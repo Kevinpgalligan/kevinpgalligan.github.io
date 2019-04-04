@@ -1,2 +1,3 @@
 Flask
-jinja2-highlight
+Frozen-Flask
+Flask-FlatPages
