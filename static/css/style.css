@@ -1,0 +1,100 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html {
+    height: 100vh;
+}
+
+body {
+    background: #284470;
+    padding: 0px;
+    margin: 0px;
+    height: 100vh;
+}
+
+.page-container {
+    overflow: auto;
+}
+
+.content-column {
+    background: #add8e6;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 10px;
+    min-height: 100vh;
+}
+
+.content {
+    color: black;
+    font-size: 16px;
+    font-family: Georgia, serif;
+    max-width: 700px;
+    margin: 40px auto;
+}
+
+header {
+    margin: 0px auto 50px;
+    max-width: 800px;
+}
+
+.header-other {
+    text-align: center;
+    vertical-align: middle;
+}
+
+#title {
+    font-family: Helvetica, sans-serif;
+    font-size: 36px;
+    color: #284470;
+    text-decoration: none;
+}
+
+.navlink {
+    color: #284470;
+    text-align: center;
+    padding: 0px 16px;
+    text-decoration: none;
+    font-size: 18px;
+    width: 100%;
+    height: 100%;
+}
+
+header a:hover {
+    text-decoration: underline;
+}
+
+#active-page {
+    border-width: 1px;
+    border-color: #284470;
+    text-decoration: underline;
+}
+
+.centered {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.content h1,h2,h3,h4,h5,h6 {
+    font-family: Helvetica, sans-serif;
+    color: #284470;
+}
+
+.backlink {
+    font-size: 13px;
+}
+
+/* Class used by syntax highlighter. */
+.highlight {
+    background: #f4f8f9;
+    overflow: auto;
+    padding-left: 10px;
+}
+
+.highlight * {
+    font-size: 12px;
+}
+
