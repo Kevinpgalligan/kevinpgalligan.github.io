@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title> apps@kevingal </title>
+    <title> 🤖❤</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/static/css/style.css">
@@ -33,10 +33,19 @@
         </nav>
     </header>
 
-<h2>Apps</h2>
-<ul>
-    <li><a href="/apps/emojipasta.html">Emojipasta 🤖❤ Generator ️💦✨</a></li>
-</ul>
+<script src="/static/js/apps/emojipasta/emoji-mappings.js"></script>
+<script src="/static/js/apps/emojipasta/emojipasta.js"></script>
+<script>
+    function writeEmojipasta() {
+        var text = document.getElementById("emojipastainput").value;
+        document.getElementById("emojipastaoutput").innerHTML = generateEmojipasta(text);
+    }
+</script>
+<h3>Emojipasta ❤ Generator 🤖</h3>
+<p>Adds word-relevant emojis 😍 to text ✨ with sometimes hilarious 😂 results 😏</p>
+<textarea id="emojipastainput" rows="5"></textarea>
+<button id="emojipastageneratebutton" onclick="writeEmojipasta();">Generate Emojipasta</button>
+<div id="emojipastaoutput"></div>
 
 
 </body>
