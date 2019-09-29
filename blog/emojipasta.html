@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title> The Tragic Story of u/AnEmojipastaBot </title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/pygments.css">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/img/favicon-16x16.png">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-147419708-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-147419708-1');
+    </script>
+</head>
+
+<body>
+    <header>
+        <div class="banner"><h1>kevingal.com</h1></div>
+        
+        <nav>
+        
+            <a href="/index.html" class="navlink">home</a>
+        
+            <a href="/blog.html" class="navlink" id="active-page-navlink">blog</a>
+        
+            <a href="/apps.html" class="navlink">apps</a>
+        
+        </nav>
+    </header>
+
+<h2>The Tragic Story of u/AnEmojipastaBot</h2>
+<p>It 🤔 was a ❤ dark 🕶🔫 and 🌰 stormy night... 🌜</p>
+<p>u/AnEmojipastaBot was a Reddit bot inspired by the very memey subreddit <a href="https://www.reddit.com/r/emojipasta">r/emojipasta</a>. The idea was simple: UserA posts a comment, UserB "tags" the bot by saying "u/AnEmojipastaBot" in a reply to UserA, and finally, the bot replies to UserB with an emoji-filled version of UserA's comment. An example:</p>
+<p><img alt="An example of u/AnEmojipastaBot in action" src="/static/img/emojipasta/firstexample.png" /></p>
+<p>The bot was a surprise hit, spreading across the entire website and acquiring 30k karma (or "upvotes") in a couple of days and keeping me busy with excitement and bug fixes. Eventually, it made too many enemies and its account was banned permanently by the admins of Reddit, supposedly for being spammy and annoying.</p>
+<p>It was fun while it lasted, though, and rather than let the code (which generates rather good emojipasta) go to waste, I recently resurrected it <a href="/apps/emojipasta.html">as a web app</a>.</p>
+<p>In the rest of the post I'll give an overview of how the emojipasta generator works, some of the bot's greatest hits from Reddit, and mention some of the bugs I encountered during the few days that it was live.</p>
+<h3>How It Works</h3>
+<p>I wrote a script to download a few thousand comments off r/emojipasta, keeping track of which words appeared beside which emojis. The bot broke up comments into chunks of text and emojis were inserted randomly between the chunks using the word->emoji "mappings" from r/emojipasta, with a maximum of 2 emojis after each chunk. Only the alphanumeric prefix of each chunk of text was considered, so that "I'll" would give the same emoji mappings as "I".</p>
+<p>That's about it. The code was pretty simple. The original source code of the bot, in Python, can be found <a href="https://github.com/Kevinpgalligan/EmojipastaBot">HERE</a>. The JavaScript version that I ported recently can be found <a href="https://github.com/Kevinpgalligan/KevingalWebsite/blob/master/static/js/apps/emojipasta/emojipasta.js">HERE</a>.</p>
+<h3>Hall of Fame</h3>
+<p>The bot's top comments during its brief lifespan.</p>
+<ul>
+<li>
+<p><strong>Oh. This was a bit dark. It was in a post about a news website inappropriately using emojis in its report of a school shooting.</strong>
+<img alt="An example of u/AnEmojipastaBot in action" src="/static/img/emojipasta/secondexample.png" /></p>
+</li>
+<li>
+<p><strong>Also a tad dark.</strong>
+<img alt="An example of u/AnEmojipastaBot in action" src="/static/img/emojipasta/thirdexample.png" /></p>
+</li>
+<li>
+<p><strong>More innocent.</strong>
+<img alt="An example of u/AnEmojipastaBot in action" src="/static/img/emojipasta/fourthexample.png" /></p>
+</li>
+<li>
+<p><strong>Cop story.</strong>
+<img alt="An example of u/AnEmojipastaBot in action" src="/static/img/emojipasta/fifthexample.png" /></p>
+</li>
+<li>
+<p><strong>Dooby brothers.</strong>
+<img alt="An example of u/AnEmojipastaBot in action" src="/static/img/emojipasta/sixthexample.png" /></p>
+</li>
+<li>
+<p><strong>Physical and mental pain.</strong>
+<img alt="An example of u/AnEmojipastaBot in action" src="/static/img/emojipasta/seventhexample.png" /></p>
+</li>
+</ul>
+<h3>Bug Trivia</h3>
+<p>I had to fix quite a few bugs in the bot's code as it picked up momentum on Reddit. It might be useful for future aspiring bot creators to be aware of them. Here is a possibly-non-comprehensive list:</p>
+<ul>
+<li>Infinite looping with other bots.</li>
+<li>Bot didn't respond when its username wasn't capitalised (e.g. "u/anemojipastabot" instead of "u/AnEmojipastaBot").</li>
+<li>Posting in inappropriate subreddits, e.g. r/suicidewatch.</li>
+<li>Crash when original comment had been deleted.</li>
+<li>Crash when posting in a subreddit where it had been banned.</li>
+<li>Didn't handle random network-related exceptions when calling Reddit API.</li>
+</ul>
+<hr>
+<p><i>Post Date: 2019-09-29</i></p>
+<div class="previous-page-link">
+ Previous: <a href="/blog/plane-boarding.html">Simulating plane designs for faster boarding</a>
+
+</div>
+<div class="next-page-link">
+ <p>No next article.</p>
+
+</div>
+
+
+</body>
+</html>
