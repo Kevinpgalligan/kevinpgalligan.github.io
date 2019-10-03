@@ -34,7 +34,7 @@
     </header>
 
 <h2>Solving all 42 versions of the Harry Potter potions puzzle</h2>
-<p>There's a neat little puzzle near the end of <em>Harry Potter and the Philosopher's Stone</em>. Harry and Hermione enter a chamber, the entrances are blocked by magic fire, and only by decoding the following riddle will they be able to escape:</p>
+<p>There's a neat puzzle near the end of <em>Harry Potter and the Philosopher's Stone</em> (aka <em>Sorcerer's Stone</em>). Harry and Hermione enter a chamber, the entrances are blocked by magic fire, and only by decoding the following riddle will they be able to escape:</p>
 <div class="codehilite"><pre><span></span>  <span class="nv">Danger</span> <span class="nv">lies</span> <span class="nv">before</span> <span class="nv">you</span>, <span class="k">while</span> <span class="nv">safety</span> <span class="nv">lies</span> <span class="nv">behind</span>,
   <span class="nv">Two</span> <span class="nv">of</span> <span class="nv">us</span> <span class="nv">will</span> <span class="nv">help</span> <span class="nv">you</span>, <span class="nv">whichever</span> <span class="nv">you</span> <span class="nv">would</span> <span class="nv">find</span>,
   <span class="nv">One</span> <span class="nv">among</span> <span class="nv">us</span> <span class="nv">seven</span> <span class="nv">will</span> <span class="nv">let</span> <span class="nv">you</span> <span class="nv">move</span> <span class="nv">ahead</span>,
@@ -56,19 +56,19 @@
 
 <p><img alt="Some potions" src="/static/img/potter-puzzle/some-potions.png" /></p>
 <p>Put simply, they have to figure out which potions are in which bottles.</p>
-<p>In this post, we're going to solve all 42 possible versions of the puzzle via programming and create a nice little diagram of the results (like the picture above, but much bigger).</p>
+<p>In this post, we're going to solve all 42 possible versions of the puzzle via programming and create a diagram of the results (like the picture above, but much bigger).</p>
 <h3>Wait, why are there 42 versions?</h3>
-<p>It's because the positions of the "giant" and "dwarf" potions are not specified. There are 7 possible positions for the giant, and for each of those, there are 6 remaining positions for the dwarf, which gives <code>7 * 6 = 42</code>. There's no way to know which one J.K. Rowling had in mind when she wrote the puzzle, unless she retcons it through Twitter. Until that inevitable day, we could pick a random version and have a crack at it. But, there's no guarantee that it would be solvable, hence why we're performing the public service of solving all 42 versions (or proving them unsolvable).</p>
+<p>It's because the positions of the "giant" and "dwarf" potion bottles are not specified. There are 7 possible positions for the giant, and for each of those, there are 6 remaining positions for the dwarf, which gives <code>7 * 6 = 42</code>. There's no way to know which one J.K. Rowling had in mind when she wrote the puzzle, unless she retcons it through Twitter. Until that inevitable day, we could pick a random version and have a crack at it. But, there's no guarantee that it would be solvable, hence why we're performing the public service of solving all 42 versions (or proving them unsolvable).</p>
 <h3>JUST SOLVE IT</h3>
 <p>First, here are the constraints of the puzzle, reworded in plainer terms:</p>
 <ol>
 <li>There are 2 harmless potions, 3 poison ones, 1 that lets you move forward and 1 that lets you move backward.</li>
 <li>There is a poison potion directly to the left of both of the harmless potions.</li>
 <li>The potions at the extreme ends are different, neither lets us move forward.</li>
-<li>Neither the biggest nor the smallest potion is poisonous.</li>
-<li>The second potion on the left and the second on the right have the same contents.</li>
+<li>Neither the biggest nor the smallest bottle contains poison potion.</li>
+<li>The second bottle on the left and the second on the right have the same contents.</li>
 </ol>
-<p>How do we tackle it? Consider this version. Note that, as stated in the puzzle, there's 1 potion smaller than all the others (the dwarf) and 1 potion bigger than all the others (the giant).</p>
+<p>How do we tackle it? Consider this version. Note that, as stated in the puzzle, there's 1 bottle smaller than all the others (the dwarf) and 1 bottle bigger than all the others (the giant).</p>
 <p><img alt="Example version" src="/static/img/potter-puzzle/solve-1.png" /></p>
 <p>Let's try using a dumb brute force search, i.e. taking the bottles one at a time and trying all of their possible contents.</p>
 <p>The first bottle, for example, can't contain the move-forward potion because of constraint #3 (see above). Neither can it contain a harmless potion, due to constraint #2 -- it would be impossible for there to be a poison potion to its left. That leaves us with a poison potion and the move-backward potion as possible contents. We try both of these.</p>
@@ -88,7 +88,7 @@
 <h3>A closer look at the solutions</h3>
 <p>Is there something that all of the solvable variations of the puzzle have in common? Yes! Notice that either the small bottle or the big bottle have to be in 2nd or 6th position. This allows us to deduce that the 2nd and 6th bottles contain harmless potion, due to constraints #4 and #5. Without this deductive step, we can't eliminate the possibility that those bottles contain poison and we end up with multiple possible solutions. The solvable variations also require that the other "special" bottle (small or big) is in 3rd or 4th position. Otherwise, we can't pin down the exact location of the move-forward potion.</p>
 <h3>Closing comments</h3>
-<p>I leave you with a nice quote from the book.</p>
+<p>I leave you with a quote I like from the book.</p>
 <blockquote>
 <p>Hermione let out a great sigh and Harry, amazed, saw that she was smiling, the very last thing he felt like doing. ‘Brilliant,’ said Hermione. ‘This isn’t magic – it’s logic – a puzzle. A lot of the greatest wizards haven’t got an ounce of logic, they’d be stuck in here for ever.’</p>
 </blockquote>
