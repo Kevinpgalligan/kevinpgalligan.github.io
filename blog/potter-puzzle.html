@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="/pygments.css">
     <link rel="icon" type="image/png" sizes="16x16" href="/static/img/favicon-16x16.png">
+    
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-147419708-1"></script>
     <script>
@@ -16,10 +17,12 @@
       gtag('js', new Date());
       gtag('config', 'UA-147419708-1');
     </script>
+    
 </head>
 
 <body>
     <header>
+        <div data-nosnippet>
         <div class="banner"><h1>kevingal.com</h1></div>
         
         <nav>
@@ -28,29 +31,30 @@
         
             <a href="/blog.html" class="navlink" id="active-page-navlink">blog</a>
         
-            <a href="/apps.html" class="navlink">apps</a>
+            <a href="/projects.html" class="navlink">projects</a>
         
         </nav>
+        </div>
     </header>
 
 <h2>Solving all 42 versions of the Harry Potter potions puzzle</h2>
 <p>There's a neat puzzle near the end of <em>Harry Potter and the Philosopher's Stone</em> (aka <em>Sorcerer's Stone</em>). Harry and Hermione enter a chamber, the entrances are blocked by magic fire, and only by decoding the following riddle will they be able to escape:</p>
-<div class="codehilite"><pre><span></span>  <span class="nv">Danger</span> <span class="nv">lies</span> <span class="nv">before</span> <span class="nv">you</span>, <span class="k">while</span> <span class="nv">safety</span> <span class="nv">lies</span> <span class="nv">behind</span>,
-  <span class="nv">Two</span> <span class="nv">of</span> <span class="nv">us</span> <span class="nv">will</span> <span class="nv">help</span> <span class="nv">you</span>, <span class="nv">whichever</span> <span class="nv">you</span> <span class="nv">would</span> <span class="nv">find</span>,
-  <span class="nv">One</span> <span class="nv">among</span> <span class="nv">us</span> <span class="nv">seven</span> <span class="nv">will</span> <span class="nv">let</span> <span class="nv">you</span> <span class="nv">move</span> <span class="nv">ahead</span>,
-  <span class="nv">Another</span> <span class="nv">will</span> <span class="nv">transport</span> <span class="nv">the</span> <span class="nv">drinker</span> <span class="nv">back</span> <span class="nv">instead</span>,
-  <span class="nv">Two</span> <span class="nv">among</span> <span class="nv">our</span> <span class="nv">number</span> <span class="nv">hold</span> <span class="nv">only</span> <span class="nv">nettle</span> <span class="nv">wine</span>,
-  <span class="nv">Three</span> <span class="nv">of</span> <span class="nv">us</span> <span class="nv">are</span> <span class="nv">killers</span>, <span class="nv">waiting</span> <span class="nv">hidden</span> <span class="nv">in</span> <span class="nv">line</span>.
-  <span class="nv">Choose</span>, <span class="nv">unless</span> <span class="nv">you</span> <span class="nv">wish</span> <span class="nv">to</span> <span class="nv">stay</span> <span class="nv">here</span> <span class="k">for</span> <span class="nv">evermore</span>,
-  <span class="nv">To</span> <span class="nv">help</span> <span class="nv">you</span> <span class="nv">in</span> <span class="nv">your</span> <span class="nv">choice</span>, <span class="nv">we</span> <span class="nv">give</span> <span class="nv">you</span> <span class="nv">these</span> <span class="nv">clues</span> <span class="nv">four</span>:
-  <span class="nv">First</span>, <span class="nv">however</span> <span class="nv">slyly</span> <span class="nv">the</span> <span class="nv">poison</span> <span class="nv">tries</span> <span class="nv">to</span> <span class="nv">hide</span>
-  <span class="nv">You</span> <span class="nv">will</span> <span class="nv">always</span> <span class="nv">find</span> <span class="nv">some</span> <span class="nv">on</span> <span class="nv">nettle</span> <span class="nv">wine</span>’<span class="nv">s</span> <span class="nv">left</span> <span class="nv">side</span><span class="c1">;</span>
-  <span class="nv">Second</span>, <span class="nv">different</span> <span class="nv">are</span> <span class="nv">those</span> <span class="nv">who</span> <span class="nv">stand</span> <span class="nv">at</span> <span class="nv">either</span> <span class="k">end</span>,
-  <span class="nv">But</span> <span class="k">if</span> <span class="nv">you</span> <span class="nv">would</span> <span class="nv">move</span> <span class="nv">onwards</span>, <span class="nv">neither</span> <span class="nv">is</span> <span class="nv">your</span> <span class="nv">friend</span><span class="c1">;</span>
-  <span class="nv">Third</span>, <span class="nv">as</span> <span class="nv">you</span> <span class="nv">see</span> <span class="nv">clearly</span>, <span class="nv">all</span> <span class="nv">are</span> <span class="nv">different</span> <span class="nv">size</span>,
-  <span class="nv">Neither</span> <span class="nv">dwarf</span> <span class="nv">nor</span> <span class="nv">giant</span> <span class="nv">holds</span> <span class="nv">death</span> <span class="nv">in</span> <span class="nv">their</span> <span class="nv">insides</span><span class="c1">;</span>
-  <span class="nv">Fourth</span>, <span class="nv">the</span> <span class="nv">second</span> <span class="nv">left</span> <span class="nv">and</span> <span class="nv">the</span> <span class="nv">second</span> <span class="nv">on</span> <span class="nv">the</span> <span class="nv">right</span>
-  <span class="nv">Are</span> <span class="nv">twins</span> <span class="nv">once</span> <span class="nv">you</span> <span class="nv">taste</span> <span class="nv">them</span>, <span class="nv">though</span> <span class="nv">different</span> <span class="nv">at</span> <span class="nv">first</span> <span class="nv">sight</span>.
+<div class="codehilite"><pre><span></span>  Danger lies before you, while safety lies behind,
+  Two of us will help you, whichever you would find,
+  One among us seven will let you move ahead,
+  Another will transport the drinker back instead,
+  Two among our number hold only nettle wine,
+  Three of us are killers, waiting hidden in line.
+  Choose, unless you wish to stay here for evermore,
+  To help you in your choice, we give you these clues four:
+  First, however slyly the poison tries to hide
+  You will always find some on nettle wine’s left side;
+  Second, different are those who stand at either end,
+  But if you would move onwards, neither is your friend;
+  Third, as you see clearly, all are different size,
+  Neither dwarf nor giant holds death in their insides;
+  Fourth, the second left and the second on the right
+  Are twins once you taste them, though different at first sight.
 </pre></div>
 
 
