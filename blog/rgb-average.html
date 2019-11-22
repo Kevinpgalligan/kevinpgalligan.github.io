@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="/pygments.css">
     <link rel="icon" type="image/png" sizes="16x16" href="/static/img/favicon-16x16.png">
     
+    <meta property="og:image" content="/static/img/rgb-average/thumbnail.png" />
+    <meta name="thumbnail" content="/static/img/rgb-average/thumbnail.png" />
+    
+    
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-147419708-1"></script>
     <script>
@@ -45,7 +49,7 @@
 <p>In other words, we have to generate a random RGB value so that (R+G+B)/3=A, or equivalently, R+G+B=3A. We'll solve this problem using the Python programming language and learn some neat <a href="https://en.wikipedia.org/wiki/Combinatorics">combinatorics</a> along the way.</p>
 <h3>An attempt</h3>
 <p>The first algorithm that might come to mind is to generate R, G and B one at a time, ensuring that we satisfy the constrants of the problem at each step. Being RGB, they have to be in the range 0-255. We must also ensure that it remains possible to satisfy R+G+B=3A. If we stay within these constraints, then we will always end up with a valid RGB value with an average of A, no matter what value A has. There's always at least one solution to R+G+B=3A, and that's the RGB value (A,A,A).</p>
-<p>Here's this simple-ish algorithm in Python code.</p>
+<p>Here's this simple algorithm in Python code.</p>
 <div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">random</span> <span class="kn">as</span> <span class="nn">rd</span>
 <span class="k">def</span> <span class="nf">generate_rgb</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
     <span class="n">S</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span><span class="n">A</span>
