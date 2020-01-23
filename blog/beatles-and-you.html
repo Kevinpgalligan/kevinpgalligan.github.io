@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title> Did The Beatles really love &#34;you&#34;? </title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/pygments.css">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/img/favicon-16x16.png">
+    
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-147419708-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-147419708-1');
+    </script>
+    
+</head>
+
+<body>
+    <header>
+        <div data-nosnippet>
+        
+        <nav>
+        <img src="/static/img/favicon-16x16.png">
+        
+            <a href="/index.html" class="navlink">home</a>
+        
+            <a href="/blog.html" class="navlink" id="active-page-navlink">blog</a>
+        
+            <a href="/projects.html" class="navlink">projects</a>
+        
+        </nav>
+        </div>
+    </header>
+
+<h2>Did The Beatles really love &#34;you&#34;?</h2>
+<p>Browsing the <a href="https://en.wikipedia.org/wiki/Lennon–McCartney">Wikipedia page of Lennon-McCartney</a>, the virtuoso songwriting duo of Beatles fame, a fun fact caught my interest.</p>
+<blockquote>
+<p>Author David Rowley points out that at least half of all Lennon–McCartney lyrics have the words "you" and/or "your" in the first line.</p>
+</blockquote>
+<p>This refers to page 3 of the book <em>Help! 50 Songwriting, Recording and Career Tips used by the Beatles</em>, which suggests that songwriters should put the word "you" in the first line of their lyrics:</p>
+<blockquote>
+<p>Around half of all Lennon-McCartney lyrics use the magic songwriting words 'you or 'your' in the first line.</p>
+<p>These words, especially when used with the words 'I' or 'me', allow the listener to imagine that the song is about them and allow the listener to imagine that they are singing the song to another person.</p>
+<p>The opening words of the following songs are all addressed directly to the listener. 'I Want to Hold Your Hand', 'We can Work It Out', 'Taxman', [...]. Indeed, on some of these songs it sounds as if the Beatles wrote the lyrics as though they were having a conversation with their listener.</p>
+</blockquote>
+<p>This incredibly unquantified statement brings two incredibly important questions to mind.</p>
+<ul>
+<li>Exactly how many Beatles songs refer to "you" in the first line?</li>
+<li>Is there actually a correlation between chart success and the inclusion of "you" in the first line of a song, or is David Rowley blowing hot steam out of his orifices?</li>
+</ul>
+<p>This post will answer these questions.</p>
+<p><img src="/static/img/lennon-mccartney-and-you/beatles-eyeshot.png"
+     alt="Photo of Lennon & McCartney"
+     class="centered"></p>
+<h3>How many Lennon-McCartney songs are addressed to "you"?</h3>
+<p>I wrote a <a href="https://github.com/Kevinpgalligan/KevingalWebsite/blob/master/experiments/beatles-and-you/beatles-lyrics-scraper.py">script</a> to download the lyrics from the Beatles' <a href="https://en.wikipedia.org/wiki/The_Beatles_discography#Studio_albums">"core catalogue" studio albums</a>. Instrumental songs, cover songs and songs credited to Ringo Starr / George Harrison were removed manually. This left a total of 140 songs. A bit short of the full ~180 songs published by Lennon-McCartney, but it should be a representative sample.</p>
+<p>After <a href="https://github.com/Kevinpgalligan/KevingalWebsite/blob/master/experiments/beatles-and-you/beatles-analysis.py">RUNNING THE NUMBERS</a>, it was found that <strong>30%</strong> of the songs had "you" (or "your") in the first line. This is quite a bit short of "around half", but since <strong>83%</strong> of the songs contained "you" <em>somewhere</em> in the lyrics, I'm willing to give David Rowley a pass. It shouldn't be controversial to state that Lennon-McCartney did, in fact, love "you".</p>
+<p>However, it would be a stretch to then issue a commandment like <em>goOd SoNgWriTeRs SAy yOu</em> in a bible of songwriting tips. Before that, the least we could do would be to establish a correlation between the use of the word "you" and success in music charts.</p>
+<h3>Chart success and you</h3>
+<p>We're going to try to find a correlation between success in music charts and "you". We consider chart success to be the highest position reached on the charts, so a song that peaks at #1 is more successful than one that peaks #5. The chart we'll be looking at is Billboard Top 100, which has been running since 1956.</p>
+<blockquote>
+<p>The Billboard Hot 100 is the music industry standard record chart in the United States for songs, published weekly by Billboard magazine. Chart rankings are based on sales (physical and digital), radio play, and online streaming in the United States. <a href="https://en.wikipedia.org/wiki/Billboard_Hot_100">source</a></p>
+</blockquote>
+<p>The Billboard Hot 100 charts were scraped (TODO should "scraped" be used?) (TODO link to script) from the start of 1962 until the start of 1970. That's 417 weeks; a total of 5681 unique songs reached the charts during that time. Interestingly, this means that ~86% of songs listed on the charts were actually duplicates (TODO wording?) from previous weeks.</p>
+<p>Remaining stuff to do:</p>
+<ul>
+<li>Scrape lyrics for those songs, as much as possible.</li>
+<li>Find correlation coefficient between presence of "you" and chart peak.</li>
+</ul>
+<h3>Conclusion</h3>
+<ul>
+<li>Is it a valid tip?</li>
+<li>Mention that we've only shown a correlation. Experimental study required.</li>
+</ul>
+<hr>
+<p><i>Post Date: 2019-10-14</i></p>
+<a href="/blog.html">Back to blog</a>
+ <p>No previous article.</p>
+
+ <p>No next article.</p>
+
+
+</body>
+</html>
