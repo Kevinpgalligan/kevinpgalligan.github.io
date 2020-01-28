@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title> Finding Mona Lisa in the Game of Life </title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/pygments.css">
+    
+<link rel="stylesheet" href="/static/css/blog.css">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/img/favicon-16x16.png">
+    
+    <meta property="og:image" content="/static/img/mona-lisa-gol/thumbnail.png" />
+    <meta name="thumbnail" content="/static/img/mona-lisa-gol/thumbnail.png" />
+    
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-147419708-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-147419708-1');
+    </script>
+    
+</head>
+<body>
+    <header>
+        <div data-nosnippet>
+        
+        <nav>
+        <img src="/static/img/favicon-16x16.png">
+        
+            <a href="/index.html" class="navlink">home</a>
+        
+            <a href="/blog.html" class="navlink">blog</a>
+        
+            <a href="/projects.html" class="navlink">projects</a>
+        
+        </nav>
+        </div>
+    </header>
+
+<h2>Finding Mona Lisa in the Game of Life</h2>
+<p>The <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Game of Life</a> is a 2d, grid-shaped petri dish. Each grid square in the dish is a cell that can be either alive or dead.</p>
+<p><img src="/static/img/mona-lisa-gol/some-life.gif"
+     alt="Evolution of Life for a number of states."
+     class="centered"></p>
+<p>The petri dish changes state according to simple rules:</p>
+<ul>
+<li>A dead cell comes to life if it has 3 adjacent cells (or "neighbours") that are alive, through reproduction.</li>
+<li>A live cell with more than 3 live neighbours dies due to overcompetition.</li>
+<li>A live cell with fewer than 2 live neighbours dies due to loneliness.</li>
+</ul>
+<p>Every cell in the above animation lives and dies according to these rules.</p>
+<p>Besides resulting in cool-looking patterns, it has been proven that the Game of Life ("Life" for short) can simulate anything that can be done by a computer, whether that's summing numbers or captioning images of cats. Not bad for a petri dish.</p>
+<p><img src="/static/img/mona-lisa-gol/spaceship.gif"
+     alt="Spaceship pattern moving along in Life"
+     class="centered"></p>
+<p>What does this have to do with Mona Lisa? It's easy to load a black &amp; white picture as a Life state, where black pixels are live cells and white pixels are dead cells. This allows us to run a Life simulation with a state that looks like Mona Lisa. The dark regions die off immediately due to overpopulation, leaving an outline, which then melts away further and leaves only hints of the original picture.</p>
+<p><img src="/static/img/mona-lisa-gol/mona-start.gif"
+     alt="Evolution of Life with Mona Lisa picture as starting state"
+     class="centered"></p>
+<p>This looks kinda cool, but what if we want to find a Life state that eventually, after following the rules of Life for a few rounds, reaches a state that looks like Mona Lisa? This requires working backwards instead of forwards from the target picture, which is a <strong>much</strong> more difficult problem.</p>
+<p>In this article, we're going to explore just how difficult this problem is, and how it can be attempted using what are known as "SAT solvers". We'll then look at animations of flowers, Steve Buscemi, and other objects of interest that we can generate with the solution.</p>
+<h3>Life, the Universe and SAT Solvers</h3>
+<p>We call Life state A the "parent" of state B if A turns into B by following the rules of Life. The reason that it's difficult to find the parent of a state is that the rules of Life are non-reversible. There's no direct way to go from a Life state to its parent, and in fact, it's possible for a state to have multiple parents or even no parents.</p>
+<p>What we <em>can</em> do is construct a boolean equation that captures the conditions that any parent state of our target state must satisfy, then solve it to find a parent, if a parent exists.</p>
+<p>(Note: a boolean equation is an equation where the variables take on true / false values, and where the operators, instead of the pluses and minuses that we usually see, are replaced by boolean operators such as AND and OR. For example, the equation <code>sour AND (NOT sweet)</code> is solved by setting <code>sour:=true</code> and <code>sweet:=false</code>. <a href="https://en.wikipedia.org/wiki/Boolean_algebra">Read more here</a>).</p>
+<p><img src="/static/img/mona-lisa-gol/scream.gif"
+     alt="Evolution of the Scream painting as a Life state"
+     class="centered"></p>
+<p>In the boolean equation that we construct, each variable corresponds to a cell and the value of the variable indicates the health of the cell. False means that the cell is dead, while true means that it's alive. If we find a set of variable assignments that causes the equation to evaluate to true, then the corresponding Life state (with false/true variables corresponding to dead/live cells) is a parent of our target state.</p>
+<p>What will the equation look like? Let's consider a 3x3 Life grid as an example.</p>
+<div class="codehilite"><pre><span></span>  1 2 3
+a o x x
+b x x x
+c x o x
+</pre></div>
+
+
+<p>The middle cell, b2, is alive. For it to be alive in this state, one of the following must be true:</p>
+<ol>
+<li>It was alive in the previous state and 2-3 of its neighbours were also alive.</li>
+<li>It was dead in the previous state and 3 of its neighbours were alive.</li>
+</ol>
+<p>Keeping in mind that true means alive and false means dead, this can be translated to a boolean equation in a fairly literal way.</p>
+<div class="codehilite"><pre><span></span>(b2 AND ((a1 AND a2 AND !a3 AND !b1 AND !b3 AND !c1 AND !c2 AND !c3)
+         OR (a1 AND !a2 AND a3 AND !b1 AND !b3 AND !c1 AND !c2 AND !c3)
+         OR ...repeat 82 more times for other valid neighbour combinations))
+OR
+(!b2 AND ((a1 AND a2 AND a3 AND !b1 AND !b3 AND !c1 AND !c2 AND !c3)
+          OR ...repeat 55 more times for other valid neighbour combinations))
+</pre></div>
+
+
+<p>If we repeat this construction for every cell in the grid and chain them together using ANDs, we end up with an equation that we can solve to find a parent of the target state. And, as it happens, there are many "SAT-solving" programs that search for solutions to boolean equations. Once we have our equation, we can ship it off to our SAT solver of choice and sit back, relaxedly sipping our lattes until it gets back to us with a result.</p>
+<h3>Great, let's move on to the pretty pictures</h3>
+<p>WAIT. While this is nice in theory, there are significant "buts".</p>
+<p>The first "but" is that, as we touched on in the previous section, <em>not all Life states have parents</em>. Such states are known as <a href="https://en.wikipedia.org/wiki/Garden_of_Eden_(cellular_automaton)">Gardens of Eden</a>. Here's an example of a Garden of Eden from Wikipedia. It's impossible to reach this state from any other 9x33 Life state.</p>
+<p><img src="/static/img/mona-lisa-gol/garden-of-eden-example.png"
+     alt="An example of a Garden of Eden"
+     class="centered"></p>
+<p>If our target picture happens to be a Garden of Eden in Life, then the SAT solver will definitely fail to find a parent, because no parent will exist. And the larger a Life state, the more likely it is to be a Garden of Eden, because it has more sub-sections that can possibly be in impossible configurations.</p>
+<p><img src="/static/img/mona-lisa-gol/cloverleaf.gif"
+     alt="Evolution of cloverleaf pattern"
+     class="centered"></p>
+<p>The second "but" is that, as the number of cells increases, so too does the difficulty of the problem. Trying to generate a SAT equation for ~1800 cells blew up my program by consuming the entire 1GB of memory that was available to it. The time taken to find the parent of a Life state also starts to become prohibitive with more than ~400 cells. <a href="https://en.wikipedia.org/wiki/Boolean_satisfiability_problem">SAT problems</a>, after all, are in the NP-complete class of problems, which means that they are damn hard to solve with current methods.</p>
+<p>To demonstrate this, below are the timings I got after running backsearch on random Life states of varying sizes, backsearch being the process of finding a Life state's parent. This includes the time taken to generate the SAT encoding. For the record, my processor is a wimpy i3-8130U 2.20GHz.</p>
+<p><img src="/static/img/mona-lisa-gol/cells-vs-backsearch-time.png"
+     alt="Time for backsearch vs number of cells, seems to grow exponentially"
+     class="centered"></p>
+<p>As a result of these "buts", any pictures we use in this article will be 20x20 or less (&lt;=400 cells). Beyond that, the problems take a long time for my computer to solve, and there is often no solution.</p>
+<p>Here's the output of backsearch on a modest 13x11 sad face. It manages to find 2 previous states before landing in a Garden of Eden. Interestingly, there's no hint of the sad face in the first state, and not much more in the second state, although the live cells do seem to converge towards their final positions.</p>
+<p><img src="/static/img/mona-lisa-gol/sadface.gif"
+     alt="Life state becomes sad face, found using backsearch"
+     class="centered"></p>
+<h3>The results</h3>
+<p>Here's the result of running backsearch on Mona Lisa's face. The parent we find looks nothing like Mona Lisa. It's also a Garden of Eden, so we've run into a dead-end and can't backsearch any further.</p>
+<p><img src="/static/img/mona-lisa-gol/mona.gif"
+     alt="Life becomes Mona Lisa"
+     class="centered"></p>
+<p>More results, this time on a flower. The parent state found by the SAT solver is, once again, a Garden of Eden. It contains a faint outline of the flower.</p>
+<p><img src="/static/img/mona-lisa-gol/flower.gif"
+     alt="Life becomes a flower"
+     class="centered"></p>
+<p>Marilyn Monroe and her Garden of Eden parent.</p>
+<p><img src="/static/img/mona-lisa-gol/marilyn.gif"
+     alt="Life becomes Marilyn Monroe"
+     class="centered"></p>
+<p>Steve Buscemi, who looks like a pissed-off <a href="https://www.smbc-comics.com/">SMBC</a> character when in black and white.</p>
+<p><img src="/static/img/mona-lisa-gol/buscemi.gif"
+     alt="Life becomes Steve Buscemi"
+     class="centered"></p>
+<p>Aaaaand a puppy.</p>
+<p><img src="/static/img/mona-lisa-gol/puppy.gif"
+     alt="Life becomes a puppy"
+     class="centered"></p>
+<p>Unfortunately, besides the sad face, we only ever manage a single successful backsearch before running into a dead-end.</p>
+<h3>Conclusions</h3>
+<p>It's possible to find parents of Game of Life states, although it's a difficult problem for computers to solve. We could possibly speed up the search by using a different SAT encoding of the problem. We could also replace MiniSAT with a different SAT solver.</p>
+<p>The parents found by our backsearch barely resemble the target picture and often turn out to be Gardens of Eden. To find longer chains of Life states that gradually turn into the target picture, we could identify multiple parent states and pick the one that a) most resembles the target picture, and b) has some property that's less common in Gardens of Eden (more clustered live cells, perhaps?).</p>
+<p>Finally, the Game of Life is just one of <a href="https://en.wikipedia.org/wiki/Cellular_automaton">many possible rulesets</a> that define the behaviour of petri dishes. It would be interesting to experiment with different rulesets and see if they're more amenable to the goal of gradually evolving chaos into a picture.</p>
+<p>On that note, here's a parting gift. Run this Life state through a 19x19 <a href="https://www.dcode.fr/game-of-life">Life simulator</a> and see what happens.</p>
+<p><img src="/static/img/mona-lisa-gol/message.png"
+     alt="Secret message"
+     class="centered"></p>
+<h3>Technical details</h3>
+<p><a href="https://github.com/Kevinpgalligan/MonaLisaGameOfLife">Here's the code</a> to run Life simulations, do backsearch and create GIFs. It's all in Common Lisp. I've only tested it using the SBCL implementation of Common Lisp. The cl-sat library was used as a wrapper to call the MiniSat SAT solver, while the skippy library was used to create GIFs. Credit to the #lispgames IRC community for helping me with my silly questions.</p>
+<h3>Further reading</h3>
+<p>Some fun stuff I came across while researching this article.</p>
+<ul>
+<li>My first idea was to use evolutionary algorithms for finding patterns in Life, but <a href="https://pdfs.semanticscholar.org/ba77/59e4d871d09459e3751d110137a8434591f6.pdf">this turned out to have been done already</a> in a paper titled "Generating Interesting Patterns in Conway’s Game of Life Through a Genetic Algorithm" by Alfaro, Mendoza and Tice.</li>
+<li>I then had the idea to look for specific patterns, such as pictures. I wasted a bunch of time on trying to do this using evolutionary algorithms until realising that the problem could be solved directly using SAT. A brief search brings up multiple backsearch programs for Life <a href="https://github.com/flopp/gol-sat">[1]</a><a href="https://www.conwaylife.com/forums/viewtopic.php?f=9&amp;t=3247">[2]</a>. They don't seem to have been applied to find pictures, however.</li>
+<li>Backwards solver #2 (from the previous point) mentions The Art of Computer Science, Volume 4, Fascicle 6 as a source of information and exercises on backsearch in Life. In particular, it describes a more efficient SAT encoding. I haven't been able to get my hands on the full text, though.</li>
+<li>A cool thing: <a href="https://codegolf.stackexchange.com/questions/38573/paint-a-still-life-or-a-moving-one-draw-an-image-in-the-game-of-life">still life paintings in Life</a>.</li>
+<li>Another cool thing: <a href="http://tlrobinson.net/blog/2009/02/game-of-life-generator/">text &amp; image generator in Life</a>.</li>
+</ul>
+<p class="tiny"><a href="/static/img/mona-lisa-gol/message.gif">spoiler</a></p>
+<hr>
+<p><i>Post Date: 2020-01-28</i></p>
+<a href="/blog.html">Back to blog</a>
+ <p>Previous article: <a href="/blog/rgb-average.html">Random RGB values that average to N; or, Pointlessness and Probability</a></p>
+
+ <p>No next article.</p>
+
+
+</body>
+</html>
