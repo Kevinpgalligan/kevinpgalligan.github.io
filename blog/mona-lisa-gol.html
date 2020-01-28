@@ -97,6 +97,9 @@ OR
 
 
 <p>If we repeat this construction for every cell in the grid and chain them together using ANDs, we end up with an equation that we can solve to find a parent of the target state. And, as it happens, there are many "SAT-solving" programs that search for solutions to boolean equations. Once we have our equation, we can ship it off to our SAT solver of choice and sit back, relaxedly sipping our lattes until it gets back to us with a result.</p>
+<p><img src="/static/img/mona-lisa-gol/girl-with-a-pearl-earring.gif"
+     alt="Evolution of the Girl With a Pearl Earring painting as a Life state"
+     class="centered"></p>
 <h3>Great, let's move on to the pretty pictures</h3>
 <p>WAIT. While this is nice in theory, there are significant "buts".</p>
 <p>The first "but" is that, as we touched on in the previous section, <em>not all Life states have parents</em>. Such states are known as <a href="https://en.wikipedia.org/wiki/Garden_of_Eden_(cellular_automaton)">Gardens of Eden</a>. Here's an example of a Garden of Eden from Wikipedia. It's impossible to reach this state from any other 9x33 Life state.</p>
@@ -104,8 +107,8 @@ OR
      alt="An example of a Garden of Eden"
      class="centered"></p>
 <p>If our target picture happens to be a Garden of Eden in Life, then the SAT solver will definitely fail to find a parent, because no parent will exist. And the larger a Life state, the more likely it is to be a Garden of Eden, because it has more sub-sections that can possibly be in impossible configurations.</p>
-<p><img src="/static/img/mona-lisa-gol/cloverleaf.gif"
-     alt="Evolution of cloverleaf pattern"
+<p><img src="/static/img/mona-lisa-gol/starry-night.gif"
+     alt="Evolution of Starry Night"
      class="centered"></p>
 <p>The second "but" is that, as the number of cells increases, so too does the difficulty of the problem. Trying to generate a SAT equation for ~1800 cells blew up my program by consuming the entire 1GB of memory that was available to it. The time taken to find the parent of a Life state also starts to become prohibitive with more than ~400 cells. <a href="https://en.wikipedia.org/wiki/Boolean_satisfiability_problem">SAT problems</a>, after all, are in the NP-complete class of problems, which means that they are damn hard to solve with current methods.</p>
 <p>To demonstrate this, below are the timings I got after running backsearch on random Life states of varying sizes, backsearch being the process of finding a Life state's parent. This includes the time taken to generate the SAT encoding. For the record, my processor is a wimpy i3-8130U 2.20GHz.</p>
@@ -158,7 +161,10 @@ OR
 <li>A cool thing: <a href="https://codegolf.stackexchange.com/questions/38573/paint-a-still-life-or-a-moving-one-draw-an-image-in-the-game-of-life">still life paintings in Life</a>.</li>
 <li>Another cool thing: <a href="http://tlrobinson.net/blog/2009/02/game-of-life-generator/">text &amp; image generator in Life</a>.</li>
 </ul>
-<p class="tiny"><a href="/static/img/mona-lisa-gol/message.gif">spoiler</a></p>
+<p><img src="/static/img/mona-lisa-gol/venus.gif"
+     alt="Life state becomes sad face, found using backsearch"
+     class="centered"></p>
+<p class="tiny"><a href="/static/img/mona-lisa-gol/message.gif">parting gift spoiler</a></p>
 <hr>
 <p><i>Post Date: 2020-01-28</i></p>
 <a href="/blog.html">Back to blog</a>
