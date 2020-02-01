@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title> Counting the number of days until your birthday and why it&#39;s a useful programming trick </title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/pygments.css">
+    
+<link rel="stylesheet" href="/static/css/blog.css">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/img/favicon-16x16.png">
+    
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-147419708-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-147419708-1');
+    </script>
+    
+</head>
+<body>
+    <header>
+        <div data-nosnippet>
+        
+        <nav>
+        <img src="/static/img/favicon-16x16.png">
+        
+            <a href="/index.html" class="navlink">home</a>
+        
+            <a href="/blog.html" class="navlink">blog</a>
+        
+            <a href="/projects.html" class="navlink">projects</a>
+        
+        </nav>
+        </div>
+    </header>
+
+<h2>Counting the number of days until your birthday and why it&#39;s a useful programming trick</h2>
+<p>Spot quiz! See how many of these calculations you get right. No calculator necessary.</p>
+<ol>
+<li>Today is March 2nd, your birthday is March 28th. How many days remain until your birthday, not including today and not including your birthday?</li>
+<li>You have an array with 100 elements. How many elements are there between index 3 and index 97, not including the element at index 3 and including the element at index 97?</li>
+<li>If you have 10 cabbages in a row, how many cabbages are there between the 2nd cabbage and the 9th cabbage, including the 2nd cabbage but not the 9th one?</li>
+<li>A group of citizens in the Dystopian city of Fencepostia, with ID numbers from 50 to 60, have been selected for thought purging. How many citizens have been selected, including both citizen #50 and citizen #60?</li>
+</ol>
+<p>Answers in 5...</p>
+<p>4...</p>
+<p>3...</p>
+<p>2...</p>
+<p>1...</p>
+<p><small>spoiler: 25, 94, 7 and 11.</small></p>
+<p>If you got all of them correct without finger-counting, without drops of nervous sweat rolling down your neck, and without asking any questions on StackOverflow, then congratulations. You are an Übermensch of calculation, and there is nothing for you to learn here.</p>
+<p>If not, then you've fallen victim to one of the 2 hard problems* in computer science: the off-by-1 error.</p>
+<p>Off-by-1 errors have been written about since before Jesus Christ. At the latest, they were mentioned by <a href="https://web.archive.org/web/20160305221341/http://www.dsm.fordham.edu/~moniot/Opinions/fencepost-error-history.shtml">a Roman named Vitruvius</a>, who served in the army of Julius Caesar. He was talking about the number of fenceposts around a temple, but the principle is the same. The problem is old and wily, and you shouldn't feel bad if it caught you out.</p>
+<p>The good news is that there's a simple, easy-to-remember formula that applies to all of the above calculations. Once you've learned it, you'll never again suffer from this particular brand of off-by-1 horror. Nor will you miscount the number of days until Aunt Catherine's birthday.</p>
+<p><img src="/static/img/interval-length/aunt-catherine.jpg"
+     alt="Angry Aunt Catherine."
+     class="centered"></p>
+<h3>Give me the formula</h3>
+<p>Let's reconsider all of the above problems as calculations of interval length.</p>
+<p>What's an interval? It's a set of integers that lies between a lower and upper bound. For example, the interval <code>[3, 7]</code> contains the numbers 3, 4, 5, 6 and 7. It's a set, so we write it using the set notation <code>{3,4,5,6,7}</code>.</p>
+<p>The bounds of an interval can be <em>open</em> or <em>closed</em>. If a bound is open, it means that the bound itself is excluded from the interval. If a bound is closed, it's included. In the above example, both bounds were closed. The same interval with open bounds, written <code>(3, 7)</code>, is the set <code>{4,5,6}</code>.</p>
+<p>The bounds can also be half-open. The half-open intervals <code>(3, 7]</code> and <code>[3, 7)</code> are <code>{4,5,6,7}</code> and <code>{3,4,5,6}</code>, respectively.</p>
+<p>Now, let's rephrase the problems from before in terms of intervals.</p>
+<ul>
+<li>Birthday: the open interval <code>(2, 28)</code>, contains 25=28-2-1 elements.</li>
+<li>Array: the half-open interval <code>(3, 97]</code>, contains 94=97-3 elements.</li>
+<li>Cabbages: the half-open interval <code>[2, 9)</code>, contains 7=9-2 elements.</li>
+<li>Dystopia: the closed interval <code>[50, 60]</code>, contains 11=60-50+1 elements.</li>
+</ul>
+<p>We have all 3 types of interval here: open, half-open and closed. As such, we can generalise the little calculations we did so that they work for any interval. If you have an open interval <code>(L, U)</code>, then the number of elements is <code>U-L-1</code>. If you have a half-open interval <code>(L, U]</code> or <code>[L, U)</code>, then it's <code>U-L</code>. And finally, if you have a closed interval <code>[L, U]</code>, it's <code>U-L+1</code>. They're all the same formula, you just have to add 1 if both bounds are closed and subtract 1 if they're both open.</p>
+<p>That's it. I was going to make this into a whole big thing, but it's really that simple.</p>
+<!-- Fuck Shane! -->
+
+<h3>Farewell to Fencepostia</h3>
+<p>You should now be able to count the number of days until your birthday with full confidence, and perhaps more usefully, avoid annoying off-by-1 errors in your programming. I used to come up with small example cases of this problem and finger-count in order to figure it out. I didn't realise that there was a better way, and I never had it explained to me. If you search the internet for "subarray length", you'll come across scary topics like "finding the length of the largest subarray with contiguous elements". It doesn't seem to be written down anywhere. Maybe that's because it's obvious, but it wasn't for me.</p>
+<p>On that note, happy counting, and say hello to Aunt Catherine.</p>
+<p><small>*From the over-used joke: "There are 2 hard problems in computer science: cache invalidation, naming things, and off-by-1 errors."</small></p>
+<hr>
+<p><i>Post Date: 2020-02-01</i></p>
+<a href="/blog.html">Back to blog</a>
+ <p>Previous article: <a href="/blog/mona-lisa-gol.html">Finding Mona Lisa in the Game of Life</a></p>
+
+ <p>No next article.</p>
+
+
+</body>
+</html>
