@@ -12,6 +12,12 @@ a:hover {
     color: #2c7cc9;
 }
 
+.navbar-img {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
 .spaced-li {
     margin-top: 10px;
 }

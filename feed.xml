@@ -4,39 +4,39 @@
     <title>kevingal's blog.</title>
     <link>https://kevingal.com</link>
     <description>Blog posts by Kevin Galligan.</description>
-    <pubDate>Sat, 01 Feb 2020 00:00:00 UTC</pubDate>
-    <lastBuildDate>Sat, 01 Feb 2020 00:00:00 UTC</lastBuildDate>
+    <pubDate>Sat, 01 Feb 2020 00:00:00 GMT</pubDate>
+    <lastBuildDate>Sat, 01 Feb 2020 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://kevingal.com/feed" rel="self" type="application/rss+xml" />
     
     <item>
         <title>Counting the number of days until your birthday and why it&#39;s a useful programming trick</title>
         <link>https://www.kevingal.com/blog/interval-length.html</link>
-        <pubDate>Sat, 01 Feb 2020 00:00:00 UTC</pubDate>
-        <guid>blog/interval-length</guid>
+        <pubDate>Sat, 01 Feb 2020 00:00:00 GMT</pubDate>
+        <guid>https://www.kevingal.com/blog/interval-length.html</guid>
     </item>
     <item>
         <title>Finding Mona Lisa in the Game of Life</title>
         <link>https://www.kevingal.com/blog/mona-lisa-gol.html</link>
-        <pubDate>Tue, 28 Jan 2020 00:00:00 UTC</pubDate>
-        <guid>blog/mona-lisa-gol</guid>
+        <pubDate>Tue, 28 Jan 2020 00:00:00 GMT</pubDate>
+        <guid>https://www.kevingal.com/blog/mona-lisa-gol.html</guid>
     </item>
     <item>
         <title>Random RGB values that average to N; or, Pointlessness and Probability</title>
         <link>https://www.kevingal.com/blog/rgb-average.html</link>
-        <pubDate>Fri, 22 Nov 2019 00:00:00 UTC</pubDate>
-        <guid>blog/rgb-average</guid>
+        <pubDate>Fri, 22 Nov 2019 00:00:00 GMT</pubDate>
+        <guid>https://www.kevingal.com/blog/rgb-average.html</guid>
     </item>
     <item>
         <title>Solving all 42 versions of the Harry Potter potions puzzle</title>
         <link>https://www.kevingal.com/blog/potter-puzzle.html</link>
-        <pubDate>Thu, 03 Oct 2019 00:00:00 UTC</pubDate>
-        <guid>blog/potter-puzzle</guid>
+        <pubDate>Thu, 03 Oct 2019 00:00:00 GMT</pubDate>
+        <guid>https://www.kevingal.com/blog/potter-puzzle.html</guid>
     </item>
     <item>
         <title>The story of u/AnEmojipastaBot</title>
         <link>https://www.kevingal.com/blog/emojipasta.html</link>
-        <pubDate>Sun, 29 Sep 2019 00:00:00 UTC</pubDate>
-        <guid>blog/emojipasta</guid>
+        <pubDate>Sun, 29 Sep 2019 00:00:00 GMT</pubDate>
+        <guid>https://www.kevingal.com/blog/emojipasta.html</guid>
     </item>
 </channel>
 </rss> 
