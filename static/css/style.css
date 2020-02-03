@@ -4,6 +4,18 @@ body {
     max-width: 800px;
 }
 
+a {
+    color: blue;
+}
+
+a:hover {
+    color: #2c7cc9;
+}
+
+.spaced-li {
+    margin-top: 10px;
+}
+
 header {
     text-align: center;
 }
