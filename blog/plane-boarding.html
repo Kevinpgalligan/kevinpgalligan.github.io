@@ -12,16 +12,6 @@
 
     <link rel="icon" type="image/png" sizes="16x16" href="/static/img/favicon-16x16.png">
     
-    
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-147419708-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-147419708-1');
-    </script>
-    
 </head>
 <body>
     <header>
@@ -42,18 +32,20 @@
 <p>During boarding, passengers are divided into 2 groups*: those whose seats are closer to the rear entrance, who board through the rear entrance; and another group whose seats are closer to the front entrance. This makes boarding more efficient because the groups don't have to climb over each other to get to their places.</p>
 <p>(*Discounting priority boarding for simplification).</p>
 <p>Here's an idea: what if we moved the entrances to 1/4 and 3/4 of the way through the plane, respectively, rather than placing them at the ends. Pre-boarding, passengers would still be sorted into 2 groups based on how close their seats were to the entrances. During boarding, however, they would effectively be split into 4 groups: those who turned left at the 1st entrance, those who turned right at the 1st entrance, those who turned left at the 2nd entrance, and those who turned right at the 2nd entrance.</p>
-<p><img src="/static/img/plane-design.png"
+<p><img src="/static/img/plane-boarding/plane-design.png"
      alt="diagram demonstrating passenger grouping"
      class="centered"></p>
 <p>This would further reduce the interference between passengers, and, in theory, further reduce boarding times. We're going to run an extremely simple simulation in Python to test this theory.</p>
 <h3>Simulating it</h3>
 <p>Here's an animated representation of the simulation, created using the pygame library. The simulation runs in a series of "time steps". It takes 1 time step for a passenger to move between rows, and 5 time steps for a passenger to put their luggage into the rack and take their seat. These numbers were chosen pretty much arbitrarily. Reality would be more chaotic and teeth-grindingly frustrating. First we run a simulation with entrances at the ends of the plane. Then we run a version with centered entrances.</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/lPdf7RwOlSE?rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="centered"></iframe>
+<video width="560" height="315" class="centered" controls>
+    <source src="/static/video/plane-boarding/simulation.mp4" type="video/mp4">
+</video>
 
 <p>In this case the entrances-at-ends design takes 239 time steps before everyone is seated, while the centered-entrances design takes 209 time steps, which is 12% less.</p>
 <h3>Further testing and results</h3>
 <p>Just to be scientific about it, we can run both versions of the simulation 10,000 times and see what the average number of time steps is for each. Here are the results in graph form:</p>
-<p><img src="/static/img/plane-simulation-results-graph.png"
+<p><img src="/static/img/plane-boarding/plane-simulation-results-graph.png"
      alt="results graph"
      class="centered"></p>
 <p>The centered-entrances design is, on average, ~15% faster in this run of the simulation.</p>
@@ -66,150 +58,7 @@
 <h3>Appendix A: follow-up reading</h3>
 <p>Further thoughts on the efficiency of plane boarding can be enjoyed in this <a href="https://www.youtube.com/watch?v=oAHbLRjF0vo">fun, informative little video by CPG Gray</a>, which doesn't mention plane design but discusses a number of algorithms for faster boarding.</p>
 <h3>Appendix B: the code</h3>
-<p>For the curious, here's the 148-line script used to run the simulation.</p>
-<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">pygame</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-
-<span class="n">ROWS</span> <span class="o">=</span> <span class="mi">32</span>
-<span class="n">SEATS</span> <span class="o">=</span> <span class="s2">&quot;ABCDEF&quot;</span>
-<span class="n">TICKS_REQUIRED_TO_PUT_AWAY_BAG</span> <span class="o">=</span> <span class="mi">5</span>
-
-<span class="n">RECTANGLE_SIZE</span> <span class="o">=</span> <span class="mi">20</span>
-<span class="n">GAP_BETWEEN_RECTS</span> <span class="o">=</span> <span class="mi">6</span>
-<span class="n">SCREEN_SIZE</span> <span class="o">=</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">ROWS</span> <span class="o">*</span> <span class="p">(</span><span class="n">RECTANGLE_SIZE</span> <span class="o">+</span> <span class="n">GAP_BETWEEN_RECTS</span><span class="p">)</span> <span class="o">+</span> <span class="n">GAP_BETWEEN_RECTS</span><span class="p">,</span>
-    <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">SEATS</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">RECTANGLE_SIZE</span> <span class="o">+</span> <span class="n">GAP_BETWEEN_RECTS</span><span class="p">)</span> <span class="o">+</span> <span class="n">GAP_BETWEEN_RECTS</span><span class="p">)</span>
-<span class="n">BACKGROUND_COLOUR</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
-<span class="n">PASSENGER_COLOUR</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">SEAT_COLOUR</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
-<span class="n">FLOOR_COLOUR</span> <span class="o">=</span> <span class="p">(</span><span class="mi">172</span><span class="p">,</span> <span class="mi">172</span><span class="p">,</span> <span class="mi">172</span><span class="p">)</span>
-
-<span class="k">class</span> <span class="nc">Simulation</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entrances</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">entrance_to_waiting_passengers</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">entrance</span> <span class="ow">in</span> <span class="n">entrances</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">entrance_to_waiting_passengers</span><span class="p">[</span><span class="n">entrance</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ROWS</span><span class="p">):</span>
-            <span class="n">nearest_entrance</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">entrances</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e</span> <span class="o">-</span> <span class="n">row</span><span class="p">))</span>
-            <span class="k">for</span> <span class="n">seat</span> <span class="ow">in</span> <span class="n">SEATS</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">entrance_to_waiting_passengers</span><span class="p">[</span><span class="n">nearest_entrance</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Passenger</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">seat</span><span class="p">))</span>
-        <span class="k">for</span> <span class="n">waiting_passengers</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entrance_to_waiting_passengers</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-            <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">waiting_passengers</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">active_passengers</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">aisle</span> <span class="o">=</span> <span class="p">[</span><span class="bp">None</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ROWS</span><span class="p">)]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">occupied_seats</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tick_counter</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="k">def</span> <span class="nf">tick</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">move_passengers</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_waiting_passengers</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tick_counter</span> <span class="o">+=</span> <span class="mi">1</span>
-
-    <span class="k">def</span> <span class="nf">move_passengers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">new_active_passengers</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">passenger</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_passengers</span><span class="p">:</span>
-            <span class="n">passenger</span><span class="o">.</span><span class="n">waiting_time</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="k">if</span> <span class="n">passenger</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="n">passenger</span><span class="o">.</span><span class="n">row</span><span class="p">:</span>
-                <span class="n">passenger</span><span class="o">.</span><span class="n">ticks_spent_putting_away_bag</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="k">if</span> <span class="n">passenger</span><span class="o">.</span><span class="n">ticks_spent_putting_away_bag</span> <span class="o">&gt;=</span> <span class="n">TICKS_REQUIRED_TO_PUT_AWAY_BAG</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">occupied_seats</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">passenger</span><span class="o">.</span><span class="n">row</span><span class="p">,</span> <span class="n">passenger</span><span class="o">.</span><span class="n">seat</span><span class="p">))</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">aisle</span><span class="p">[</span><span class="n">passenger</span><span class="o">.</span><span class="n">position</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">new_active_passengers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">passenger</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">new_position</span> <span class="o">=</span> <span class="p">(</span><span class="n">passenger</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="mi">1</span>
-                    <span class="k">if</span> <span class="n">passenger</span><span class="o">.</span><span class="n">position</span> <span class="o">&lt;</span> <span class="n">passenger</span><span class="o">.</span><span class="n">row</span>
-                    <span class="k">else</span> <span class="n">passenger</span><span class="o">.</span><span class="n">position</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">aisle</span><span class="p">[</span><span class="n">new_position</span><span class="p">]</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">aisle</span><span class="p">[</span><span class="n">passenger</span><span class="o">.</span><span class="n">position</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">aisle</span><span class="p">[</span><span class="n">new_position</span><span class="p">]</span> <span class="o">=</span> <span class="n">passenger</span>
-                    <span class="n">passenger</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">new_position</span>
-                <span class="n">new_active_passengers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">passenger</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">active_passengers</span> <span class="o">=</span> <span class="n">new_active_passengers</span>
-
-    <span class="k">def</span> <span class="nf">add_waiting_passengers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">entrance</span><span class="p">,</span> <span class="n">waiting_passengers</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entrance_to_waiting_passengers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">waiting_passengers</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">aisle</span><span class="p">[</span><span class="n">entrance</span><span class="p">]</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-                <span class="n">new_passenger</span> <span class="o">=</span> <span class="n">waiting_passengers</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-                <span class="n">new_passenger</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">entrance</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">aisle</span><span class="p">[</span><span class="n">entrance</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_passenger</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">active_passengers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_passenger</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">finished</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">any</span><span class="p">(</span><span class="n">waiting_passengers</span>
-                <span class="k">for</span> <span class="n">waiting_passengers</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entrance_to_waiting_passengers</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_passengers</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">screen</span><span class="p">):</span>
-        <span class="n">screen</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">BACKGROUND_COLOUR</span><span class="p">)</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">GAP_BETWEEN_RECTS</span><span class="p">,</span> <span class="n">GAP_BETWEEN_RECTS</span>
-        <span class="n">drawer</span> <span class="o">=</span> <span class="n">RectDrawer</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">GAP_BETWEEN_RECTS</span><span class="p">,</span> <span class="n">GAP_BETWEEN_RECTS</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">seat</span> <span class="ow">in</span> <span class="n">SEATS</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">SEATS</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]:</span>
-            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ROWS</span><span class="p">):</span>
-                <span class="n">drawer</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">PASSENGER_COLOUR</span> <span class="k">if</span> <span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">seat</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupied_seats</span> <span class="k">else</span> <span class="n">SEAT_COLOUR</span><span class="p">)</span>
-            <span class="n">drawer</span><span class="o">.</span><span class="n">advance_row</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">aisle_position</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">aisle</span><span class="p">:</span>
-            <span class="n">drawer</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">FLOOR_COLOUR</span> <span class="k">if</span> <span class="n">aisle_position</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">PASSENGER_COLOUR</span><span class="p">)</span>
-        <span class="n">drawer</span><span class="o">.</span><span class="n">advance_row</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">seat</span> <span class="ow">in</span> <span class="n">SEATS</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">SEATS</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">:]:</span>
-            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ROWS</span><span class="p">):</span>
-                <span class="n">drawer</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">PASSENGER_COLOUR</span> <span class="k">if</span> <span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">seat</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupied_seats</span> <span class="k">else</span> <span class="n">SEAT_COLOUR</span><span class="p">)</span>
-            <span class="n">drawer</span><span class="o">.</span><span class="n">advance_row</span><span class="p">()</span>
-
-<span class="k">class</span> <span class="nc">Passenger</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">seat</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">waiting_time</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">row</span> <span class="o">=</span> <span class="n">row</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">seat</span> <span class="o">=</span> <span class="n">seat</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ticks_spent_putting_away_bag</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
-
-<span class="k">class</span> <span class="nc">RectDrawer</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span> <span class="n">initial_x</span><span class="p">,</span> <span class="n">initial_y</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">screen</span> <span class="o">=</span> <span class="n">screen</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">initial_x</span> <span class="o">=</span> <span class="n">initial_x</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">initial_x</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">initial_y</span>
-
-    <span class="k">def</span> <span class="nf">advance_row</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_x</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="n">RECTANGLE_SIZE</span> <span class="o">+</span> <span class="n">GAP_BETWEEN_RECTS</span>
-
-    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colour</span><span class="p">):</span>
-        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">rect</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="p">,</span>
-            <span class="n">colour</span><span class="p">,</span>
-            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">RECTANGLE_SIZE</span><span class="p">,</span> <span class="n">RECTANGLE_SIZE</span><span class="p">),</span>
-            <span class="mi">0</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="n">RECTANGLE_SIZE</span> <span class="o">+</span> <span class="n">GAP_BETWEEN_RECTS</span>
-
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
-    <span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="n">SCREEN_SIZE</span><span class="p">)</span>
-    <span class="n">sim</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">ROWS</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
-
-    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">QUIT</span><span class="p">:</span>
-                <span class="k">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">tick_counter</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ticks elapsed.&quot;</span><span class="p">)</span>
-                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">sim</span><span class="o">.</span><span class="n">finished</span><span class="p">():</span>
-            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.15</span><span class="p">)</span>
-            <span class="n">sim</span><span class="o">.</span><span class="n">tick</span><span class="p">()</span>
-        <span class="n">sim</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span>
-        <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">main</span><span class="p">()</span>
-</pre></div>
+<p>For the curious, <a href="https://github.com/Kevinpgalligan/KevingalWebsite/blob/master/experiments/plane-boarding/plane-boarding.py">here's the script</a> used to run the simulation and animate it.</p>
 <hr>
 <p><i>Post Date: 2019-09-07</i></p>
 <a href="/blog.html">Back to blog</a>
