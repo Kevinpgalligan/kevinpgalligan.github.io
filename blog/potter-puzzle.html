@@ -21,31 +21,31 @@
         | <a href="/blog.html" class="navlink">blog</a>
         | <a href="/projects.html" class="navlink">projects</a>
         | <a href="/feed.xml"><img class="navbar-img" src="/static/img/rss.png"></a>
+        | <a href="https://twitter.com/KevinGalligan2"><img class="navbar-img" src="/static/img/twitter.png"></a>
         </nav>
         </div>
     </header>
 
 <h2>Solving all 42 versions of the Harry Potter potions puzzle</h2>
 <p>There's a neat puzzle near the end of <em>Harry Potter and the Philosopher's Stone</em> (aka <em>Sorcerer's Stone</em>). Harry and Hermione enter a chamber, the entrances are blocked by magic fire, and only by decoding the following riddle will they be able to escape:</p>
-<div class="codehilite"><pre><span></span>  Danger lies before you, while safety lies behind,
-  Two of us will help you, whichever you would find,
-  One among us seven will let you move ahead,
-  Another will transport the drinker back instead,
-  Two among our number hold only nettle wine,
-  Three of us are killers, waiting hidden in line.
-  Choose, unless you wish to stay here for evermore,
-  To help you in your choice, we give you these clues four:
-  First, however slyly the poison tries to hide
-  You will always find some on nettle wine’s left side;
-  Second, different are those who stand at either end,
-  But if you would move onwards, neither is your friend;
-  Third, as you see clearly, all are different size,
-  Neither dwarf nor giant holds death in their insides;
-  Fourth, the second left and the second on the right
-  Are twins once you taste them, though different at first sight.
-</pre></div>
-
-
+<blockquote>
+<p>Danger lies before you, while safety lies behind,<br />
+Two of us will help you, whichever you would find,<br />
+One among us seven will let you move ahead,<br />
+Another will transport the drinker back instead,<br />
+Two among our number hold only nettle wine,<br />
+Three of us are killers, waiting hidden in line.<br />
+Choose, unless you wish to stay here for evermore,<br />
+To help you in your choice, we give you these clues four:<br />
+First, however slyly the poison tries to hide<br />
+You will always find some on nettle wine’s left side;<br />
+Second, different are those who stand at either end,<br />
+But if you would move onwards, neither is your friend;<br />
+Third, as you see clearly, all are different size,<br />
+Neither dwarf nor giant holds death in their insides;<br />
+Fourth, the second left and the second on the right<br />
+Are twins once you taste them, though different at first sight.</p>
+</blockquote>
 <p><img alt="Some potions" src="/static/img/potter-puzzle/some-potions.png" /></p>
 <p>Put simply, they have to figure out which potions are in which bottles.</p>
 <p>In this post, we're going to solve all 42 possible versions of the puzzle via programming and create a diagram of the results (like the picture above, but much bigger).</p>
@@ -74,7 +74,7 @@
 <p><img alt="Example with second potion filled in" src="/static/img/potter-puzzle/solve-4d.png" /></p>
 <p>And eventually, by continuing like this and discarding WIP solutions if they reach a state where one of the bottles can't be filled without breaking a constraint, we end up with a single valid solution:</p>
 <p><img alt="Solution of example" src="/static/img/potter-puzzle/some-potions.png" /></p>
-<p>Of course, we weren't guaranteed to find a solution. There might have been no solution, or multiple solutions (and having multiple solutions is equivalent to the puzzle being unsolvable because you can't tell which is the correct one).</p>
+<p>Of course, we weren't guaranteed to find a solution. There might have been no solution, or multiple solutions. Having multiple solutions is equivalent to the puzzle being unsolvable because you can't tell which is the correct one.</p>
 <p>Applying our algorithm to all puzzle versions gives us the following solutions. 8 versions of the puzzle are solvable, 8 have no solutions and 26 have multiple solutions.</p>
 <p><img alt="All solutions" src="/static/img/potter-puzzle/potions-puzzle-solutions.png" /></p>
 <h3>A closer look at the solutions</h3>

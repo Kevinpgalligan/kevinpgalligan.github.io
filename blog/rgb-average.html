@@ -24,14 +24,15 @@
         | <a href="/blog.html" class="navlink">blog</a>
         | <a href="/projects.html" class="navlink">projects</a>
         | <a href="/feed.xml"><img class="navbar-img" src="/static/img/rss.png"></a>
+        | <a href="https://twitter.com/KevinGalligan2"><img class="navbar-img" src="/static/img/twitter.png"></a>
         </nav>
         </div>
     </header>
 
 <h2>Random RGB values that average to N; or, Pointlessness and Probability</h2>
-<p>On this episode of Problems That Don't Need to Be Solved, we have a doozy from r/computerscience.</p>
+<p>On this episode of Problems That Don't Need to Be Solved, we have <a href="https://www.reddit.com/r/computerscience/comments/a1ea1s/create_program_to_generate_random_rgb_values_that/">a doozy from r/computerscience</a>.</p>
 <blockquote>
-<p><a href="https://www.reddit.com/r/computerscience/comments/a1ea1s/create_program_to_generate_random_rgb_values_that/">"Generate a random RGB value where the average of R, G and B is A, A being an integer from 0-255."</a></p>
+<p>Generate a random RGB value where the average of R, G and B is A, A being an integer from 0-255.</p>
 </blockquote>
 <p>In other words, we have to generate a random RGB value so that (R+G+B)/3=A, or equivalently, R+G+B=3A. We'll solve this problem using the Python programming language and learn some neat <a href="https://en.wikipedia.org/wiki/Combinatorics">combinatorics</a> along the way.</p>
 <h3>An attempt</h3>
@@ -77,9 +78,7 @@
 <p>The issue with the first algorithm is our false assumption that all possible R values are equally likely. In the case of A=1, P(R=3) -- the probability that R is 3 -- is 0.1, since 1/10 of the possible RGB values have R=3. Meanwhile, P(R=1)=0.3, since 3/10 of the possible RGB values have R=1.</p>
 <p>Hence, before picking R at random, we have to calculate the probability of each of its possible values.</p>
 <p>P(R=r) for some r is given by:</p>
-<blockquote>
-<p>#{GB values that sum to 3A-r} / #{RGB values that average to A}</p>
-</blockquote>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;#{GB values that sum to 3A-r} / #{RGB values that average to A}</p>
 <p>(Syntax note: #{blah} here means "the number of blah", so #{GB values that sum to 3A-r} is the same as saying "the number of GB values that sum to 3A-r").</p>
 <p>You can see why this gives P(R=3)=0.1 and P(R=1)=0.3, given that #{GB values that sum to 2}=3, #{GB values that sum to 0}=1, and #{RGB values that average to 1}=10.</p>
 <p>How do we calculate this for any 'r' and any 'A'? Let's consider the numerator and the denominator separately.</p>
