@@ -41,60 +41,57 @@
 <li>Are there any other words that appear often in Beatles songs?</li>
 <li>Does "you" lead to some measurable increase in song quality, or is the author of this book blowing hot steam out of his <a href="https://www.youtube.com/watch?v=l-ekNlk5VDM">honey pie</a>?</li>
 </ul>
-<p>This post will answer these questions. More specifically, we'll do some analysis on the lyrics of Lennon-McCartney (because who cares about Ringo), and we'll see how the use of "you" (a.k.a. the second person perspective) has affected the success of songs in the Billboard music charts.</p>
+<p>To answer these questions, we'll do some analysis on the lyrics of Lennon-McCartney (because who cares about Ringo), and we'll see how the use of "you" (a.k.a. the second person perspective) has affected the success of songs in the Billboard music charts.</p>
 <p><img src="/static/img/beatles-and-you/sad-ringo.jpeg"
-     alt="Ringo Starr with a sad expression on his face in black & white colour."
+     alt="Ringo Starr with a sad expression on his face in black & white."
      class="centered"></p>
 <h3>How many Lennon-McCartney songs are addressed to "you"?</h3>
-<p>I downloaded the lyrics of the Beatles' "core catalogue" studio albums (<a href="https://github.com/Kevinpgalligan/BeatlesAndYou/blob/master/beatles_lyrics_scraper.py">code</a>). Instrumental songs, cover songs and songs credited to Ringo Starr / George Harrison were removed manually. This left a total of 138 songs. Admittedly, it's a fair bit short of the full ~180 published by Lennon-McCartney.</p>
-<p>Analysis of the lyrics (<a href="https://github.com/Kevinpgalligan/BeatlesAndYou/blob/master/lyrics_analysis.py">code</a>) showed that <strong>29%</strong> of the songs contain "you" in the first line (or any of its related forms: "your", "yours" and "yourself"). This is somewhat short of "around half", as claimed by David Rowley, but since <strong>82%</strong> of the songs contain "you" <em>somewhere</em> in the lyrics, I'm willing to give him a pass. Lennon-McCartney did, in fact, love "you".</p>
+<p>I downloaded the lyrics of the Beatles' "core catalogue" studio albums (<a href="https://github.com/Kevinpgalligan/BeatlesAndYou/blob/master/beatles_lyrics_scraper.py">code</a>). Instrumental songs, cover songs and songs credited to Ringo Starr / George Harrison were removed manually. This left a total of 138 songs, about 3/4 of the full ~180 songs published by Lennon-McCartney.</p>
+<p>Analysis of the lyrics (<a href="https://github.com/Kevinpgalligan/BeatlesAndYou/blob/master/lyrics_analysis.py">code</a>) shows that <strong>29%</strong> of the songs contain "you" in the first line (or any of its related forms: "your", "yours" and "yourself"). This is somewhat short of "around half", as claimed by David Rowley, but since <strong>82%</strong> of the songs contain "you" <em>somewhere</em> in the lyrics, I'm willing to give him a pass. Lennon-McCartney did, in fact, love "you".</p>
 <p>Here's a comparison with some other words. Surprisingly, Lennon-McCartney's love of the second person was outstripped by their love of themselves, as <strong>86%</strong> of lyrics contain the word "I" (or "me", or "my", or "myself").</p>
 <p><img src="/static/img/beatles-and-you/word-freq-beatles.png"
      alt="Percentage of Lennon-McCartney songs that various words appear in; I 86.2%, you 81.9%, love 44.2%, day 23.9%, friend 8.7%, life 7.2%, road 5.1%, guitar 0.7%, mustard 0.7%, beatle 0.0%."
      class="centered"></p>
-<p>In 138 songs, Lennon-McCartney never once mentioned the Beatles. Not even in Glass Onion. And roads, or the things that are done in them, are almost as popular a theme as life itself.</p>
+<p>Other observations: in 138 songs, they never once mentioned the Beatles. Not even in Glass Onion. And roads, or the things that are done in them, are almost as popular a theme as life itself.</p>
 <h3>Chart success and you</h3>
 <p>Lennon-McCartney loved "you", evidently, but can we show that this aspect of their style is worth copying? Does it lead to more successful songs?</p>
-<p>To this end, I downloaded the songs in the weekly <a href="https://en.wikipedia.org/wiki/Billboard_Hot_100">Billboard Hot 100</a> from the start of 1962 until the start of 1970 (<a href="https://github.com/Kevinpgalligan/BeatlesAndYou/blob/master/chart_scrape.py">code</a>). That's the active period of the Beatles, roughly speaking, spanning 417 weeks and a total of 5681 unique songs in the charts. This means that, each week, ~86% of the songs on the Billboard Hot 100 were actually repeats from previous weeks.</p>
-<p>I then gathered the lyrics of 5184 (91.3%) of those songs (<a href="https://github.com/Kevinpgalligan/BeatlesAndYou/blob/master/chart_lyrics_scrape.py">code</a>, <a href="https://github.com/Kevinpgalligan/BeatlesAndYou/blob/master/google_lyrics_scrape.py">more code</a>, <a href="https://github.com/Kevinpgalligan/BeatlesAndYou/blob/master/general_lyrics_scrape.py">even more code</a>). The songs I left out were written by the Beatles, instrumental, or obscure enough that the lyrics were difficult to track down on the internet. Special mention goes to the song <a href="https://www.youtube.com/watch?v=p13yZAjhU0M">Wipeout</a>, by The Surfaris, which I almost removed from the dataset when I mistook its single line for a copyright notice: "Ah ha ha ha ha ha ha ha ha ha ha ha, wipe out".</p>
-<p>Analysis of the lyrics reveals that Lennon-McCartney were not at all exceptional in their love of the second person perspective: <strong>27%</strong> of the songs contain "you" in the first line, while <strong>88%</strong> contain it somewhere in the lyrics.</p>
-<p>As a measure of success, I assigned a score to each song: 100 points for a week in the #1 position on the charts, 99 points for #2, and so on. For example, a song that charted at #50, #76 and #98 over a period of 3 weeks would receive a total of (101-50)+(101-76)+(101-98) = 51+25+3 = 79 points. </p>
-<p>Here's the points distribution of all songs, as a cumulative frequency plot.</p>
+<p>To this end, I downloaded the songs in the weekly <a href="https://en.wikipedia.org/wiki/Billboard_Hot_100">Billboard Hot 100</a> from the start of 1962 until the start of 1970 (<a href="https://github.com/Kevinpgalligan/BeatlesAndYou/blob/master/chart_scrape.py">code</a>). That's the active period of the Beatles, roughly speaking, spanning 417 weeks and a total of 5681 unique songs in the charts. On average, ~86% of the songs on the Billboard Hot 100 were actually repeats from previous weeks.</p>
+<p>As a measure of success, I assigned a score to each of the songs: 100 points for a week in the #1 position on the charts, 99 points for #2, and so on. For example, a song that charted at #50, #76 and #98 over a period of 3 weeks would receive a total of (101-50)+(101-76)+(101-98) = 51+25+3 = 79 points.</p>
+<p>I then gathered the lyrics of 5184 (91.3%) of those songs (<a href="https://github.com/Kevinpgalligan/BeatlesAndYou/blob/master/chart_lyrics_scrape.py">code</a>, <a href="https://github.com/Kevinpgalligan/BeatlesAndYou/blob/master/google_lyrics_scrape.py">more code</a>, <a href="https://github.com/Kevinpgalligan/BeatlesAndYou/blob/master/general_lyrics_scrape.py">even more code</a>). The ones I left out were by the Beatles, instrumental, or had lyrics that were difficult to track down on the internet.</p>
+<p>Here are the success scores of the songs with lyrics, as a cumulative frequency plot.</p>
 <p><img src="/static/img/beatles-and-you/success-scores-cumulative.png"
      alt="Cumulative frequency graph of song success, as per the metric described above."
      class="centered"></p>
-<p>From left to right, the curve increases as the success score overtakes more and more songs. The curve starts off with a sharp rise, gobbling up songs that barely made it onto the chart (such as the slightly creepy Father Knows Best by the Radiants: "Whenever I'm in trouble I ask my dad / For his advice / ... / He said to make your girl love ya / ... / You got to get tough / And treat her wrong / And if she cries, so what / She's trying to put you to a test"). It then has a long tail of extremely successful and enduring songs, such as Everyday People by Sly &amp; The Family Stone and... and...</p>
-<p>...Wipe Out!? That's right. Wipe Out is, by our metric, the most successful song of the 60s, at a total of 2019 points. That doesn't include the Beatles, but still. The 60s were weird.</p>
-<p>Anyway, to finish our analysis, let's look at the distribution of success scores for songs that contain "you" (n=4564) versus songs that don't (n=620).</p>
+<p>From left to right, the curve increases as the success score overtakes more and more songs. The curve starts off with a sharp rise, gobbling up songs that barely made it onto the chart, such as the slightly creepy Father Knows Best by the Radiants: "Whenever I'm in trouble I ask my dad / For his advice / ... / He said to make your girl love ya / ... / You got to get tough / And treat her wrong / And if she cries, so what / She's trying to put you to a test". It then has a long tail of extremely successful and enduring songs, such as Everyday People by Sly &amp; The Family Stone and...</p>
+<p>...<a href="https://www.youtube.com/watch?v=p13yZAjhU0M">Wipe Out</a>!? That's right. Wipe Out is, by our metric, and among the songs we have selected, the most successful song of the 60s, at a total of 2019 points. And its 1-line lyrics are a mocking rejection of the second person perspective: "Ah ha ha ha ha ha ha ha ha ha ha ha, wipe out!". The 60s certainly were wild.</p>
+<p>Analysing the lyrics of all the songs, we see that Lennon-McCartney were not at all exceptional in their love of the second person perspective. <strong>27%</strong> of the songs contain "you" in the first line, while <strong>88%</strong> contain "you" somewhere in the lyrics.</p>
+<p>Finally, to see if there's a relationship between use of the second person perspective and chart success, let's look at the distribution of success scores for songs that contain "you" (n=4564) versus songs that don't (n=620).</p>
 <p><img src="/static/img/beatles-and-you/you-vs-notyou-boxplot.png"
      alt="box plot comparing success scores of songs containing you vs songs that don't; the distributions are similar but with the 'not you' songs having a slightly higher median / middle value."
      class="centered"></p>
-<p>The coloured boxes show the range of success scores you would be left with if you dropped the 25% least successful and 25% most successful songs. The orange line is the median success score, which is better than exactly 50% of songs. The whiskers extending from the boxes represent the full range of the success scores -- except for outliers, which are represented by circles. Wipe Out sits triumphantly on top of the whole pile of outliers.</p>
-<p>As it turns out, songs that don't contain "you" have a higher median success score by 13% (278 vs 316).</p>
+<p>The coloured boxes show the range of success scores you would be left with if you dropped the 25% least successful and 25% most successful songs. The horizontal dark blue line is the median success score, which is better than exactly 50% of songs. The whiskers extending from the boxes represent the full range of the success scores -- except for outliers, which are represented by circles. Wipe Out sits triumphantly above them all.</p>
+<p>As it turns out, songs that don't contain "you" have a higher median success score by 13% (278 vs 316), contrary to what we would expect if we believed David Rowley's songwriting tip.</p>
 <p>Here's the distribution of songs that contain "you" in the first line (n=1412) versus those that don't (n=3772).</p>
 <p><img src="/static/img/beatles-and-you/youfirstline-vs-notyoufirstline-boxplot.png"
      alt="box plot comparing success scores of songs containing you in the first line vs songs that don't; the distributions are similar, but the songs with you in the first line have a slightly higher median."
      class="centered"></p>
-<p>This time, the trend is reversed. The median of songs with "you" in the first line and the median of those without sit at 302 and 276, respectively. That's a 9% difference.</p>
+<p>Songs with "you" in the first line actually have a 9% higher median success score than those without (302 vs 276). It seems that there are a number of lower-scoring "you" songs that don't have "you" in the first line, which drag down the median of whichever category they're in.</p>
 <h3>Conclusions</h3>
-<p>Use of the second person perspective was overwhelmingly common in the 60s. It wasn't a unique feature of Lennon-McCartney's songwriting. As such, a revised edition of David Rowley's songwriting tip might go:</p>
-<blockquote>
-<p>Around 82% of all Lennon-McCartney lyrics contain the magic songwriting words 'you' or 'your'. This was typical of most songs in the 60s and there is no quantifiable justification for why you should mimic that.</p>
-</blockquote>
-<p>In fact, our analysis of chart success has shown that use of "you" may, if anything, have <em>reduced</em> the success of 60s songs, since the median success score of songs was higher if they <em>didn't</em> use the second person perspective anywhere in their lyrics.</p>
-<p>As a curious reversal of that, songs with "you" in the first line turned out to have a higher median score than those without. This could suggest that there was a cohort of mediocre songwriters in the 60s who didn't have the imagination to use a grammatical person other than the second person, who dragged down the median success score of whichever category they were in. And they tended not to put "you" in the first line of their songs.</p>
-<h3>Other stuff</h3>
-<p>The code from this article can be found <a href="https://github.com/Kevinpgalligan/BeatlesAndYou">here</a>.</p>
-<p>And here are some fun articles based on Billboard Hot 100 song lyrics that I came across during my research:</p>
+<p>We have seen that the second person perspective was overwhelmingly common in 60s song lyrics. More than Lennon-McCartney secret sauce, it was standard songwriting practice. Furthermore, our overanalysis hasn't shown use of "you" to have a correlation with chart success. Considering that it was used in almost 90% of chart songs, however, there has to be something of secret sauce about it. Chart-hitting 60s songwriters must have known what they were doing, right?</p>
+<p>...<em>right?</em></p>
+<h3>Fun bonus reads</h3>
 <ul>
-<li><a href="https://www.kaylinpavlik.com/50-years-of-pop-music/">50 Years of Pop Music</a> (cool data analysis and visualisation)</li>
+<li><a href="https://www.kaylinpavlik.com/50-years-of-pop-music/">50 Years of Pop Music</a> (cool data analysis and visualisation of song lyrics)</li>
 <li><a href="https://aeon.co/ideas/why-are-pop-songs-getting-sadder-than-they-used-to-be">Why are pop songs getting sadder than they used to be?</a> (sentiment analysis)</li>
 <li><a href="https://medium.com/@latenightfroyo/the-6-types-of-billboard-hits-e0cb2987abf">The 6 Types of Billboard Hits</a> (song clustering)</li>
+<li><a href="https://www.npr.org/sections/allsongs/2013/05/29/187168874/the-good-listener-whats-more-important-lyrics-or-music?t=1585780553905">The Good Listener: What's More Important, Lyrics Or Music?</a> (relevant NPR article)</li>
 </ul>
+<h3>The code</h3>
+<p><a href="https://github.com/Kevinpgalligan/BeatlesAndYou">It's all here</a>.</p>
 <hr>
-<p><i>Post Date: 2020-03-28</i></p>
+<p><i>Post Date: 2020-04-01</i></p>
 <a href="/blog.html">Back to blog</a>
- <p>No previous article.</p>
+ <p>Previous article: <a href="/blog/interval-length.html">Counting the number of days until your birthday and why it&#39;s a useful programming trick</a></p>
 
  <p>No next article.</p>
 
