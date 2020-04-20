@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/pygments.css">
     
 <link rel="stylesheet" href="/static/css/blog.css">
+<meta property="description" content="A Reddit bot whose function was to turn comments into emojipasta.">
 
     <link rel="icon" type="image/png" sizes="16x16" href="/static/img/favicon-16x16.png">
     
@@ -43,23 +44,22 @@
 <li>It crashed if it was summoned in a subreddit where it had been banned.</li>
 <li>It didn't handle random network-related errors when calling the Reddit API.</li>
 </ul>
-<p>These bugs were squashed, however, and everything began to run smoothly. Here are the most-upvoted comments of the bot from those carefree days.</p>
+<p>These bugs were squashed, however, and everything began to run smoothly. Here are the most popular comments of the bot from those carefree days.</p>
 <ul>
-<li><a href="https://www.reddit.com/r/FellowKids/comments/85ty5v/ah_yes_thats_an_appropriate_use_of_emojis/dw0aiam/">🔫🔫🔫Shooting🔫🔫🔫At 🔫 Maryland🇺🇸High⬆️School📚🏫🎓</a>, 1858 points (+2000ish more for follow-up comments).</li>
-<li><a href="https://www.reddit.com/r/Showerthoughts/comments/863ag0/if_getting_hurt_physically_can_leave_you_walking/dw259jx/">Those limps are 🗑 called depression, anxiety, PTSD, and 💰😏 addiction. 💊</a>, 833 points (+1200ish more for follow-ups).</li>
-<li><a href="https://www.reddit.com/r/copypasta/comments/85iurk/welcome_to_my_steam_profile/dvxqg19/">Greetings travelers! Welcome to my profile!</a>, 378 points.</li>
-<li><a href="https://www.reddit.com/r/copypasta/comments/85658e/ultimate_roblox_scam/dvv41mm/">I 👀 pretended to 💦👏 be a girl 🤰💃 in 🌤 the 🎁 new roblox 😮 server 🙅🏻</a>, 327 points.</li>
-<li><a href="https://www.reddit.com/r/me_irl/comments/85zd42/me_irl/dw1i2qo/">shitty twitter memes ♀💩</a>, 313 points.</li>
-<li><a href="https://www.reddit.com/r/BlackPeopleTwitter/comments/86xtyf/what_happened_to_click_it_or_ticket/dw8t9bx/">💂 anything illegal 😶 in 😍🔙 the car 🍳 👮</a>, 255 points.</li>
-<li><a href="https://www.reddit.com/r/starterpacks/comments/867exf/that_one_girl_who_is_obsessed_with_being_positive/dw39nl9/">Dooby brothers! 👬👬</a>, 252 points.</li>
-<li><a href="https://www.reddit.com/r/HistoryMemes/comments/85zmhw/oc_as_a_history_buff_does_this_trigger_you_as/dw1flmj/">physical 💏 and mental ⚖ pain 😧</a>, 252 points.</li>
+<li><a href="https://www.reddit.com/r/FellowKids/comments/85ty5v/ah_yes_thats_an_appropriate_use_of_emojis/dw0aiam/">🔫🔫🔫Shooting🔫🔫🔫At 🔫 Maryland🇺🇸High⬆️School📚🏫🎓</a></li>
+<li><a href="https://www.reddit.com/r/Showerthoughts/comments/863ag0/if_getting_hurt_physically_can_leave_you_walking/dw259jx/">Those limps are 🗑 called depression, anxiety, PTSD, and 💰😏 addiction. 💊</a></li>
+<li><a href="https://www.reddit.com/r/copypasta/comments/85iurk/welcome_to_my_steam_profile/dvxqg19/">Greetings travelers! Welcome to my profile!</a></li>
+<li><a href="https://www.reddit.com/r/copypasta/comments/85658e/ultimate_roblox_scam/dvv41mm/">I 👀 pretended to 💦👏 be a girl 🤰💃 in 🌤 the 🎁 new roblox 😮 server 🙅🏻</a></li>
+<li><a href="https://www.reddit.com/r/me_irl/comments/85zd42/me_irl/dw1i2qo/">shitty twitter memes ♀💩</a></li>
+<li><a href="https://www.reddit.com/r/BlackPeopleTwitter/comments/86xtyf/what_happened_to_click_it_or_ticket/dw8t9bx/">💂 anything illegal 😶 in 😍🔙 the car 🍳 👮</a></li>
+<li><a href="https://www.reddit.com/r/starterpacks/comments/867exf/that_one_girl_who_is_obsessed_with_being_positive/dw39nl9/">Dooby brothers! 👬👬</a></li>
+<li><a href="https://www.reddit.com/r/HistoryMemes/comments/85zmhw/oc_as_a_history_buff_does_this_trigger_you_as/dw1flmj/">physical 💏 and mental ⚖ pain 😧</a></li>
 <li>...and many more.</li>
 </ul>
 <p>Eventually, the bot made enemies with too many important people and its account was banned permanently. For being spammy and annoying, apparently. Nobody could have seen it coming.</p>
 <p>It was fun while it lasted, however, and rather than let the code go to waste, I recently resurrected it <a href="/apps/emojipasta.html">as a web app</a>.</p>
 <p>For the interested, here's a brief description of how it worked (and how it still works in the web app). I wrote a script to download a few thousand comments off r/emojipasta, keeping track of which words appeared beside which emojis. The bot broke up comments into chunks of text and emojis were inserted randomly between the chunks using the word->emoji "mappings" from r/emojipasta, with a maximum of 2 emojis after each chunk. Only the alphanumeric prefix of each chunk of text was considered, so that "I'll" would give the same emoji mappings as "I".</p>
-<p>That's about it. The code was pretty simple. The original source code of the bot, in Python, can be found <a href="https://github.com/Kevinpgalligan/EmojipastaBot">HERE</a>. The JavaScript version that I ported recently can be found <a href="https://github.com/Kevinpgalligan/KevingalWebsite/blob/master/static/js/apps/emojipasta/emojipasta.js">HERE</a>.</p>
-<p>And so ends 🔚 the story 📖 of AnEmojipastaBot 🤖</p>
+<p>That's about it. The code was pretty simple. The original source code of the bot, in Python, can be found <a href="https://github.com/Kevinpgalligan/EmojipastaBot">here</a>. The JavaScript version that I ported recently can be found <a href="https://github.com/Kevinpgalligan/KevingalWebsite/blob/master/static/js/apps/emojipasta/emojipasta.js">here</a>.</p>
 <hr>
 <p><i>Post Date: 2019-09-29</i></p>
 <a href="/blog.html">Back to blog</a>
