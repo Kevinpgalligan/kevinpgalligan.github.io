@@ -49,9 +49,9 @@ Are twins once you taste them, though different at first sight.</p>
 </blockquote>
 <p><img alt="Some potions" src="/static/img/potter-puzzle/some-potions.png" /></p>
 <p>Put simply, they have to figure out which potions are in which bottles.</p>
-<p>In this post, we're going to solve all 42 possible versions of the puzzle via programming and create a diagram of the results (like the picture above, but much bigger).</p>
+<p>In this post, we're going to solve all 42 possible versions of the puzzle via programming and create a diagram of the results. A diagram like the picture above, but much bigger.</p>
 <h3>Wait, why are there 42 versions?</h3>
-<p>It's because the positions of the "giant" and "dwarf" potion bottles are not specified. There are 7 possible positions for the giant, and for each of those, there are 6 remaining positions for the dwarf, which gives <code>7 * 6 = 42</code>. There's no way to know which one J.K. Rowling had in mind when she wrote the puzzle, unless she retcons it through Twitter. Until that inevitable day, we could pick a random version and have a crack at it. But, there's no guarantee that it would be solvable, hence why we're performing the public service of solving all 42 versions (or proving them unsolvable).</p>
+<p>It's because the positions of the "giant" and "dwarf" potion bottles are not specified. There are 7 possible positions for the giant, and for each of those, there are 6 remaining positions for the dwarf, which gives <code>7 * 6 = 42</code>. There's no way to know which one J.K. Rowling had in mind when she wrote the puzzle, unless she retcons it through Twitter. We could pick a random version and have a crack at it, but there would be no guarantee that the version we picked would be solvable. That's why we're performing the public service of solving, or proving unsolvable, all 42 versions.</p>
 <h3>JUST SOLVE IT</h3>
 <p>First, here are the constraints of the puzzle, reworded in plainer terms:</p>
 <ol>
@@ -63,9 +63,9 @@ Are twins once you taste them, though different at first sight.</p>
 </ol>
 <p>How do we tackle it? Consider this version. Note that, as stated in the puzzle, there's 1 bottle smaller than all the others (the dwarf) and 1 bottle bigger than all the others (the giant).</p>
 <p><img alt="Example version" src="/static/img/potter-puzzle/solve-1.png" /></p>
-<p>Let's try using a dumb brute force search, i.e. taking the bottles one at a time and trying all of their possible contents.</p>
-<p>The first bottle, for example, can't contain the move-forward potion because of constraint #3 (see above). Neither can it contain a harmless potion, due to constraint #2 -- it would be impossible for there to be a poison potion to its left. That leaves us with a poison potion and the move-backward potion as possible contents. We try both of these.</p>
-<p>(Note: in the pictures that follow, green potions = poison, orange = harmless, blue = move-backward, purple = move-forward).</p>
+<p>Let's take the bottles one at a time and try all of their possible contents. This is known as the brute-force approach.</p>
+<p>The first bottle, for example, can't contain the move-forward potion because of constraint #3 that we mentioned above. Neither can it contain a harmless potion, due to constraint #2 -- it would be impossible for there to be a poison potion to its left. That leaves us with a poison potion and the move-backward potion as possible contents. We try both of these.</p>
+<p>Note: in the pictures that follow, green potions = poison, orange = harmless, blue = move-backward, purple = move-forward.</p>
 <p><img alt="Example with first potion filled in" src="/static/img/potter-puzzle/solve-2.png" /></p>
 <p><img alt="Example with first potion filled in" src="/static/img/potter-puzzle/solve-3.png" /></p>
 <p>We repeat this process for both of the WIP (work in progress) solutions above, taking the second bottle and trying all valid contents. This gives us:</p>
@@ -92,9 +92,11 @@ Are twins once you taste them, though different at first sight.</p>
 <p>‘Which one will get you back through the purple flames?’</p>
 <p>Hermione pointed at a rounded bottle at the right end of the line.</p>
 </blockquote>
-<p>Drats. This still leaves multiple candidates. Get retconning, J.K.</p>
+<p>Drats. This still leaves 4 candidates:</p>
+<p><img alt="Canonical versions, which match the dialogue from the book" src="/static/img/potter-puzzle/canonical.png" /></p>
+<p>Get retconning, J.K.</p>
 <h3>The code</h3>
-<p>If you're curious about the code for solving the puzzles / drawing the diagram of solutions, see <a href="https://github.com/Kevinpgalligan/KevingalWebsite/blob/master/experiments/hp.py">HERE</a>.</p>
+<p>If you're curious about the code for solving the puzzles / drawing the diagram of solutions, see <a href="https://github.com/Kevinpgalligan/KevingalWebsite/blob/master/experiments/hp.py">here</a>.</p>
 <h3>Discussion</h3>
 <ul>
 <li><a href="https://www.reddit.com/r/programming/comments/deauxe/solving_all_42_versions_of_the_harry_potter/">reddit</a></li>
