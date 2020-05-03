@@ -1,0 +1,69 @@
+<html>
+<head>
+    <title>Just a F*cking Metronome</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<script>
+var go = false;
+var bpm = 100;
+var audio = new Audio("/static/sound/b.mp3");
+function change() {
+    go = !go;
+    if (go) {
+        updatePlayButton("■", "on");
+        play();
+    } else {
+        updatePlayButton("►", "off");
+    }
+}
+function g(id) {
+    return document.getElementById(id);
+}
+function updatePlayButton(text, cls) {
+    g("change").innerHTML = text;
+    g("change").className = cls;
+}
+function play() {
+    if (go) {
+        setTimeout(play, 60*1000/bpm);
+        audio.play();
+    }
+}
+function adjustBpm(d) {
+    if (bpm+d < 40 || bpm+d > 200) {
+        g("bpm").style.color = "red";
+        setTimeout(function () {
+            g("bpm").style.color = "black";
+        }, 200);
+    }
+    bpm = Math.min(Math.max(40, bpm+d), 200);
+    g("bpm").innerHTML = bpm + " bpm";
+}
+</script>
+<style>
+div {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    max-width: 250px;
+}
+#bpm {
+    text-align: center;
+    padding: 5px;
+}
+.off {
+    background-color: #4CAF50;
+}
+.on {
+    background-color: red;
+}
+</style>
+<div>
+<span id="bpm">100 bpm</span><button id="change" class="off" onclick="change();">►</button>
+<button onclick="adjustBpm(-1);">-1</button><button onclick="adjustBpm(1);">+1</button>
+<button onclick="adjustBpm(-5);">-5</button><button onclick="adjustBpm(5);">+5</button>
+<button onclick="adjustBpm(-25);">-25</button><button onclick="adjustBpm(25);">+25</button>
+</div>
+<p>Just a F*cking Metronome | <a href="/">kevingal.com</a></p>
+</body>
+</html>

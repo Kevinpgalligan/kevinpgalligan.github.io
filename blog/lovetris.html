@@ -20,7 +20,7 @@
         <nav>
         <a href="/index.html" class="navlink">home</a>
         | <a href="/blog.html" class="navlink">blog</a>
-        | <a href="/apps.html" class="navlink">apps</a>
+        | <a href="/software.html" class="navlink">software</a>
         | <a href="/feed.xml"><img class="navbar-img" src="/static/img/rss.png"></a>
         | <a href="https://twitter.com/KevinGalligan2"><img class="navbar-img" src="/static/img/twitter.png"></a>
         </nav>
@@ -75,9 +75,13 @@
 <p>Search depth. Gets out of control. So we need beam search.</p>
 <p>Results of unoptimised beam search with untuned parameters.</p>
 <p>Various things to improve! Cached states -- with a search depth of 6 and a beam width of 2, we examine 2^(6+1)=128 states. It turns out that about 90/128 (30%-ish) of the states we examine are duplicates. We're wasting effort by examining states that we've already seen. We can avoid this by keeping track of states and not visiting a state again if we've already seen it.</p>
-<p>Profiling (see appendix) / multi-threading to speed it up. Allows us to extend search depth / beam width.</p>
-<p>And finally, tune parameters.</p>
-<p>BETTER RESULT!?</p>
+<h3>Performance tuning</h3>
+<p>Flame graph: https://github.com/40ants/cl-flamegraph</p>
+<p>Multi-threading</p>
+<p>Allows us to extend search depth / beam width.</p>
+<p>Finally, tuned heuristic parameters using EA.</p>
+<h3>Final results</h3>
+<p>With tuned beam search.</p>
 <h3>Monte Carlo Tree Search</h3>
 <p>May or may not do this.</p>
 <h3>Conclusion</h3>
