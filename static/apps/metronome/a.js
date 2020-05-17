@@ -22,10 +22,15 @@ function schedule() {
 
 function scheduleNote(t) {
     var osc = audioContext.createOscillator();
-    osc.connect(audioContext.destination);
-    osc.frequency.value = 220.0;
+    var vol = audioContext.createGain();
+    osc.connect(vol);
+    vol.connect(audioContext.destination);
+    osc.frequency.value = 200;
     osc.start(t);
-    osc.stop(t + 0.05);
+    osc.stop(t + 0.1);
+    vol.gain.setValueAtTime(0.01, 0);
+    vol.gain.exponentialRampToValueAtTime(1, t, t + 0.05);
+    vol.gain.linearRampToValueAtTime(0, t + 0.1);
 }
 
 function calculateNextNoteTime(previousNoteTime) {
