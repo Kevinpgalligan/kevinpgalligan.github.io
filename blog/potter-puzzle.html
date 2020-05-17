@@ -63,7 +63,7 @@ Are twins once you taste them, though different at first sight.</p>
 </ol>
 <p>How do we tackle it? Consider this version. Note that, as stated in the puzzle, there's 1 bottle smaller than all the others (the dwarf) and 1 bottle bigger than all the others (the giant).</p>
 <p><img alt="Example version" src="/static/img/potter-puzzle/solve-1.png" /></p>
-<p>Let's take the bottles one at a time and try all of their possible contents. This is known as the brute-force approach.</p>
+<p>Let's take the bottles one at a time and try all of their possible contents. This approach is known as brute-force search.</p>
 <p>The first bottle, for example, can't contain the move-forward potion because of constraint #3 that we mentioned above. Neither can it contain a harmless potion, due to constraint #2 -- it would be impossible for there to be a poison potion to its left. That leaves us with a poison potion and the move-backward potion as possible contents. We try both of these.</p>
 <p>Note: in the pictures that follow, green potions = poison, orange = harmless, blue = move-backward, purple = move-forward.</p>
 <p><img alt="Example with first potion filled in" src="/static/img/potter-puzzle/solve-2.png" /></p>
