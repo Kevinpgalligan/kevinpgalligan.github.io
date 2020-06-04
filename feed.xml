@@ -1,42 +1,61 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
-    <title>kevingal's blog.</title>
+    <title>Kevin's Blog</title>
     <link>https://www.kevingal.com</link>
-    <description>Blog posts by Kevin Galligan.</description>
+    <description>Maths, computers and stuff.</description>
     <pubDate>Wed, 01 Apr 2020 00:00:00 GMT</pubDate>
     <lastBuildDate>Wed, 01 Apr 2020 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://kevingal.com/feed.xml" rel="self" type="application/rss+xml" />
     
     <item>
         <title>Did the Beatles love &#34;you&#34;?</title>
+        <description>Overanalysing a claim that putting &#34;you&#34; in the first line of a song makes it better.</description>
         <link>https://www.kevingal.com/blog/beatles-and-you.html</link>
         <pubDate>Wed, 01 Apr 2020 00:00:00 GMT</pubDate>
         <guid>https://www.kevingal.com/blog/beatles-and-you.html</guid>
     </item>
     <item>
         <title>Counting the number of days until your birthday and why it&#39;s a useful programming trick</title>
+        <description>There&#39;s a formula for interval length that saves you from finger-counting.</description>
         <link>https://www.kevingal.com/blog/interval-length.html</link>
         <pubDate>Sat, 01 Feb 2020 00:00:00 GMT</pubDate>
         <guid>https://www.kevingal.com/blog/interval-length.html</guid>
     </item>
     <item>
         <title>Finding Mona Lisa in the Game of Life</title>
+        <description>Using SAT-solvers to discover Game of Life states that turn into pictures.</description>
         <link>https://www.kevingal.com/blog/mona-lisa-gol.html</link>
         <pubDate>Tue, 28 Jan 2020 00:00:00 GMT</pubDate>
         <guid>https://www.kevingal.com/blog/mona-lisa-gol.html</guid>
     </item>
     <item>
         <title>Random RGB values that average to N; or, Pointlessness and Probability</title>
+        <description>A simple-seeming problem is solved using tricky combinatorics.</description>
         <link>https://www.kevingal.com/blog/rgb-average.html</link>
         <pubDate>Fri, 22 Nov 2019 00:00:00 GMT</pubDate>
         <guid>https://www.kevingal.com/blog/rgb-average.html</guid>
     </item>
     <item>
         <title>Solving all 42 versions of the Harry Potter potions puzzle</title>
+        <description>Brute-force search is applied to a puzzle from Harry Potter.</description>
         <link>https://www.kevingal.com/blog/potter-puzzle.html</link>
         <pubDate>Thu, 03 Oct 2019 00:00:00 GMT</pubDate>
         <guid>https://www.kevingal.com/blog/potter-puzzle.html</guid>
+    </item>
+    <item>
+        <title>The story of u/AnEmojipastaBot</title>
+        <description>A Reddit bot whose function was to turn comments into emojipasta.</description>
+        <link>https://www.kevingal.com/blog/emojipasta.html</link>
+        <pubDate>Sun, 29 Sep 2019 00:00:00 GMT</pubDate>
+        <guid>https://www.kevingal.com/blog/emojipasta.html</guid>
+    </item>
+    <item>
+        <title>Simulating plane designs for faster boarding</title>
+        <description>Moving entrances closer to the middle could make plane boarding faster.</description>
+        <link>https://www.kevingal.com/blog/plane-boarding.html</link>
+        <pubDate>Sat, 07 Sep 2019 00:00:00 GMT</pubDate>
+        <guid>https://www.kevingal.com/blog/plane-boarding.html</guid>
     </item>
 </channel>
 </rss> 
