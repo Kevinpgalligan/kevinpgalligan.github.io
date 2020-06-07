@@ -4,10 +4,17 @@
     <title>Kevin's Blog</title>
     <link>https://www.kevingal.com</link>
     <description>Maths, computers and stuff.</description>
-    <pubDate>Wed, 01 Apr 2020 00:00:00 GMT</pubDate>
-    <lastBuildDate>Wed, 01 Apr 2020 00:00:00 GMT</lastBuildDate>
+    <pubDate>Sun, 07 Jun 2020 00:00:00 GMT</pubDate>
+    <lastBuildDate>Sun, 07 Jun 2020 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://kevingal.com/feed.xml" rel="self" type="application/rss+xml" />
     
+    <item>
+        <title>Obese websites and planet-sized metronomes</title>
+        <description>A reflection on website obesity and my attempt to make a 981-byte metronome app.</description>
+        <link>https://www.kevingal.com/blog/metronome.html</link>
+        <pubDate>Sun, 07 Jun 2020 00:00:00 GMT</pubDate>
+        <guid>https://www.kevingal.com/blog/metronome.html</guid>
+    </item>
     <item>
         <title>Did the Beatles love &#34;you&#34;?</title>
         <description>Overanalysing a claim that putting &#34;you&#34; in the first line of a song makes it better.</description>
