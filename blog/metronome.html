@@ -160,7 +160,7 @@ count 3728058
 <p>As for making the app smaller, here are some of the things I tried:</p>
 <ul>
 <li><a href="https://blog.notryan.com/013.txt">Removing unnecessary HTML</a>. My favourite bits: 1) attributes don't need quotes if the value doesn't contain spaces, making <code>&lt;p id=x&gt;</code> the same as <code>&lt;p id="x"&gt;</code>; and 2) if you omit &lt;html&gt;, &lt;head&gt; and &lt;body&gt; tags, they'll be generated for you by the browser.</li>
-<li>Various <a href="https://dev.to/emnudge/js-code-golfing-how-to-ruin-everyone-s-day-40h3">JavaScript golf techniques</a>, such as replacing all regular functions with arrow functions, replacing local variables with global ones, and reducing names to 1 letter.</li>
+<li>Various <a href="https://dev.to/emnudge/js-code-golfing-how-to-ruin-everyone-s-day-40h3">JavaScript golf techniques</a>, such as replacing regular functions with arrow functions, replacing local variables with global ones, and reducing names to 1 letter.</li>
 <li>Running the HTML, CSS and JavaScript through minifiers to remove whitespace. The <a href="https://javascript-minifier.com/">JavaScript one</a> in particular introduced some neat abbreviations, like replacing <code>false</code> with <code>!1</code>.</li>
 <li>Programmatically generating some of the buttons on page load, saving about 50 bytes.</li>
 </ul>
