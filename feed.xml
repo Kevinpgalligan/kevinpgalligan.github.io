@@ -31,7 +31,7 @@
     </item>
     <item>
         <title>Finding Mona Lisa in the Game of Life</title>
-        <description>Using SAT-solvers to discover Game of Life states that turn into pictures.</description>
+        <description>Using a SAT-solver to find Game of Life states that turn into pictures.</description>
         <link>https://kevingal.com/blog/mona-lisa-gol.html</link>
         <pubDate>Tue, 28 Jan 2020 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/mona-lisa-gol.html</guid>

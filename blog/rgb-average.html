@@ -39,7 +39,7 @@
 <h3>An attempt</h3>
 <p>The first algorithm that might come to mind is to generate R, G and B one at a time, ensuring that we satisfy the constrants of the problem at each step. Being RGB, they have to be in the range 0-255. We must also ensure that it remains possible to satisfy R+G+B=3A. If we stay within these constraints, then we will always end up with a valid RGB value with an average of A, no matter what value A has. Note that there's always at least one solution to R+G+B=3A, and that's the RGB value (A,A,A).</p>
 <p>Here's this simple algorithm in Python code.</p>
-<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">random</span> <span class="kn">as</span> <span class="nn">rd</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">random</span> <span class="k">as</span> <span class="nn">rd</span>
 <span class="k">def</span> <span class="nf">generate_rgb</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
     <span class="n">S</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span><span class="n">A</span>
     <span class="c1"># Generate a random value for R, ensuring that:</span>
@@ -55,15 +55,15 @@
     <span class="n">S</span> <span class="o">-=</span> <span class="n">G</span>
     <span class="n">B</span> <span class="o">=</span> <span class="n">S</span>
     <span class="k">return</span> <span class="n">R</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">B</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>This approach seems reasonable, and if we run a test that checks whether the resulting RGB values have an average of A (for A=1), it passes with <font color="red">flyi</font><font color="green">ng c</font><font color="blue">olours</font>.</p>
-<div class="codehilite"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="mi">1</span>
+<div class="codehilite"><pre><span></span><code><span class="n">A</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">rgbs</span> <span class="o">=</span> <span class="p">[</span><span class="n">generate_rgb</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100000</span><span class="p">)]</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;PASS&quot;</span> <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">rgb</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="o">*</span><span class="n">A</span> <span class="k">for</span> <span class="n">rgb</span> <span class="ow">in</span> <span class="n">rgbs</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;FAIL&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PASS&quot;</span> <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">rgb</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="o">*</span><span class="n">A</span> <span class="k">for</span> <span class="n">rgb</span> <span class="ow">in</span> <span class="n">rgbs</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;FAIL&quot;</span><span class="p">)</span>
 <span class="c1"># output: PASS</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>However, this doesn't give us the full picture. Besides ensuring that R+G+B=3A, we also need to check that all of the possible RGB values are equally likely to appear, since the problem statement requires randomness. Graphing the frequency of the possible values, we see that this is not the case.</p>
@@ -128,7 +128,7 @@
 <h3>Putting it all together: using P(R=r) to generate random RGB values</h3>
 <p>The hardest part is done. Now we pick R randomly based on P(R=r). After that, G and B can be determined from a random choice with uniform probability like in the "first attempt" algorithm.</p>
 <p>Here it is in Python code.</p>
-<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">random</span> <span class="kn">as</span> <span class="nn">rd</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">random</span> <span class="k">as</span> <span class="nn">rd</span>
 <span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">comb</span>
 
 <span class="k">def</span> <span class="nf">generate_rgbs</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
@@ -167,7 +167,7 @@
     <span class="n">S</span> <span class="o">-=</span> <span class="n">G</span>
     <span class="n">B</span> <span class="o">=</span> <span class="n">S</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Besides generating valid RGB values, all of the possible RGB values seem to have an equal probability of being generated (here, for A=245).</p>
