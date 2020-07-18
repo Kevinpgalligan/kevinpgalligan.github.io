@@ -9,7 +9,7 @@
     
 <link rel="stylesheet" href="/pygments.css">
 <link rel="stylesheet" href="/static/css/blog.css">
-<meta property="description" content="Using a SAT-solver to find Game of Life states that turn into pictures.">
+<meta property="description" content="Using a SAT solver to find Game of Life states that turn into pictures.">
 
     <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon.ico">
     
@@ -30,7 +30,9 @@
         </div>
     </header>
 
+<p><i>Date: 2020-01-28</i></p>
 <h2>Finding Mona Lisa in the Game of Life</h2>
+<hr>
 <p>The <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Game of Life</a> is a 2d, grid-shaped petri dish. Each grid square in the dish is a cell that can be either alive or dead.</p>
 <p><img src="/static/img/mona-lisa-gol/some-life.gif"
      alt="Evolution of Life for a number of states."
@@ -139,6 +141,10 @@ OR
      class="centered"></p>
 <h3>Technical details</h3>
 <p><a href="https://github.com/Kevinpgalligan/MonaLisaGameOfLife">Here's the code</a> to run Life simulations, do backsearch and create GIFs. It's all in Common Lisp. I've only tested it using the SBCL implementation of Common Lisp. The cl-sat library was used as a wrapper to call the MiniSat SAT solver, while the skippy library was used to create GIFs. Credit to the #lispgames IRC community for helping me with my silly questions.</p>
+<h3>Addendum (July 18th 2020)</h3>
+<p>On further reflection, the main limit on size seemed to be cl-sat, both because it was slow to convert the SAT expression to the form expected by SAT solvers and because it exhausted memory rather easily. I imagine it would be possible to handle much larger Life grids by cutting out cl-sat and writing the SAT constraints directly to a file, which could then be passed to your SAT solver of choice.</p>
+<p>Also, based on Reddit conversation, it seems that you can avoid Gardens of Eden by searching multiple generations into the past in the same SAT expression. To clarify: if you go original -&gt; parent -&gt; grandparent, then parent can turn out to be a Garden of Eden. The proposal is to go directly from original -&gt; grandparent. I don't know to what extent this would increase the complexity of the expression.</p>
+<p>Maybe I'll come back to this some day and find a giant Life state that turns into a detailed portrait of John Conway.</p>
 <h3>Further reading</h3>
 <p>Some fun stuff I came across while researching this article.</p>
 <ul>
@@ -158,7 +164,6 @@ OR
      class="centered"></p>
 <p class="tiny"><a href="/static/img/mona-lisa-gol/message.gif">parting gift spoiler</a></p>
 <hr>
-<p><i>Post Date: 2020-01-28</i></p>
 <p><a href="/blog.html">Back to blog</a></p>
 <p><a href="/feed.xml"><img src="/static/img/rss.png"></a> <a href="https://twitter.com/KevinGalligan2"><img src="/static/img/twitter.png"></a></p>
 <p>I'd be happy to hear from you at <i>galligankevinp@gmail.com</i>.</p>
