@@ -10,7 +10,7 @@
     
     <item>
         <title>A short review of A Short History of Nearly Everything</title>
-        <description>&lt;p&gt;If everyone on Earth owned a copy of &lt;em&gt;A Short History of Nearly Everything&lt;/em&gt;, and they stacked their copies one on top of the other, then that stack would touch the Moon&lt;sup&gt;1&lt;/sup&gt;.&lt;/p&gt;
+        <description>&lt;p&gt;If everyone on Earth owned a copy of &lt;em&gt;A Short History of Nearly Everything&lt;/em&gt;, and they stacked their copies one on top of the other, then that stack would touch the Moon&lt;sup id=&#34;fnref:moon&#34;&gt;&lt;a class=&#34;footnote-ref&#34; href=&#34;#fn:moon&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
 &lt;p&gt;That&#39;s the sort of thought experiment you&#39;ll find in Bill Bryson&#39;s popular science book, &lt;em&gt;A Short History of Nearly Everything&lt;/em&gt;, in which Bryson (BB for short) tackles all of the Big Questions that might occur to a curious resident of our planet. Questions like &#34;What&#39;s the Universe?&#34;, &#34;Where Did We Come From?&#34;, and &#34;How Do Scientists Know That the Earth Weighs 6 Million Yottagrams?&#34;.&lt;/p&gt;
 &lt;p&gt;There&#39;s a lot to cover in a history of the Universe. BB&#39;s story begins with the Big Bang and ends with the plight of modern humans, but along the way, he makes forays into such varied topics as quantum mechanics, cell biology and species extinction. He manages to arrange these large subject areas into a somewhat coherent narrative, never getting too bogged down by details. And it&#39;s not at all like a dry textbook. Each victory of science is presented as a story: the dumb theories that came first, the scientists, the breakthrough, what we still don&#39;t understand, and so on.&lt;/p&gt;
 &lt;p&gt;BB cherishes any opportunity to diverge from the main thread of the story and write about scientists. While he panders a bit to the mad genius stereotype, it makes for good reading. Isaac Newton is the prototypical eccentric scientist. His vision experiments included poking a metal needle around his eye socket and staring at the sun. By BB&#39;s account, Newton was also surprisingly coy with his research. It took an incidental encounter with Edmund Halley, one of his peers, before he launched into writing the famous &lt;em&gt;Principia Mathematica&lt;/em&gt; and introduced the world to gravity and calculus.&lt;/p&gt;
@@ -31,10 +31,19 @@
 &lt;p&gt;Another example, which you&#39;ll recognise if you&#39;ve seen Carl Sagan&#39;s &lt;em&gt;Cosmos&lt;/em&gt;, is the &lt;a href=&#34;https://en.wikipedia.org/wiki/Cosmic_Calendar&#34;&gt;Cosmic Calendar&lt;/a&gt;. The idea is to imagine the entire history of the Universe as a 365-day calendar. On that calendar, modern humans exist for only the last 10 minutes of December 31st. Way more evocative than saying &#34;humans have existed for only 0.002% of the history of the Universe&#34;.&lt;/p&gt;
 &lt;p&gt;Even science types might discover some gaps in their knowledge. As for me, I was surprised at the number of possible events that could wipe humanity from existence, including but not limited to meteor collisions, supervolcanoes and gamma rays. These catastrophic processes happen on a regular basis. The catch, however, is that they&#39;re regular on a planetary or universal timescale. BB relates a further analogy that might illustrate what I mean: lift your arms until they&#39;re horizontal to the ground and consider their span to be the entire history of the Universe. If someone now scrapes a file against one of your fingernails, it&#39;s equivalent to wiping humanity from existence. All that to say, that even if civilisation-ending events happen at tiny intervals along your arm span, they&#39;re unlikely to happen during a single human lifetime. We likely don&#39;t need to worry about extinction, as long as we don&#39;t manufacture it ourselves.&lt;/p&gt;
 &lt;p&gt;Science has advanced since &lt;em&gt;A Short History of Everything&lt;/em&gt; was published in 2003, outdating some of its information. Pluto has been demoted to the rank of dwarf planet. The existence of the Higgs Boson particle has been confirmed experimentally. And what BB referred to as &#34;junk DNA&#34; is now believed to serve a purpose after all. The book also contains information that&#39;s just plain wrong, like the myth that church windows are thicker at the bottom due to the gradual flow of glass. It would take a much longer time for the flow of glass to be noticeable. The windows were just built like that. BB also gives credence to the popular myth that Albert Einstein was in any way an &#34;average&#34; student, when by Einstein&#39;s own account, he had mastered integral and differential calculus by the age of 14. There&#39;s obviously something seductive about the notion that there&#39;s a little Einstein buried deep inside all of us, if only we applied ourselves.&lt;/p&gt;
-&lt;p&gt;Most disgracefully, BB buys into the old sailor myth of divers literally being sucked up and squished into the helmet of their diving suits, a phenomenon known as The Squeeze. Of course, this is a ridiculous flight of fancy, probably fabricated by J.B.S. Haldane after a rough session in the pressure pot. I don&#39;t understand how BB could ever be taken in by such an obviously fake story&lt;sup&gt;2&lt;/sup&gt;.&lt;/p&gt;
+&lt;p&gt;Most disgracefully, BB buys into the old sailor myth of divers literally being sucked up and squished into the helmet of their diving suits, a phenomenon known as The Squeeze. Of course, this is a ridiculous flight of fancy, probably fabricated by J.B.S. Haldane after a rough session in the pressure pot. I don&#39;t understand how BB could ever be taken in by such an obviously fake story&lt;sup id=&#34;fnref:myth&#34;&gt;&lt;a class=&#34;footnote-ref&#34; href=&#34;#fn:myth&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
 &lt;p&gt;Anyone who fixates on these minor inaccuracies is missing the Universe for the atoms, however. I happily recommend &lt;em&gt;A Short History of Everything&lt;/em&gt; to anyone with even a passing interest in science. It&#39;s packed with anecdotes to make you smile and analogies to make you go &#34;oooohhhhh&#34;.&lt;/p&gt;
-&lt;p&gt;&lt;small&gt;&lt;sup&gt;1&lt;/sup&gt;The Moon is 384,400,000-ish metres from Earth; a page is roughly 0.00012 metres thick; there are 544 pages in A Short History of Nearly Everything (including many pages of references); 384,400,000/(0.00012x544)=~6 billion copies would be required to touch the moon; and there are 7-8 billion people on Earth. The stack would overshoot by tens of thousands of kilometres, but that&#39;s the best Bill Bryson-esque analogy I could come up with.&lt;/small&gt;&lt;/p&gt;
-&lt;p&gt;&lt;small&gt;&lt;sup&gt;2&lt;/sup&gt;This phenomenon was proved in an episode of Mythbusters. They created a &#34;meat man&#34; out of dead animal parts, sent him deep underwater in an old-fashioned diving suit, and cut off his air supply. The resulting pressure differential in the suit caused his entire body to be sucked up into his helmet. Yuck. (For reference, it&#39;s season 7, episode 19, &#34;Dumpster Diving&#34;. &lt;a href=&#34;https://www.dailymotion.com/video/x2n8zuu&#34;&gt;Here&#39;s a link&lt;/a&gt; that might go out of date).&lt;/small&gt;&lt;/p&gt;</description>
+&lt;div class=&#34;footnote&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:moon&#34;&gt;
+&lt;p&gt;The Moon is 384,400,000-ish metres from Earth; a page is roughly 0.00012 metres thick; there are 544 pages in A Short History of Nearly Everything (including many pages of references); 384,400,000/(0.00012x544)=~6 billion copies would be required to touch the moon; and there are 7-8 billion people on Earth. The stack would overshoot by tens of thousands of kilometres, but that&#39;s the best Bill Bryson-esque analogy I could come up with.&amp;#160;&lt;a class=&#34;footnote-backref&#34; href=&#34;#fnref:moon&#34; title=&#34;Jump back to footnote 1 in the text&#34;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:myth&#34;&gt;
+&lt;p&gt;This phenomenon was proved in an episode of Mythbusters. They created a &#34;meat man&#34; out of dead animal parts, sent him deep underwater in an old-fashioned diving suit, and cut off his air supply. The resulting pressure differential in the suit caused his entire body to be sucked up into his helmet. Yuck. (For reference, it&#39;s season 7, episode 19, &#34;Dumpster Diving&#34;. &lt;a href=&#34;https://www.dailymotion.com/video/x2n8zuu&#34;&gt;Here&#39;s a link&lt;/a&gt; that might go out of date).&amp;#160;&lt;a class=&#34;footnote-backref&#34; href=&#34;#fnref:myth&#34; title=&#34;Jump back to footnote 2 in the text&#34;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</description>
         <link>https://kevingal.com/blog/shorthistory.html</link>
         <pubDate>Sat, 18 Jul 2020 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/shorthistory.html</guid>
@@ -173,7 +182,8 @@ count 3728058
 &lt;li&gt;Various &lt;a href=&#34;https://dev.to/emnudge/js-code-golfing-how-to-ruin-everyone-s-day-40h3&#34;&gt;JavaScript golf techniques&lt;/a&gt;, such as replacing regular functions with arrow functions, replacing local variables with global ones, and reducing names to 1 letter.&lt;/li&gt;
 &lt;li&gt;Running the HTML, CSS and JavaScript through minifiers to remove whitespace. The &lt;a href=&#34;https://javascript-minifier.com/&#34;&gt;JavaScript one&lt;/a&gt; in particular introduced some neat abbreviations, like replacing &lt;code&gt;false&lt;/code&gt; with &lt;code&gt;!1&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;Programmatically generating some of the buttons on page load, saving about 50 bytes.&lt;/li&gt;
-&lt;/ul&gt;</description>
+&lt;/ul&gt;
+&lt;hr&gt;</description>
         <link>https://kevingal.com/blog/metronome.html</link>
         <pubDate>Sun, 07 Jun 2020 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/metronome.html</guid>
@@ -236,7 +246,8 @@ count 3728058
 &lt;li&gt;&lt;a href=&#34;https://www.npr.org/sections/allsongs/2013/05/29/187168874/the-good-listener-whats-more-important-lyrics-or-music?t=1585780553905&#34;&gt;The Good Listener: What&#39;s More Important, Lyrics Or Music?&lt;/a&gt; (relevant NPR article)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3&gt;The code&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&#34;https://github.com/Kevinpgalligan/BeatlesAndYou&#34;&gt;It&#39;s all here&lt;/a&gt;.&lt;/p&gt;</description>
+&lt;p&gt;&lt;a href=&#34;https://github.com/Kevinpgalligan/BeatlesAndYou&#34;&gt;It&#39;s all here&lt;/a&gt;.&lt;/p&gt;
+&lt;hr&gt;</description>
         <link>https://kevingal.com/blog/beatles-and-you.html</link>
         <pubDate>Wed, 01 Apr 2020 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/beatles-and-you.html</guid>
@@ -257,7 +268,7 @@ count 3728058
 &lt;p&gt;1...&lt;/p&gt;
 &lt;p&gt;&lt;small&gt;spoiler: 25, 94, 7 and 11.&lt;/small&gt;&lt;/p&gt;
 &lt;p&gt;If you got all of them correct without finger-counting, without drops of nervous sweat rolling down your neck, and without asking any questions on StackOverflow, then congratulations. You are an Übermensch of calculation, and there is nothing for you to learn here.&lt;/p&gt;
-&lt;p&gt;If not, then you&#39;ve fallen victim to one of the 2 hard problems* in computer science: the off-by-1 error.&lt;/p&gt;
+&lt;p&gt;If not, then you&#39;ve fallen victim to one of the 2 hard problems&lt;sup id=&#34;fnref:joke&#34;&gt;&lt;a class=&#34;footnote-ref&#34; href=&#34;#fn:joke&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; in computer science: the off-by-1 error.&lt;/p&gt;
 &lt;p&gt;Off-by-1 errors have been written about since before Jesus Christ. At the latest, they were mentioned by &lt;a href=&#34;https://web.archive.org/web/20160305221341/http://www.dsm.fordham.edu/~moniot/Opinions/fencepost-error-history.shtml&#34;&gt;a Roman named Vitruvius&lt;/a&gt;, who served in the army of Julius Caesar. He was talking about the number of fenceposts around a temple, but the principle is the same. The problem is old, and you shouldn&#39;t feel bad if it caught you out.&lt;/p&gt;
 &lt;p&gt;The good news is that there&#39;s a simple, easy-to-remember formula that applies to all of the above calculations. Once you&#39;ve learned it, you&#39;ll never again suffer from this particular brand of off-by-1 horror. Nor will you miscount the number of days until Aunt Catherine&#39;s birthday.&lt;/p&gt;
 &lt;h3&gt;Give me the formula&lt;/h3&gt;
@@ -280,7 +291,14 @@ count 3728058
 
 &lt;h3&gt;Farewell to Fencepostia&lt;/h3&gt;
 &lt;p&gt;You should now be able to count the number of days until your birthday with full confidence, and perhaps more usefully, avoid annoying off-by-1 errors in your programming. Happy counting, and say hello to Aunt Catherine.&lt;/p&gt;
-&lt;p&gt;&lt;small&gt;*From the over-used joke: &#34;There are 2 hard problems in computer science: cache invalidation, naming things, and off-by-1 errors.&#34;&lt;/small&gt;&lt;/p&gt;</description>
+&lt;div class=&#34;footnote&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:joke&#34;&gt;
+&lt;p&gt;From the over-used joke: &#34;There are 2 hard problems in computer science: cache invalidation, naming things, and off-by-1 errors.&#34;&amp;#160;&lt;a class=&#34;footnote-backref&#34; href=&#34;#fnref:joke&#34; title=&#34;Jump back to footnote 1 in the text&#34;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</description>
         <link>https://kevingal.com/blog/interval-length.html</link>
         <pubDate>Sat, 01 Feb 2020 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/interval-length.html</guid>
@@ -416,7 +434,9 @@ OR
 &lt;p&gt;&lt;img src=&#34;/static/img/mona-lisa-gol/venus.gif&#34;
      alt=&#34;Life state becomes the Birth of Venus&#34;
      class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p class=&#34;tiny&#34;&gt;&lt;a href=&#34;/static/img/mona-lisa-gol/message.gif&#34;&gt;parting gift spoiler&lt;/a&gt;&lt;/p&gt;</description>
+&lt;p class=&#34;tiny&#34;&gt;&lt;a href=&#34;/static/img/mona-lisa-gol/message.gif&#34;&gt;parting gift spoiler&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr&gt;</description>
         <link>https://kevingal.com/blog/mona-lisa-gol.html</link>
         <pubDate>Tue, 28 Jan 2020 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/mona-lisa-gol.html</guid>
@@ -574,7 +594,8 @@ OR
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.reddit.com/r/programming/comments/e03k3p/random_rgb_values_that_average_to_n_or/&#34;&gt;reddit&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://news.ycombinator.com/item?id=21607401&#34;&gt;Hacker News&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description>
+&lt;/ul&gt;
+&lt;hr&gt;</description>
         <link>https://kevingal.com/blog/rgb-average.html</link>
         <pubDate>Fri, 22 Nov 2019 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/rgb-average.html</guid>
@@ -654,7 +675,8 @@ Are twins once you taste them, though different at first sight.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.reddit.com/r/programming/comments/deauxe/solving_all_42_versions_of_the_harry_potter/&#34;&gt;reddit&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://habr.com/ru/post/471856/&#34;&gt;habr&lt;/a&gt; (Russian translation)&lt;/li&gt;
-&lt;/ul&gt;</description>
+&lt;/ul&gt;
+&lt;hr&gt;</description>
         <link>https://kevingal.com/blog/potter-puzzle.html</link>
         <pubDate>Thu, 03 Oct 2019 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/potter-puzzle.html</guid>
@@ -691,7 +713,8 @@ Are twins once you taste them, though different at first sight.&lt;/p&gt;
 &lt;p&gt;Eventually, the bot made enemies with too many important people and its account was banned permanently. For being spammy and annoying, apparently. Nobody could have seen it coming.&lt;/p&gt;
 &lt;p&gt;It was fun while it lasted, however, and rather than let the code go to waste, I recently resurrected it &lt;a href=&#34;/apps/emojipasta.html&#34;&gt;as a web app&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;For the interested, here&#39;s a brief description of how it worked (and how it still works in the web app). I wrote a script to download a few thousand comments off r/emojipasta. These were used to create &#34;mappings&#34; from words to the emojis that tend to appear beside them. When it was summoned, the bot broke up comments into chunks of text and emojis were inserted randomly between the chunks using the word-&gt;emoji mappings, with a maximum of 2 emojis after each chunk. Only the alphanumeric prefix of each chunk of text was considered, so that &#34;I&#39;ll&#34; would give the same emoji mappings as &#34;I&#34;.&lt;/p&gt;
-&lt;p&gt;That&#39;s about it. The code was pretty simple. The original source code of the bot, in Python, can be found &lt;a href=&#34;https://github.com/Kevinpgalligan/EmojipastaBot&#34;&gt;here&lt;/a&gt;. The JavaScript version that I ported recently can be found &lt;a href=&#34;https://github.com/Kevinpgalligan/KevingalWebsite/blob/master/static/js/apps/emojipasta/emojipasta.js&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;</description>
+&lt;p&gt;That&#39;s about it. The code was pretty simple. The original source code of the bot, in Python, can be found &lt;a href=&#34;https://github.com/Kevinpgalligan/EmojipastaBot&#34;&gt;here&lt;/a&gt;. The JavaScript version that I ported recently can be found &lt;a href=&#34;https://github.com/Kevinpgalligan/KevingalWebsite/blob/master/static/js/apps/emojipasta/emojipasta.js&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;hr&gt;</description>
         <link>https://kevingal.com/blog/emojipasta.html</link>
         <pubDate>Sun, 29 Sep 2019 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/emojipasta.html</guid>
@@ -730,7 +753,8 @@ Are twins once you taste them, though different at first sight.&lt;/p&gt;
 &lt;h3&gt;Appendix A: follow-up reading&lt;/h3&gt;
 &lt;p&gt;Further thoughts on the efficiency of plane boarding can be enjoyed in this &lt;a href=&#34;https://www.youtube.com/watch?v=oAHbLRjF0vo&#34;&gt;fun video by CPG Gray&lt;/a&gt;, which doesn&#39;t mention plane design but discusses a number of algorithms for faster boarding.&lt;/p&gt;
 &lt;h3&gt;Appendix B: the code&lt;/h3&gt;
-&lt;p&gt;For the curious, &lt;a href=&#34;https://github.com/Kevinpgalligan/KevingalWebsite/blob/master/experiments/plane-boarding/plane-boarding.py&#34;&gt;here&#39;s the script&lt;/a&gt; used to run the simulation and animate it.&lt;/p&gt;</description>
+&lt;p&gt;For the curious, &lt;a href=&#34;https://github.com/Kevinpgalligan/KevingalWebsite/blob/master/experiments/plane-boarding/plane-boarding.py&#34;&gt;here&#39;s the script&lt;/a&gt; used to run the simulation and animate it.&lt;/p&gt;
+&lt;hr&gt;</description>
         <link>https://kevingal.com/blog/plane-boarding.html</link>
         <pubDate>Sat, 07 Sep 2019 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/plane-boarding.html</guid>
