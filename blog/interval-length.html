@@ -23,6 +23,7 @@
         | <a href="/software.html" class="navlink">software</a>
         | <a href="/feed.xml"><img class="navbar-img" src="/static/img/rss.png"></a>
         | <a href="https://twitter.com/KevinGalligan2"><img class="navbar-img" src="/static/img/twitter.png"></a>
+        | <a href="https://github.com/Kevinpgalligan"><img class="navbar-img" src="/static/img/github.png"></a>
         </nav>
         </div>
     </header>
@@ -47,7 +48,7 @@
 <p>If not, then you've fallen victim to one of the 2 hard problems<sup id="fnref:joke"><a class="footnote-ref" href="#fn:joke">1</a></sup> in computer science: the off-by-1 error.</p>
 <p>Off-by-1 errors have been written about since before Jesus Christ. At the latest, they were mentioned by <a href="https://web.archive.org/web/20160305221341/http://www.dsm.fordham.edu/~moniot/Opinions/fencepost-error-history.shtml">a Roman named Vitruvius</a>, who served in the army of Julius Caesar. He was talking about the number of fenceposts around a temple, but the principle is the same. The problem is old, and you shouldn't feel bad if it caught you out.</p>
 <p>The good news is that there's a simple, easy-to-remember formula that applies to all of the above calculations. Once you've learned it, you'll never again suffer from this particular brand of off-by-1 horror. Nor will you miscount the number of days until Aunt Catherine's birthday.</p>
-<h3>Give me the formula</h3>
+<h3>Give me the formula!</h3>
 <p>Let's reconsider all of the above problems as calculations of interval length.</p>
 <p>What's an interval? It's a set of integers that lies between a lower and upper bound. For example, the interval <code>[3, 7]</code> contains the numbers 3, 4, 5, 6 and 7. It's a set, so we write it using the set notation <code>{3,4,5,6,7}</code>.</p>
 <p>The bounds of an interval can be <em>open</em> or <em>closed</em>. If a bound is open, it means that the bound itself is excluded from the interval. If a bound is closed, it's included. In the above example, both bounds were closed. The same interval with open bounds, written <code>(3, 7)</code>, is the set <code>{4,5,6}</code>.</p>
@@ -62,7 +63,7 @@
 <p>We have all 3 types of interval here: open, half-open and closed. If you look closely, you'll notice a pattern in how we calculate the number of elements: subtract the lower bound from the upper bound, then add -1, 0 or +1 depending on the type of interval.</p>
 <p>Here it is more explicitly. If you have an open interval <code>(L, U)</code>, then the number of elements is <code>U-L-1</code>. If you have a half-open interval <code>(L, U]</code> or <code>[L, U)</code>, then it's <code>U-L</code>. And finally, if you have a closed interval <code>[L, U]</code>, it's <code>U-L+1</code>. They're all the same formula, you just have to add 1 if both bounds are closed and subtract 1 if they're both open.</p>
 <p>This is the reason why programming interfaces use half-open bounds for ranges. In Python, for example, you say <code>mylist[L:L+N]</code> to copy the list items with indexes in the interval <code>[L, L+N)</code>. That's (L+N)-L=N elements. Much neater than having rogue +1s and -1s floating around the place.</p>
-<p>That's it. I was going to make this into a whole big thing, but it's really that simple. I used to come up with small example cases and finger-count in order to figure out interval length. This way is less stressful on the ol' brain.</p>
+<p>That's it. I was going to make this into a whole big thing, but it's really that simple. I used to come up with small example cases and finger-count in order to figure out interval length. This way is easier.</p>
 <!-- Fuck Shane! -->
 
 <h3>Farewell to Fencepostia</h3>
