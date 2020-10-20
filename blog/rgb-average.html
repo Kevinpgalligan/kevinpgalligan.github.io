@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="/static/css/blog.css">
 <meta property="description" content="A simple-seeming problem is solved using tricky combinatorics.">
 
+
     <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon.ico">
     
     <meta property="og:image" content="/static/img/rgb-average/thumbnail.png" />
@@ -91,7 +92,7 @@
 <p><img src="/static/img/rgb-average/equation-1-numerator.png"
      alt="numerator formula, min(3A-r, 255) - max(3A-r-255, 0) + 1"
      class="centered"></p>
-<p>G and B can be any value in the interval [max(3A-r-255, 0), min(3A-r, 255)], so all we're doing is calculating the length of this interval. It's similar to what we did in the first algorithm.</p>
+<p>G and B can be any value in the interval <script type="math/tex; mode=display">max(3A-r-255, 0), min(3A-r, 255)</script>, so all we're doing is calculating the length of this interval. It's similar to what we did in the first algorithm.</p>
 <p>To convince yourself that it's correct, consider the case where A=87, 3A=261 and r=1. We have 3A-r=260. The GB values that sum to 260 are (255,5), (254,6), ..., (5,255). There are 255-5+1=251 such values. This agrees with the expression above. Repeat for various values of A and r.</p>
 <h3>P(R=r): the denominator</h3>
 <p>The expression for #{RGB values that average to A} is below. It looks scary, but we'll explain each part in an intuitive manner.</p>
@@ -188,7 +189,7 @@
 </ul>
 <hr>
 <p><a href="/blog.html">Back to blog</a></p>
-<p><a href="/feed.xml"><img src="/static/img/rss.png"></a> <a href="https://twitter.com/KevinGalligan2"><img src="/static/img/twitter.png"></a></p>
+<p><a href="/feed.xml"><img src="/static/img/rss.png"></a> <a href="https://twitter.com/KevinGalligan2"><img src="/static/img/twitter.png"></a> <a href="https://github.com/Kevinpgalligan"><img src="/static/img/github.png"></a></p>
 <p>I'd be happy to hear from you at <i>galligankevinp@gmail.com</i>.</p>
 
 </body>
