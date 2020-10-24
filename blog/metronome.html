@@ -81,7 +81,7 @@
 <p>I didn't like any of the apps I found. They were grotesquely overweight (as large as 11.35MB), mobile-unfriendly (I can't express the horror of trying to set precise numeric values with a slider), and full of trackers (hi Google!).</p>
 <p>As a result, I set myself a challenge: to make my own, mobile-friendly, slider-free metronome app, with the constraint that it be less than 1KB in size. That's half the size of Tim Berners-Lee's original webpage. A tight margin, for sure, but this would be small fry compared to the <a href="https://js1k.com/">1KB JavaScript games</a> that some people make for fun.</p>
 <p>The finished product is <a href="/apps/metronome.html">here</a>. The first version was over 2.5KB, but by applying various dirty tricks (detailed in Appendix B, along with technical details of the app), I managed to shrink it down to 981 bytes, or ~3.5 tweets.</p>
-<div class="codehilite"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span><span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Metronome<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">viewport</span> <span class="na">content</span><span class="o">=</span><span class="s">width=device-width</span><span class="p">&gt;</span>
+<div class="codehilite"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span><span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Metronome<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">viewport</span> <span class="na">content</span><span class="o">=</span><span class="s">width=device-width</span><span class="p">&gt;</span>
 <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span><span class="nt">body</span><span class="p">{</span><span class="k">display</span><span class="p">:</span><span class="k">grid</span><span class="p">;</span><span class="k">grid-template-columns</span><span class="p">:</span><span class="mi">50</span><span class="kt">%</span><span class="mi">50</span><span class="kt">%</span><span class="p">;</span><span class="k">max-width</span><span class="p">:</span><span class="mi">150</span><span class="kt">px</span><span class="p">}</span>
 <span class="p">#</span><span class="nn">b</span><span class="o">,</span><span class="nt">button</span><span class="p">{</span><span class="k">text-align</span><span class="p">:</span><span class="kc">center</span><span class="p">;</span><span class="k">line-height</span><span class="p">:</span><span class="mi">50</span><span class="kt">px</span><span class="p">}&lt;/</span><span class="nt">style</span><span class="p">&gt;&lt;</span><span class="nt">script</span><span class="p">&gt;</span><span class="nx">p</span><span class="o">=!</span><span class="mi">1</span><span class="p">,</span><span class="nx">b</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="nx">i</span><span class="o">=</span><span class="mf">.025</span><span class="p">,</span>
 <span class="nx">l</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span><span class="nx">n</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nx">M</span><span class="o">=</span><span class="nb">Math</span><span class="p">,</span><span class="nx">D</span><span class="o">=</span><span class="nb">document</span><span class="p">,</span><span class="nx">x</span><span class="o">=</span><span class="k">new</span> <span class="nx">AudioContext</span><span class="p">,</span><span class="nx">H</span><span class="o">=</span><span class="p">((</span><span class="nx">e</span><span class="p">,</span><span class="nx">n</span><span class="p">)=&gt;</span><span class="nx">e</span><span class="p">.</span><span class="nx">innerHTML</span><span class="o">=</span><span class="nx">n</span><span class="p">),</span>
@@ -93,7 +93,7 @@
 <span class="nx">a</span><span class="o">=</span><span class="p">(</span><span class="nx">e</span><span class="p">=&gt;</span><span class="nx">h</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="nx">b</span><span class="o">=</span><span class="nx">M</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">M</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="nx">b</span><span class="o">+</span><span class="nx">e</span><span class="p">),</span><span class="mi">240</span><span class="p">))),</span><span class="nb">window</span><span class="p">.</span><span class="nx">onload</span><span class="o">=</span><span class="p">(()=&gt;[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span><span class="mi">25</span><span class="p">].</span><span class="nx">forEach</span><span class="p">(</span>
 <span class="nx">n</span><span class="p">=&gt;(</span><span class="nx">e</span><span class="o">=</span><span class="nx">D</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">&quot;button&quot;</span><span class="p">),</span><span class="nx">e</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&quot;click&quot;</span><span class="p">,()=&gt;</span><span class="nx">a</span><span class="p">(</span><span class="nx">n</span><span class="p">)),</span><span class="nx">H</span><span class="p">(</span><span class="nx">e</span><span class="p">,(</span><span class="nx">n</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">?</span><span class="s2">&quot;&quot;</span><span class="o">:</span><span class="s2">&quot;+&quot;</span><span class="p">)</span><span class="o">+</span><span class="nx">n</span><span class="p">),</span>
 <span class="nx">D</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">e</span><span class="p">))));&lt;/</span><span class="nt">script</span><span class="p">&gt;&lt;</span><span class="nt">p</span> <span class="na">id</span><span class="o">=</span><span class="s">b</span><span class="p">&gt;</span>100<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">c</span> <span class="na">onclick</span><span class="o">=</span><span class="s">c();</span><span class="p">&gt;</span>play<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
-</code></pre></div>
+</pre></div>
 
 
 <p>The purpose of this exercise? Mostly as a point of comparison for other online metronome apps, which I believe are symptomatic of the horrid state of the web, and which we will examine in the next section.</p>
@@ -116,7 +116,7 @@
 <p>I'm not suggesting that we become leather-clad monks, purging strips of fat from our websites with puritan fury. While fun, compressing a website takes a lot of effort, and the end result tends to <a href="/apps/metronome.html">look like shit</a>. Let's just try to keep our websites Earth-sized, please. Or even Neptune-sized. Not everyone can afford to download Jupiter.</p>
 <h3>Appendix A: Page weight breakdown</h3>
 <p>After loading the HTTP Archive database into Google BigQuery (it's free and takes 5 minutes, instructions <a href="https://github.com/HTTPArchive/httparchive.org/blob/master/docs/gettingstarted_bigquery.md">here</a>), I ran this query to fetch the data I needed for my bar chart. </p>
-<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span>
+<div class="codehilite"><pre><span></span><span class="k">SELECT</span>
   <span class="k">SUM</span><span class="p">(</span><span class="n">bytesHtml</span><span class="p">)</span> <span class="k">as</span> <span class="n">html</span><span class="p">,</span>
   <span class="k">SUM</span><span class="p">(</span><span class="n">bytesJS</span><span class="p">)</span> <span class="k">as</span> <span class="n">js</span><span class="p">,</span>
   <span class="k">SUM</span><span class="p">(</span><span class="n">bytesCSS</span><span class="p">)</span> <span class="k">as</span> <span class="n">css</span><span class="p">,</span>
@@ -129,12 +129,12 @@
   <span class="o">`</span><span class="n">httparchive</span><span class="p">.</span><span class="n">summary_pages</span><span class="p">.</span><span class="mi">2020</span><span class="n">_04_01_desktop</span><span class="o">`</span>
 <span class="k">WHERE</span>
   <span class="n">bytesTotal</span> <span class="o">&gt;=</span> <span class="mi">456601</span> <span class="k">AND</span> <span class="n">bytesTotal</span> <span class="o">&lt;=</span> <span class="mi">7363789</span>
-</code></pre></div>
+</pre></div>
 
 
 <p>The bounds on bytesTotal are the p10 and p90 values of page size, plucked from <a href="https://httparchive.org/reports/page-weight">here</a>. They're intended to remove outliers. The bar heights are then <code>bytes/total*100</code>.</p>
 <p>Results:</p>
-<div class="codehilite"><pre><span></span><code>html 188774196140
+<div class="codehilite"><pre><span></span>html 188774196140
 js 2337263808937
 css 462249675219
 img 5528893867126
@@ -142,17 +142,17 @@ font 595097490698
 video 257342218994
 total 9405167424348
 count 3728058
-</code></pre></div>
+</pre></div>
 
 
 <p>You might complain that this distribution is skewed, even after we've removed outliers. <em>Some</em> websites may have super heavy images, but <em>most</em> websites don't. In response to that quibble, here's another query we can run. It shows the number of webpages that load images.</p>
-<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span>
+<div class="codehilite"><pre><span></span><span class="k">SELECT</span>
   <span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="k">as</span> <span class="k">count</span>
 <span class="k">FROM</span>
   <span class="o">`</span><span class="n">httparchive</span><span class="p">.</span><span class="n">summary_pages</span><span class="p">.</span><span class="mi">2020</span><span class="n">_04_01_desktop</span><span class="o">`</span>
 <span class="k">WHERE</span>
   <span class="n">bytesImg</span> <span class="o">&gt;</span> <span class="mi">0</span>
-</code></pre></div>
+</pre></div>
 
 
 <p>The answer turns out to be 4,658,956. There are ~4,660,072 webpages in the database, meaning that more than 99.9% of webpages have image data. And, according to the reports of the HTTP Archive, the median image weight of webpages is 950KB, or thereabouts. This means that 50% of webpages have 950KB or more of image data, and our figure of 1.2MB isn't far off the mark, skewed though it may be.</p>

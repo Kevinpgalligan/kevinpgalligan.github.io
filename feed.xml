@@ -4,10 +4,144 @@
     <title>Kevin's Blog</title>
     <link>https://kevingal.com</link>
     <description>Maths, computers and stuff.</description>
-    <pubDate>Sat, 18 Jul 2020 00:00:00 GMT</pubDate>
-    <lastBuildDate>Sat, 18 Jul 2020 00:00:00 GMT</lastBuildDate>
+    <pubDate>Thu, 22 Oct 2020 00:00:00 GMT</pubDate>
+    <lastBuildDate>Thu, 22 Oct 2020 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://kevingal.com/feed.xml" rel="self" type="application/rss+xml" />
     
+    <item>
+        <title>Can your granny beat Michael Jordan at basketball? A probabilistic answer</title>
+        <description>&lt;p&gt;I played a lot of basketball during lockdown. I had free time, there was a basketball hoop outside my house, and I had recently watched The Last Dance, the hit basketball documentary about Michael Jordan and the Chicago Bulls. The time was ripe for my basketball ascendance.&lt;/p&gt;
+&lt;p&gt;Yet my 70-year-old father still managed to beat me at Around the World. Around the World is a basketball game where your objective is to score from each of several positions around the hoop. And my father beat me at it, despite all my practice, and despite the fact that he had never played much basketball in his life.&lt;/p&gt;
+&lt;p&gt;This made me wonder -- how much better than someone do you need to be in order to beat them consistently at Around the World? That&#39;s the question we&#39;re going to answer in this article, using tools from probability. By the end, we&#39;ll have produced some cool graphs (if you&#39;re into that sort of thing), and we&#39;ll have definitively answered the question of whether your granny can beat Michael Jordan at basketball.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/static/img/basketball/around-the-world.png&#34;
+     alt=&#34;A variation of Around the World. 7 shooting positions, evenly spaced in a semi-circle around the hoop.&#34;
+     class=&#34;centered&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Around the World is a race. Players take turns shooting from set positions around the hoop. A player&#39;s turn ends when they miss a shot. The winner is the first player to score a shot from all positions. In my variant, we had to score 7 shots, spaced at regular intervals in a semi-circle around the hoop (see above).&lt;/p&gt;
+&lt;p&gt;Another way to look at it is that the winner is the person who misses the fewest shots before scoring 7 times. And this can be modelled using what is known as a &lt;a href=&#34;https://en.wikipedia.org/wiki/Negative_binomial_distribution&#34;&gt;Pascal distribution&lt;/a&gt;. Given that a player scores each shot with probability $p$, the probability that they miss $k$ shots before finishing the game is&lt;/p&gt;
+&lt;p&gt;
+&lt;script type=&#34;math/tex; mode=display&#34;&gt;P(X=k)={k+7-1 \choose 7-1}(1-p)^k p^7.&lt;/script&gt;
+&lt;/p&gt;
+&lt;p&gt;Where did this ugly-looking expression come from? Well, there are ${k+7-1 \choose 7-1}$ sequences of shots (&lt;a href=&#34;https://en.wikipedia.org/wiki/Binomial_coefficient&#34;&gt;binomial coefficient formula&lt;/a&gt;) where the player misses $k$ shots before finishing. Why that many!? The player takes $k+7$ shots in total. The last shot has to be a success, as that&#39;s when the player finishes the game. This leaves $k+7-1$ shots, of which we &lt;em&gt;choose&lt;/em&gt; $7-1=6$ to be successes. As for $(1-p)^k p^7$, it&#39;s the probability of a single sequence of shots where the player misses $k$ shots before scoring 7.&lt;/p&gt;
+&lt;p&gt;Now that we&#39;ve hand-wavingly derived the probability formula, what does the distribution look like for different values of $p$? How many shots should you expect to miss at different skill levels?&lt;/p&gt;
+&lt;p&gt;Here&#39;s the distribution when $p=0.1$. This is roughly granny-level shooting ability. A granny musters enough energy to hurl the ball in the general direction of the hoop, and it happens to go in, about 1 in 10 times. On average, it takes more than 60 misses before granny finishes the game (indicated by the red line).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/static/img/basketball/pascal-p0.1.png&#34;
+     alt=&#34;The distribution for p=0.1; 9/10 shots are misses. A curve that peaks at around 55 missed shots. The mean is just over 60 missed shots.&#34;
+     class=&#34;centered&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Michael Jordan&#39;s average free throw percentage over his career was 83.5% (&lt;a href=&#34;https://stats.nba.com/player/893/career/&#34;&gt;ref&lt;/a&gt;), so let&#39;s look at $p=0.835$. We see that it would be common (3/10 games) for MJ to not miss a single shot, and the other player wouldn&#39;t even touch the ball if MJ was the starting player. On average, we&#39;d expect MJ to miss slightly more than 1 shot.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/static/img/basketball/pascal-p0.835.png&#34;
+     alt=&#34;The distribution for p=0.835.&#34;
+     class=&#34;centered&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Finally, between the two extremes, here&#39;s $p=0.5$. This player misses an average of 7 shots before finishing. It&#39;s like me on a good day.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/static/img/basketball/pascal-p0.5.png&#34;
+     alt=&#34;The distribution for p=0.5.&#34;
+     class=&#34;centered&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Our goal is to estimate the win probability of one player versus another. Me versus my dad. Michael Jordan versus your granny. Michael Jordan versus Michael Jordan. And so on. To do that, we&#39;ll have to define some new variables. Let $W$ be the event of a win for the first player, let $F$ be the number of shots they miss, and let $S$ be the same but for the second player. Also let $p_F$ and $p_S$ be the shot success probabilities of each player. We can now state the probability of the first player winning:&lt;/p&gt;
+&lt;p&gt;
+&lt;script type=&#34;math/tex; mode=display&#34;&gt;
+P(W) = \sum_{s=0}^\infty P(S=s) P(F \leq S).
+&lt;/script&gt;
+&lt;/p&gt;
+&lt;p&gt;We know the value of $P(S=s)$ from above, except that $p$ is swapped for $p_S$. And we get $P(F \leq s)$ by summing up $P(F=f)$ for all $f \leq s$:&lt;/p&gt;
+&lt;p&gt;
+&lt;script type=&#34;math/tex; mode=display&#34;&gt;
+P(F \leq s) = \sum_{f=0}^s P(F=f).
+&lt;/script&gt;
+&lt;/p&gt;
+&lt;p&gt;Why $\leq$ and not $&amp;lt;$? This is because the first player wins if they miss the same amount of shots as the second player, as the game ends before the second player can finish their shots.&lt;/p&gt;
+&lt;p&gt;With that out of the way, here&#39;s a heat map of the first player&#39;s win probability, for varying values of $p_F$ and $p_S$&lt;sup id=&#34;fnref:infinite&#34;&gt;&lt;a class=&#34;footnote-ref&#34; href=&#34;#fn:infinite&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. It ranges from black (the first player will almost certainly lose) to white (the first player will almost certainly win). When we compare Michael Jordan as the first player ($p_F=0.835$) to a granny as the second player ($p_S=0.1$), the result is blindingly white. Granny doesn&#39;t stand a chance.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/static/img/basketball/heatmap.png&#34;
+     alt=&#34;Heatmap of win probability of first player. p_F and p_S are varied between 0.1 and 0.9. &#34;
+     class=&#34;centered&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Another observation: the pixel in the bottom left corner is a reddy orange, which is close to a 50% win rate for the first player. The pixel in the top right corner is an orangey yellow, around 70%. It seems that going first gives a bigger advantage to more skillful players.&lt;/p&gt;
+&lt;p&gt;Here&#39;s similar data in table format, with results rounded to 4 decimal places. $p_F$ increases as you go down the table, while $p_S$ increases as you go left to right.&lt;/p&gt;
+&lt;div class=&#34;cooltablewrap&#34;&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+  &lt;th&gt;p&lt;sub&gt;F&lt;/sub&gt;/p&lt;sub&gt;S&lt;/sub&gt;&lt;/th&gt;
+  &lt;th&gt;0.1&lt;/th&gt;
+  &lt;th&gt;0.25&lt;/th&gt;
+  &lt;th&gt;0.4&lt;/th&gt;
+  &lt;th&gt;0.5&lt;/th&gt;
+  &lt;th&gt;0.6&lt;/th&gt;
+  &lt;th&gt;0.835&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+  &lt;th&gt;0.1&lt;/th&gt;
+  &lt;td&gt;0.5059&lt;/td&gt;
+  &lt;td&gt;0.0374&lt;/td&gt;
+  &lt;td&gt;0.0032&lt;/td&gt;
+  &lt;td&gt;0.0007&lt;/td&gt;
+  &lt;td&gt;0.0002&lt;/td&gt;
+  &lt;td&gt;0.0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;0.25&lt;/th&gt;
+  &lt;td&gt;0.9665&lt;/td&gt;
+  &lt;td&gt;0.5162&lt;/td&gt;
+  &lt;td&gt;0.162&lt;/td&gt;
+  &lt;td&gt;0.0654&lt;/td&gt;
+  &lt;td&gt;0.0245&lt;/td&gt;
+  &lt;td&gt;0.0016&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;0.4&lt;/th&gt;
+  &lt;td&gt;0.9974&lt;/td&gt;
+  &lt;td&gt;0.8637&lt;/td&gt;
+  &lt;td&gt;0.5291&lt;/td&gt;
+  &lt;td&gt;0.3208&lt;/td&gt;
+  &lt;td&gt;0.1726&lt;/td&gt;
+  &lt;td&gt;0.0234&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;0.5&lt;/th&gt;
+  &lt;td&gt;0.9994&lt;/td&gt;
+  &lt;td&gt;0.9499&lt;/td&gt;
+  &lt;td&gt;0.7382&lt;/td&gt;
+  &lt;td&gt;0.54&lt;/td&gt;
+  &lt;td&gt;0.3514&lt;/td&gt;
+  &lt;td&gt;0.0738&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;0.6&lt;/th&gt;
+  &lt;td&gt;0.9998&lt;/td&gt;
+  &lt;td&gt;0.9833&lt;/td&gt;
+  &lt;td&gt;0.8742&lt;/td&gt;
+  &lt;td&gt;0.7311&lt;/td&gt;
+  &lt;td&gt;0.554&lt;/td&gt;
+  &lt;td&gt;0.1736&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;0.835&lt;/th&gt;
+  &lt;td&gt;0.9999&lt;/td&gt;
+  &lt;td&gt;0.9993&lt;/td&gt;
+  &lt;td&gt;0.9894&lt;/td&gt;
+  &lt;td&gt;0.965&lt;/td&gt;
+  &lt;td&gt;0.9124&lt;/td&gt;
+  &lt;td&gt;0.6235&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This confirms our observation that going first gives a bigger advantage to stronger players. When a granny plays a granny, the first granny has only a small advantage -- a 50.59% chance of winning. Whereas a Michael Jordan who plays first has a 62.35% chance of beating a second Michael Jordan. The game tends to end in fewer turns at higher levels of play, which makes the extra turn at the start count for more.&lt;/p&gt;
+&lt;p&gt;Let&#39;s say that my father, a mediocre player, has a score rate of 40%. And that I, a slightly less mediocre player, have a score rate of 50%. Then my father would still be expected to beat me in about 3/10 games. I guess this explains my humiliating defeats.&lt;/p&gt;
+&lt;p&gt;As for the scenario we posed at the beginning of the article: your granny has almost no chance of beating Michael Jordan. But it&#39;s not impossible.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Find the code behind this article &lt;a href=&#34;https://github.com/Kevinpgalligan/around-the-world&#34;&gt;here&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+&lt;div class=&#34;footnote&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:infinite&#34;&gt;
+&lt;p&gt;As you might have guessed, we don&#39;t compute the entire infinite sum to generate this graph. We stop after enough terms have been added that the error in the result is small.&amp;#160;&lt;a class=&#34;footnote-backref&#34; href=&#34;#fnref:infinite&#34; title=&#34;Jump back to footnote 1 in the text&#34;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</description>
+        <link>https://kevingal.com/blog/basketball.html</link>
+        <pubDate>Thu, 22 Oct 2020 00:00:00 GMT</pubDate>
+        <guid>https://kevingal.com/blog/basketball.html</guid>
+    </item>
     <item>
         <title>A short review of A Short History of Nearly Everything</title>
         <description>&lt;p&gt;If everyone on Earth owned a copy of &lt;em&gt;A Short History of Nearly Everything&lt;/em&gt;, and they stacked their copies one on top of the other, then that stack would touch the Moon&lt;sup id=&#34;fnref:moon&#34;&gt;&lt;a class=&#34;footnote-ref&#34; href=&#34;#fn:moon&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
@@ -95,7 +229,7 @@
 &lt;p&gt;I didn&#39;t like any of the apps I found. They were grotesquely overweight (as large as 11.35MB), mobile-unfriendly (I can&#39;t express the horror of trying to set precise numeric values with a slider), and full of trackers (hi Google!).&lt;/p&gt;
 &lt;p&gt;As a result, I set myself a challenge: to make my own, mobile-friendly, slider-free metronome app, with the constraint that it be less than 1KB in size. That&#39;s half the size of Tim Berners-Lee&#39;s original webpage. A tight margin, for sure, but this would be small fry compared to the &lt;a href=&#34;https://js1k.com/&#34;&gt;1KB JavaScript games&lt;/a&gt; that some people make for fun.&lt;/p&gt;
 &lt;p&gt;The finished product is &lt;a href=&#34;/apps/metronome.html&#34;&gt;here&lt;/a&gt;. The first version was over 2.5KB, but by applying various dirty tricks (detailed in Appendix B, along with technical details of the app), I managed to shrink it down to 981 bytes, or ~3.5 tweets.&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;cp&#34;&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;title&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;Metronome&lt;span class=&#34;p&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;title&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;meta&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;viewport&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;content&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;width=device-width&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;title&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;Metronome&lt;span class=&#34;p&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;title&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;meta&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;viewport&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;content&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;width=device-width&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
 &lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;style&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;body&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;display&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;grid&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;grid-template-columns&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;50&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;50&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;max-width&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;150&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;px&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;span class=&#34;p&#34;&gt;#&lt;/span&gt;&lt;span class=&#34;nn&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;button&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;text-align&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;center&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;line-height&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;50&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;px&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;style&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;script&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;p&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=!&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;100&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;.025&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
 &lt;span class=&#34;nx&#34;&gt;l&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;.1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;M&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;Math&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;D&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;document&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;AudioContext&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;H&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)=&amp;gt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;innerHTML&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
@@ -107,7 +241,7 @@
 &lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;h&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;b&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;M&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;min&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;M&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;max&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;20&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;240&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))),&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;window&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;onload&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(()=&amp;gt;[&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;25&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;25&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;].&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;forEach&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
 &lt;span class=&#34;nx&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;=&amp;gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;D&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;createElement&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;button&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;addEventListener&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;click&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,()=&amp;gt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)),&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;H&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;?&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;+&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
 &lt;span class=&#34;nx&#34;&gt;D&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;body&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;appendChild&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))));&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;script&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;p&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;100&lt;span class=&#34;p&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;p&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;button&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;c&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;onclick&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;c();&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;play&lt;span class=&#34;p&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;button&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;The purpose of this exercise? Mostly as a point of comparison for other online metronome apps, which I believe are symptomatic of the horrid state of the web, and which we will examine in the next section.&lt;/p&gt;
@@ -130,7 +264,7 @@
 &lt;p&gt;I&#39;m not suggesting that we become leather-clad monks, purging strips of fat from our websites with puritan fury. While fun, compressing a website takes a lot of effort, and the end result tends to &lt;a href=&#34;/apps/metronome.html&#34;&gt;look like shit&lt;/a&gt;. Let&#39;s just try to keep our websites Earth-sized, please. Or even Neptune-sized. Not everyone can afford to download Jupiter.&lt;/p&gt;
 &lt;h3&gt;Appendix A: Page weight breakdown&lt;/h3&gt;
 &lt;p&gt;After loading the HTTP Archive database into Google BigQuery (it&#39;s free and takes 5 minutes, instructions &lt;a href=&#34;https://github.com/HTTPArchive/httparchive.org/blob/master/docs/gettingstarted_bigquery.md&#34;&gt;here&lt;/a&gt;), I ran this query to fetch the data I needed for my bar chart. &lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;k&#34;&gt;SELECT&lt;/span&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;SELECT&lt;/span&gt;
   &lt;span class=&#34;k&#34;&gt;SUM&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bytesHtml&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;html&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
   &lt;span class=&#34;k&#34;&gt;SUM&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bytesJS&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;js&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
   &lt;span class=&#34;k&#34;&gt;SUM&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bytesCSS&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;css&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
@@ -143,12 +277,12 @@
   &lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;httparchive&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;summary_pages&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2020&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_04_01_desktop&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;
 &lt;span class=&#34;k&#34;&gt;WHERE&lt;/span&gt;
   &lt;span class=&#34;n&#34;&gt;bytesTotal&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;456601&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;AND&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;bytesTotal&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;7363789&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;The bounds on bytesTotal are the p10 and p90 values of page size, plucked from &lt;a href=&#34;https://httparchive.org/reports/page-weight&#34;&gt;here&lt;/a&gt;. They&#39;re intended to remove outliers. The bar heights are then &lt;code&gt;bytes/total*100&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;Results:&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;html 188774196140
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;html 188774196140
 js 2337263808937
 css 462249675219
 img 5528893867126
@@ -156,17 +290,17 @@ font 595097490698
 video 257342218994
 total 9405167424348
 count 3728058
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;You might complain that this distribution is skewed, even after we&#39;ve removed outliers. &lt;em&gt;Some&lt;/em&gt; websites may have super heavy images, but &lt;em&gt;most&lt;/em&gt; websites don&#39;t. In response to that quibble, here&#39;s another query we can run. It shows the number of webpages that load images.&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;k&#34;&gt;SELECT&lt;/span&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;SELECT&lt;/span&gt;
   &lt;span class=&#34;k&#34;&gt;COUNT&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;count&lt;/span&gt;
 &lt;span class=&#34;k&#34;&gt;FROM&lt;/span&gt;
   &lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;httparchive&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;summary_pages&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2020&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_04_01_desktop&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;
 &lt;span class=&#34;k&#34;&gt;WHERE&lt;/span&gt;
   &lt;span class=&#34;n&#34;&gt;bytesImg&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;The answer turns out to be 4,658,956. There are ~4,660,072 webpages in the database, meaning that more than 99.9% of webpages have image data. And, according to the reports of the HTTP Archive, the median image weight of webpages is 950KB, or thereabouts. This means that 50% of webpages have 950KB or more of image data, and our figure of 1.2MB isn&#39;t far off the mark, skewed though it may be.&lt;/p&gt;
@@ -334,11 +468,11 @@ count 3728058
      class=&#34;centered&#34;&gt;&lt;/p&gt;
 &lt;p&gt;In the boolean equation that we construct, each variable corresponds to a cell and the value of the variable indicates the health of the cell. False means that the cell is dead, while true means that it&#39;s alive. If we find a set of variable assignments that causes the equation to evaluate to true, then the corresponding Life state (with false/true variables corresponding to dead/live cells) is a parent of our target state.&lt;/p&gt;
 &lt;p&gt;What will the equation look like? Let&#39;s consider a 3x3 Life grid as an example.&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;  1 2 3
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;  1 2 3
 a o x x
 b x x x
 c x o x
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;The middle cell, b2, is alive. For it to be alive in this state, one of the following must be true:&lt;/p&gt;
@@ -347,13 +481,13 @@ c x o x
 &lt;li&gt;It was dead in the previous state and 3 of its neighbours were alive.&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;Keeping in mind that true means alive and false means dead, this can be translated to a boolean equation in a fairly literal way.&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;(b2 AND ((a1 AND a2 AND !a3 AND !b1 AND !b3 AND !c1 AND !c2 AND !c3)
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;(b2 AND ((a1 AND a2 AND !a3 AND !b1 AND !b3 AND !c1 AND !c2 AND !c3)
          OR (a1 AND !a2 AND a3 AND !b1 AND !b3 AND !c1 AND !c2 AND !c3)
          OR ...repeat 82 more times for other valid neighbour combinations))
 OR
 (!b2 AND ((a1 AND a2 AND a3 AND !b1 AND !b3 AND !c1 AND !c2 AND !c3)
           OR ...repeat 55 more times for other valid neighbour combinations))
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;If we repeat this construction for every cell in the grid and chain them together using ANDs, we end up with an equation that we can solve to find a parent of the target state. And, as it happens, there are many &#34;SAT-solving&#34; programs that search for solutions to boolean equations. Once we have our equation, we can ship it off to our SAT solver of choice and sit back, relaxedly sipping our lattes until it gets back to us with a result.&lt;/p&gt;
@@ -450,7 +584,7 @@ OR
 &lt;h3&gt;An attempt&lt;/h3&gt;
 &lt;p&gt;The first algorithm that might come to mind is to generate R, G and B one at a time, ensuring that we satisfy the constrants of the problem at each step. Being RGB, they have to be in the range 0-255. We must also ensure that it remains possible to satisfy R+G+B=3A. If we stay within these constraints, then we will always end up with a valid RGB value with an average of A, no matter what value A has. Note that there&#39;s always at least one solution to R+G+B=3A, and that&#39;s the RGB value (A,A,A).&lt;/p&gt;
 &lt;p&gt;Here&#39;s this simple algorithm in Python code.&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;random&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;rd&lt;/span&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;random&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;rd&lt;/span&gt;
 &lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;generate_rgb&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
     &lt;span class=&#34;n&#34;&gt;S&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;
     &lt;span class=&#34;c1&#34;&gt;# Generate a random value for R, ensuring that:&lt;/span&gt;
@@ -466,15 +600,15 @@ OR
     &lt;span class=&#34;n&#34;&gt;S&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;G&lt;/span&gt;
     &lt;span class=&#34;n&#34;&gt;B&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;S&lt;/span&gt;
     &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;R&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;G&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;B&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;This approach seems reasonable, and if we run a test that checks whether the resulting RGB values have an average of A (for A=1), it passes with &lt;font color=&#34;red&#34;&gt;flyi&lt;/font&gt;&lt;font color=&#34;green&#34;&gt;ng c&lt;/font&gt;&lt;font color=&#34;blue&#34;&gt;olours&lt;/font&gt;.&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;n&#34;&gt;A&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;A&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
 &lt;span class=&#34;n&#34;&gt;rgbs&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;generate_rgb&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;range&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;100000&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)]&lt;/span&gt;
-&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;PASS&amp;quot;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;all&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;sum&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;rgb&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;A&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;rgb&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;rgbs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;FAIL&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;PASS&amp;quot;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;all&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;sum&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;rgb&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;A&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;rgb&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;rgbs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;FAIL&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 &lt;span class=&#34;c1&#34;&gt;# output: PASS&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;However, this doesn&#39;t give us the full picture. Besides ensuring that R+G+B=3A, we also need to check that all of the possible RGB values are equally likely to appear, since the problem statement requires randomness. Graphing the frequency of the possible values, we see that this is not the case.&lt;/p&gt;
@@ -539,7 +673,7 @@ OR
 &lt;h3&gt;Putting it all together: using P(R=r) to generate random RGB values&lt;/h3&gt;
 &lt;p&gt;The hardest part is done. Now we pick R randomly based on P(R=r). After that, G and B can be determined from a random choice with uniform probability like in the &#34;first attempt&#34; algorithm.&lt;/p&gt;
 &lt;p&gt;Here it is in Python code.&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;random&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;rd&lt;/span&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;random&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;rd&lt;/span&gt;
 &lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;scipy.special&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;comb&lt;/span&gt;
 
 &lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;generate_rgbs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
@@ -578,7 +712,7 @@ OR
     &lt;span class=&#34;n&#34;&gt;S&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;G&lt;/span&gt;
     &lt;span class=&#34;n&#34;&gt;B&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;S&lt;/span&gt;
     &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;R&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;G&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;B&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Besides generating valid RGB values, all of the possible RGB values seem to have an equal probability of being generated (here, for A=245).&lt;/p&gt;
