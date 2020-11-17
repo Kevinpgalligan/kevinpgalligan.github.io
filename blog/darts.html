@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/static/css/style.css">
     
-<link rel="stylesheet" href="/pygments.css">
 <link rel="stylesheet" href="/static/css/blog.css">
+<link rel="stylesheet" href="/pygments.css">
 <meta property="description" content="How you can estimate a mathematical constant using only darts and a dartboard.">
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js" async></script>
 <script type="text/x-mathjax-config">
@@ -43,8 +43,7 @@ MathJax.Hub.Config({
 <p><i>Date: 2020-08-05</i></p>
 <h2>The darts player who estimated π</h2>
 <hr>
-<p>TODO: polish the story (crappy bit in the middle where she's explaining pi); split the code part into the FULL PROGRAM + results, and an appendix where the code is explained bit by bit; and polish the mathematical analysis. Also find a more appropriate place to put the physics girl link.</p>
-<p><em>This article introduces a method for approximating π using darts and a dartboard. There are 3 parts: 1) a story, to introduce the method; 2) a program that implements it; and 3) a short mathematical analysis.</em></p>
+<p><em>This article introduces a method for approximating π using darts and a dartboard. There are 3 parts: 1) a story, to introduce the method; 2) a computer program that implements it; and 3) a short mathematical analysis.</em></p>
 <h3>The story</h3>
 <p>A darts player and a mathematician walk into a bar. The mathematician takes a seat and orders cranberry juice, while the darts player starts practising at the dartboard.</p>
 <p>After a while, the mathematician looks over. "You're not very good, are you?" she says, as another dart whizzes uselessly into the backboard.</p>
@@ -90,9 +89,9 @@ MathJax.Hub.Config({
 <p>"Well... have you heard of <em>e</em>?"</p>
 <h3>The code</h3>
 <p>The story above was inspired by exercise 3.5 of the computer science textbook, <em>Structure and Interpretation of Computer Programs</em>. It asks you to estimate π using a Monte Carlo algorithm, which just means that you simulate throwing a dart a bunch of times.</p>
-<p>In this section, we'll look at a Common Lisp program that can estimate π. If you know a bit about programming but nothing about Common Lisp, then Appendix A provides a step-by-step walkthrough of the code. If you don't care about programming, you can skip to the next section for some maths fun.</p>
+<p>In this section, we'll look at a Common Lisp program that can estimate π. If you know a bit about programming but nothing about Common Lisp, then Appendix B provides a step-by-step walkthrough of the code. If you don't care about programming, you can skip to the next section for some maths fun.</p>
 <p>Caveats out of the way, here's the full program. It defines a function, <code>estimate-pi</code>, that takes a single parameter <code>n</code>. The function returns an estimate of π based on <code>n</code> simulated throws of a dart at a dartboard of radius 1/2.</p>
-<div class="codehilite"><pre><span></span><span class="p">(</span><span class="nb">defparameter</span> <span class="nv">+r+</span> <span class="m">1/2</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nb">defparameter</span> <span class="nv">+r+</span> <span class="m">1/2</span><span class="p">)</span>
 
 <span class="p">(</span><span class="nb">defun</span> <span class="nv">estimate-pi</span> <span class="p">(</span><span class="nv">n</span><span class="p">)</span>
   <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">in-circle-count</span> <span class="mi">0</span><span class="p">))</span>
@@ -113,17 +112,15 @@ MathJax.Hub.Config({
 
 <span class="p">(</span><span class="nb">defun</span> <span class="nv">square</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span>
   <span class="p">(</span><span class="nb">*</span> <span class="nv">x</span> <span class="nv">x</span><span class="p">))</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>Here's how the program can be used in a Common Lisp interpreter.</p>
-<div class="codehilite"><pre><span></span><span class="nv">CL-USER&gt;</span> <span class="p">(</span><span class="nv">estimate-pi</span> <span class="mi">1000</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="nv">CL-USER&gt;</span> <span class="p">(</span><span class="nv">estimate-pi</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="mf">3.104</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>Throwing only 1000 darts, we get an approximation of 3.104. Not bad at all! What happens if we increase the number of darts?</p>
-<div class="codehilite"><pre><span></span><span class="nv">CL-USER&gt;</span> <span class="p">(</span><span class="nv">estimate-pi</span> <span class="mi">10000</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="nv">CL-USER&gt;</span> <span class="p">(</span><span class="nv">estimate-pi</span> <span class="mi">10000</span><span class="p">)</span>
 <span class="mf">3.1356</span>
 <span class="nv">CL-USER&gt;</span> <span class="p">(</span><span class="nv">estimate-pi</span> <span class="mi">100000</span><span class="p">)</span>
 <span class="mf">3.14144</span>
@@ -131,8 +128,7 @@ MathJax.Hub.Config({
 <span class="mf">3.142252</span>
 <span class="nv">CL-USER&gt;</span> <span class="p">(</span><span class="nv">estimate-pi</span> <span class="mi">10000000</span><span class="p">)</span>
 <span class="mf">3.1426332</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>Hmmm. After throwing 10 MILLION darts, our approximation is still only accurate to 2 decimal places! That's a lot of throws for a kinda rubbish estimate of π.</p>
 <p>Now, if we want to figure out how many darts we need to throw in order to (probably) achieve a certain level of accuracy in our estimate, we'll need to delve into probability theory. And that is the topic of the next section.</p>
@@ -154,40 +150,38 @@ P(-\epsilon < Y-\pi < \epsilon) &= 1-2P(Y-\pi < -\epsilon) \\
 <p><img src="/static/img/darts/graph.png"
      alt="Plot of the probability of our approximation having a certain level of accuracy given 'n' throws."
      class="centered"></p>
-<h3>Appendix A: the code, in depth</h3>
+<h3>Appendix A: in the real world</h3>
+<p>To see the darts experiment in action, watch <a href="https://www.youtube.com/watch?v=M34TO71SKGk">this video</a> (Physics Girl, "Calculating Pi with Darts").</p>
+<h3>Appendix B: the code, in depth</h3>
 <p>If you're familiar with programming but not the Common Lisp programming language, this appendix will guide you through the full program for estimating π.</p>
 <p>First, we define the radius as a constant. <code>defparameter</code> is the keyword for defining variables. <code>+r+</code> is the name of the constant, which, as described in the story, has a value of 1/2. By convention, constant names are surrounded by '+'.</p>
-<div class="codehilite"><pre><span></span><span class="p">(</span><span class="nb">defparameter</span> <span class="nv">+r+</span> <span class="m">1/2</span><span class="p">)</span>
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nb">defparameter</span> <span class="nv">+r+</span> <span class="m">1/2</span><span class="p">)</span>
+</code></pre></div>
 
 <p>We next define a simple utility function for squaring a number. <code>defun</code> is the keyword for defining a function, <code>square</code> is the name of our function, and <code>x</code> is the function argument. </p>
-<div class="codehilite"><pre><span></span><span class="p">(</span><span class="nb">defun</span> <span class="nv">square</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nb">defun</span> <span class="nv">square</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span>
   <span class="p">(</span><span class="nb">*</span> <span class="nv">x</span> <span class="nv">x</span><span class="p">))</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>In the function body, you'll notice that there's no return statement. That's because the return value of a function is the value of the final expression in the function body, which in this case is <code>(* x x)</code>. You'll also notice that the multiplication operator, <code>*</code>, comes before its operands. It's treated just like a function, so in the same way that we'd write <code>(square 5)</code> with our new function to square the number 5, we write <code>(* 1 2)</code> to multiply the numbers 1 &amp; 2.</p>
 <p>Now we define a function to generate random x &amp; y co-ordinates within the square, returning a list <code>(x y)</code>. The function has no arguments. In the function body, we <code>repeat</code> our procedure to generate a random co-ordinate, once for x and once for y, and <code>collect</code> the results in a list. The circle is centered at (0,0), so the random values we generate should be between -0.5 and +0.5.</p>
-<div class="codehilite"><pre><span></span><span class="p">(</span><span class="nb">defun</span> <span class="nv">random-xy</span> <span class="p">()</span>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nb">defun</span> <span class="nv">random-xy</span> <span class="p">()</span>
   <span class="p">(</span><span class="nb">loop</span> <span class="nv">repeat</span> <span class="mi">2</span>
         <span class="nv">collect</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">+r+</span> <span class="p">(</span><span class="nb">random</span> <span class="p">(</span><span class="nb">*</span> <span class="mf">2.0</span> <span class="nv">+r+</span><span class="p">)))))</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>We need one last helper function. Co-ordinates x &amp; y lie within a circle if they satisfy:</p>
 <p>
 <script type="math/tex; mode=display">\sqrt{x^2 + y^2} \leq r.</script>
 </p>
 <p>Here it is in code. We follow the convention that a function name should end in "-p" if it returns a true or false value, p being short for predicate.</p>
-<div class="codehilite"><pre><span></span><span class="p">(</span><span class="nb">defun</span> <span class="nv">is-in-circle-p</span> <span class="p">(</span><span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nb">defun</span> <span class="nv">is-in-circle-p</span> <span class="p">(</span><span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
   <span class="p">(</span><span class="nb">&lt;=</span> <span class="p">(</span><span class="nb">sqrt</span> <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nv">square</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nv">square</span> <span class="nv">y</span><span class="p">)))</span>
       <span class="nv">+r+</span><span class="p">))</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>Finally, the meat of the code! Here's a function to simulate a given number of dart throws and return an estimate of π based on the results, just like in the story. There are some tricky parts here if you haven't used Lisp before, but I'll try to give the gist of what's going on.</p>
-<div class="codehilite"><pre><span></span><span class="p">(</span><span class="nb">defun</span> <span class="nv">estimate-pi</span> <span class="p">(</span><span class="nv">throws</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nb">defun</span> <span class="nv">estimate-pi</span> <span class="p">(</span><span class="nv">throws</span><span class="p">)</span>
   <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">in-circle-count</span> <span class="mi">0</span><span class="p">))</span>
     <span class="p">(</span><span class="nb">loop</span> <span class="nv">repeat</span> <span class="nv">throws</span>
           <span class="nb">do</span> <span class="p">(</span><span class="nb">destructuring-bind</span> <span class="p">(</span><span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
@@ -195,13 +189,10 @@ P(-\epsilon < Y-\pi < \epsilon) &= 1-2P(Y-\pi < -\epsilon) \\
                <span class="p">(</span><span class="nb">when</span> <span class="p">(</span><span class="nv">is-in-circle-p</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
                  <span class="p">(</span><span class="nb">incf</span> <span class="nv">in-circle-count</span><span class="p">))))</span>
     <span class="p">(</span><span class="nb">*</span> <span class="mi">4</span> <span class="p">(</span><span class="nb">/</span> <span class="nv">in-circle-count</span> <span class="nv">throws</span><span class="p">))))</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>The first new thing is the <code>let</code> statement. All we're doing is defining a new local variable, <code>in-circle-count</code>, and "letting" it equal 0. Next, we throw darts, <code>throws</code> times. <code>destructuring-bind</code> takes the 2-value list returned by <code>random-xy</code> and assigns the values to local variables <code>x</code> and <code>y</code>. <em>When</em> these co-ordinates are inside the circle, <code>incf</code> adds 1 to our count of circle-hitting darts. After the loop is done, we return our approximation. Simples!</p>
 <p>If you want to learn more about Common Lisp, the free book <a href="http://www.gigamonkeys.com/book/"><em>Practical Common Lisp</em></a> is often recommended to beginners. For Lisp newbies, I prefer <em>The Little Schemer</em>, which isn't actually about Common Lisp, but is an entertaining, hands-on introduction to Scheme, another Lisp-like language.</p>
-<h3>Appendix B: in the real world</h3>
-<p>To see the darts experiment in action, watch <a href="https://www.youtube.com/watch?v=M34TO71SKGk">this video</a> (Physics Girl, "Calculating Pi with Darts").</p>
 <hr>
 <p><a href="/blog.html">Back to blog</a></p>
 <p><a href="/feed.xml"><img src="/static/img/rss.png"></a> <a href="https://twitter.com/KevinGalligan2"><img src="/static/img/twitter.png"></a> <a href="https://github.com/Kevinpgalligan"><img src="/static/img/github.png"></a></p>

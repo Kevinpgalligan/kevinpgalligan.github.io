@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title> Making CLI tools in Python, from argparsing to packaging </title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+<link rel="stylesheet" href="/static/css/blog.css">
+<link rel="stylesheet" href="/pygments.css">
+<meta property="description" content="How to">
+
+
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon.ico">
+    
+</head>
+<body>
+    <header>
+        <div data-nosnippet>
+        <nav>
+        <a href="/index.html" class="navlink">about</a>
+        | <a href="/blog.html" class="navlink">blog</a>
+        | <a href="/software.html" class="navlink">software</a>
+        | <a href="/feed.xml"><img class="navbar-img" src="/static/img/rss.png"></a>
+        | <a href="https://twitter.com/KevinGalligan2"><img class="navbar-img" src="/static/img/twitter.png"></a>
+        | <a href="https://github.com/Kevinpgalligan"><img class="navbar-img" src="/static/img/github.png"></a>
+        </nav>
+        </div>
+    </header>
+
+<p><i>Date: 2020-10-31</i></p>
+<h2>Making CLI tools in Python, from argparsing to packaging</h2>
+<hr>
+<p>Something something. Everyone loves grep. Everyone loves cowsay. How easy is it to make your own CLI application and get it into people's hands? Well, if you use Python, it's very easy.</p>
+<p>The nice thing about using Python for a CLI application is that it has built-in argparsing, and also a distribution network (PyPI). It's really easy to publish your CLI application to PyPI and then it's available to anyone with an installation of pip.</p>
+<h3>Parsing program args</h3>
+<p>Python comes with a built-in argument-parsing module, argparse. It's rather easy to use.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">argparse</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--blah&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h3>Getting it out there broh</h3>
+<p>Useful link: https://packaging.python.org/tutorials/packaging-projects/</p>
+<p>Then go through packaging &amp; publishing to PyPI.</p>
+<h3>Fuck</h3>
+<ul>
+<li>Provide template repo at the end.</li>
+<li>End w/ ideas for CLI tools: calculator, show weather, show /download articles from some website</li>
+</ul>
+<hr>
+<p><a href="/blog.html">Back to blog</a></p>
+<p><a href="/feed.xml"><img src="/static/img/rss.png"></a> <a href="https://twitter.com/KevinGalligan2"><img src="/static/img/twitter.png"></a> <a href="https://github.com/Kevinpgalligan"><img src="/static/img/github.png"></a></p>
+<p>I'd be happy to hear from you at <i>galligankevinp@gmail.com</i>.</p>
+
+</body>
+</html>
