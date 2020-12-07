@@ -37,7 +37,7 @@ even wish to know of his existence but would now have been offended
 &lt;li&gt;&lt;strong&gt;setup.py&lt;/strong&gt; contains the information we need to package our project and upload it to PyPI for distribution.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;__init__.py&lt;/strong&gt; contains the actual functionality of dumbgrep. If you didn&#39;t know, a folder that contains a file called &lt;strong&gt;__init__.py&lt;/strong&gt; is a Python package. That package&#39;s code is saved in the &lt;strong&gt;__init__.py&lt;/strong&gt; file.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Why not dump all of our Python code into the &lt;strong&gt;dumbgrep&lt;/strong&gt; file? This more complicated structure allows us to split the code into multiple files and even multiple subpackages, which will be useful if the codebase grows too big. It&#39;s also easier to add tests this way, for boring people who write tests.&lt;/p&gt;
+&lt;p&gt;Why not dump all of our Python code into the &lt;strong&gt;dumbgrep&lt;/strong&gt; file? This more complicated structure allows us to split the code into multiple files and even multiple subpackages, which will be useful if the codebase grows too big. It&#39;s also easier to add tests this way, if you&#39;re boring like that.&lt;/p&gt;
 &lt;p&gt;Let&#39;s write the &lt;strong&gt;dumbgrep&lt;/strong&gt; script. All it does is call the &lt;code&gt;main()&lt;/code&gt; function of the &lt;code&gt;dumbgrepcli&lt;/code&gt; package, which we&#39;ll write later.&lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;ch&#34;&gt;#!/usr/bin/env python3&lt;/span&gt;
 &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;dumbgrepcli&lt;/span&gt;
@@ -415,7 +415,7 @@ P(F \leq s) = \sum_{f=0}^s P(F=f).
 &lt;p&gt;This confirms our observation that going first gives a bigger advantage to stronger players. When a granny plays a granny, the first granny has only a small advantage -- a 50.59% chance of winning. Whereas a Michael Jordan who plays first has a 62.35% chance of beating a second Michael Jordan. The game tends to end in fewer turns at higher levels of play, which makes the extra turn at the start count for more.&lt;/p&gt;
 &lt;p&gt;Let&#39;s say that my father, a mediocre player, has a score rate of 40%. And that I, a slightly less mediocre player, have a score rate of 50%. Then my father would still be expected to beat me in about 3/10 games. I guess this explains my humiliating defeats.&lt;/p&gt;
 &lt;p&gt;As for the scenario we posed at the beginning of the article: it&#39;s almost impossible for a granny to beat Michael Jordan. But there&#39;s a chance.&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;Find the code behind this article &lt;a href=&#34;https://github.com/Kevinpgalligan/around-the-world&#34;&gt;here&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;See the code &lt;a href=&#34;https://github.com/Kevinpgalligan/around-the-world&#34;&gt;here&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
 &lt;div class=&#34;footnote&#34;&gt;
 &lt;hr /&gt;
 &lt;ol&gt;
