@@ -7,10 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/static/css/style.css">
     
-<link rel="stylesheet" href="/static/css/blog.css">
+
 
 <meta property="description" content="Brute-force search is applied to a puzzle from Harry Potter.">
 
+
+<link rel="stylesheet" href="/static/css/blog.css">
 
     <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon.ico">
     
@@ -29,7 +31,8 @@
         </div>
     </header>
 
-<h2 class="post-title">Solving all 42 versions of the Harry Potter potions puzzle <span class="post-date">2019-10-03</span></h2>
+<h2 class="post-title">Solving all 42 versions of the Harry Potter potions puzzle </h2>
+<h3 class="post-date">2019-10-03</h3>
 <hr>
 <p>There's a neat puzzle near the end of <em>Harry Potter and the Philosopher's Stone</em> (aka <em>Sorcerer's Stone</em>). Harry and Hermione enter a chamber, the entrances are blocked by magic fire, and only by decoding the following riddle will they be able to escape:</p>
 <blockquote>
@@ -53,9 +56,9 @@ Are twins once you taste them, though different at first sight.</p>
 <p><img alt="Some potions" src="/static/img/potter-puzzle/some-potions.png" /></p>
 <p>Put simply, they have to figure out which potions are in which bottles.</p>
 <p>In this post, we're going to solve all 42 possible versions of the puzzle via programming and create a diagram of the results. A diagram like the picture above, but much bigger.</p>
-<h3>Wait, why are there 42 versions?</h3>
+<h3 id="wait-why-are-there-42-versions">Wait, why are there 42 versions?</h3>
 <p>It's because the positions of the "giant" and "dwarf" potion bottles are not specified. There are 7 possible positions for the giant, and for each of those, there are 6 remaining positions for the dwarf, which gives <code>7 * 6 = 42</code>. There's no way to know which one J.K. Rowling had in mind when she wrote the puzzle, unless she retcons it through Twitter. We could pick a random version and have a crack at it, but there would be no guarantee that the version we picked would be solvable. That's why we're performing the public service of solving, or proving unsolvable, all 42 versions.</p>
-<h3>JUST SOLVE IT</h3>
+<h3 id="just-solve-it">JUST SOLVE IT</h3>
 <p>First, here are the constraints of the puzzle, reworded in plainer terms:</p>
 <ol>
 <li>There are 2 harmless potions, 3 poison ones, 1 that lets you move forward and 1 that lets you move backward.</li>
@@ -81,9 +84,9 @@ Are twins once you taste them, though different at first sight.</p>
 <p>Of course, we weren't guaranteed to find a solution. There might have been no solution, or multiple solutions. Having multiple solutions is equivalent to the puzzle being unsolvable because you can't tell which is the correct one.</p>
 <p>Applying our algorithm to all puzzle versions gives us the following solutions. 8 versions of the puzzle are solvable, 8 have no solutions and 26 have multiple solutions.</p>
 <p><img alt="All solutions" src="/static/img/potter-puzzle/potions-puzzle-solutions.png" /></p>
-<h3>A closer look at the solutions</h3>
+<h3 id="a-closer-look-at-the-solutions">A closer look at the solutions</h3>
 <p>Is there something that all of the solvable variations of the puzzle have in common? Yes! Notice that either the small bottle or the big bottle have to be in 2nd or 6th position. This allows us to deduce that the 2nd and 6th bottles contain harmless potion, due to constraints #4 and #5. Without this deductive step, we can't eliminate the possibility that those bottles contain poison and we end up with multiple possible solutions. The solvable variations also require that the other "special" bottle (small or big) is in 3rd or 4th position. Otherwise, we can't pin down the exact location of the move-forward potion.</p>
-<h3>Closing comments</h3>
+<h3 id="closing-comments">Closing comments</h3>
 <p>I leave you with a quote I like from the book.</p>
 <blockquote>
 <p>Hermione let out a great sigh and Harry, amazed, saw that she was smiling, the very last thing he felt like doing. ‘Brilliant,’ said Hermione. ‘This isn’t magic – it’s logic – a puzzle. A lot of the greatest wizards haven’t got an ounce of logic, they’d be stuck in here for ever.’</p>
@@ -97,10 +100,10 @@ Are twins once you taste them, though different at first sight.</p>
 </blockquote>
 <p>Drats. This still leaves 4 candidates:</p>
 <p><img alt="Canonical versions, which match the dialogue from the book" src="/static/img/potter-puzzle/canonical.png" /></p>
-<p>Get retconning, J.K.</p>
-<h3>The code</h3>
+<p>Time for J.K. to do some more retconning.</p>
+<h3 id="the-code">The code</h3>
 <p>If you're curious about the code for solving the puzzles / drawing the diagram of solutions, see <a href="https://github.com/Kevinpgalligan/KevingalWebsite/blob/master/experiments/hp.py">here</a>.</p>
-<h3>Discussion</h3>
+<h3 id="discussion">Discussion</h3>
 <ul>
 <li><a href="https://www.reddit.com/r/programming/comments/deauxe/solving_all_42_versions_of_the_harry_potter/">reddit</a></li>
 <li><a href="https://habr.com/ru/post/471856/">habr</a> (Russian translation)</li>

@@ -7,10 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/static/css/style.css">
     
-<link rel="stylesheet" href="/static/css/blog.css">
-<link rel="stylesheet" href="/static/css/pygments.css">
-<meta property="description" content="A guide to making Python CLI tools.">
 
+<link rel="stylesheet" href="/static/css/pygments.css">
+<meta property="description" content="An example of how to make Python CLI tools.">
+
+
+<link rel="stylesheet" href="/static/css/blog.css">
 
     <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon.ico">
     
@@ -32,7 +34,8 @@
         </div>
     </header>
 
-<h2 class="post-title">Recreating grep in Python <span class="post-date">2020-11-27</span></h2>
+<h2 class="post-title">Recreating grep in Python </h2>
+<h3 class="post-date">2020-11-27</h3>
 <hr>
 <p>Let's make our own version of grep, nicknamed dumbgrep. Along the way, we'll learn about 19th-century Russian literature and how to make command line interface (CLI) tools in Python.</p>
 <div class="codehilite"><pre><span></span>$ grep existence &lt;/tmp/war-and-peace.txt
@@ -43,7 +46,7 @@ even wish to know of his existence but would now have been offended
 
 
 <p>Why Python? Python's <code>argparse</code> package makes it easy to handle the parsing side of things. And using the Python Package Index (PyPI), you can easily deliver a CLI tool to the writhing masses of humanity.</p>
-<h3>Baby steps 👶</h3>
+<h3 id="baby-steps">Baby steps 👶</h3>
 <p>You'll need Python 3 if you want to follow along. For reference, the full program is available <a href="https://github.com/Kevinpgalligan/dumbgrep">here</a>. Shamefully, I've only tested it on Linux, so there might be extra hoop-jumping required to set it up on Windows.</p>
 <p>Here's the skeleton of our project.</p>
 <div class="codehilite"><pre><span></span>dumbgrep/
@@ -110,7 +113,7 @@ even wish to know of his existence but would now have been offended
 
 
 <p>That's the boring stuff out of the way! Now we can move on to plagiarising grep.</p>
-<h3>G(lobally search for a) R(egular) E(xpression and) P(rint matching lines)</h3>
+<h3 id="globally-search-for-a-regular-expression-and-print-matching-lines">G(lobally search for a) R(egular) E(xpression and) P(rint matching lines)</h3>
 <p>Here's how we start our implementation of grep in <strong>__init__.py</strong>.</p>
 <div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">argparse</span>
 
@@ -174,7 +177,7 @@ hello
 
 <p>We create a <code>Pattern</code> object based on the pattern provided by the user, and all lines of input that match this pattern are printed to standard output.</p>
 <p>And that's it! We've recreated grep. Let's set up a virtual environment where we can install this bad boy and test it out. (A virtual environment is a self-contained Python installation that you can experiment on without mucking up your main Python installation).</p>
-<h5>Create and activate the environment</h5>
+<h5 id="create-and-activate-the-environment">Create and activate the environment</h5>
 <div class="codehilite"><pre><span></span>$ pwd
 /home/kevingal/proyectos/dumbgrep
 $ mkdir env
@@ -185,7 +188,7 @@ $ source env/bin/activate
 </pre></div>
 
 
-<h5>Install dumbgrep</h5>
+<h5 id="install-dumbgrep">Install dumbgrep</h5>
 <div class="codehilite"><pre><span></span>(env) $ python3 setup.py install
 running install
 running bdist_egg
@@ -196,7 +199,7 @@ running egg_info
 </pre></div>
 
 
-<h5>Test it out, then deactivate the environment</h5>
+<h5 id="test-it-out-then-deactivate-the-environment">Test it out, then deactivate the environment</h5>
 <div class="codehilite"><pre><span></span>(env) $ dumbgrep existence &lt;/tmp/war-and-peace.txt
 in this part of the house and did not even know of the existence of
 even wish to know of his existence but would now have been offended
@@ -207,7 +210,7 @@ $
 
 
 <p>In the next section we'll explore <code>argparse</code> a bit more by adding some bells and whistles to dumbgrep.</p>
-<h3>Milk and sugar</h3>
+<h3 id="milk-and-sugar">Milk and sugar</h3>
 <p>Let's say we want to recreate grep's "-v" flag, which means that only lines NOT matching the input pattern are printed. All we have to do is add a boolean flag to our argument parser to check whether we should invert the matches. And then tweak the matching logic to use that flag.</p>
 <div class="codehilite"><pre><span></span><span class="o">...</span>
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
@@ -289,7 +292,7 @@ $
 
 </figure>
 
-<h3>Distribute to the clammering public</h3>
+<h3 id="distribute-to-the-clammering-public">Distribute to the clammering public</h3>
 <p>If we're feeling particularly benevolent and charitable, then we can upload our nifty tool to PyPI. After all, why would anyone want to use the original grep when they could use our version?</p>
 <div class="codehilite"><pre><span></span>$ time python3 src/dumbgrepcli/__init__.py existence &lt;/tmp/war-and-peace.txt &gt;/dev/null
 user    0m0.086s
@@ -311,8 +314,6 @@ $ bs FFFE
   binary      1111111111111110
   octal       177776
 </pre></div>
-
-
 <hr>
 <p><a href="/blog.html">Back to blog</a></p>
 <p><a href="/feed.xml"><img src="/static/img/rss.png"></a> <a href="https://twitter.com/KevinGalligan2"><img src="/static/img/twitter.png"></a> <a href="https://github.com/Kevinpgalligan"><img src="/static/img/github.png"></a></p>

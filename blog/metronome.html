@@ -7,10 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/static/css/style.css">
     
-<link rel="stylesheet" href="/static/css/blog.css">
+
 <link rel="stylesheet" href="/static/css/pygments.css">
 <meta property="description" content="A reflection on website obesity and my attempt to make a 981-byte metronome app.">
 
+
+<link rel="stylesheet" href="/static/css/blog.css">
 
     <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon.ico">
     
@@ -32,7 +34,8 @@
         </div>
     </header>
 
-<h2 class="post-title">Obese websites and planet-sized metronomes <span class="post-date">2020-06-07</span></h2>
+<h2 class="post-title">Obese websites and planet-sized metronomes </h2>
+<h3 class="post-date">2020-06-07</h3>
 <hr>
 <p>As you may have heard, we're in the middle of a crisis.</p>
 <p>No, not that one. I'm talking about the <a href="https://idlewords.com/talks/website_obesity.htm">website obesity crisis</a>.</p>
@@ -47,7 +50,7 @@
 
 <p>Our expectations of the World Wide Web have grown since then, and so have websites. The median webpage size in 2020 is 2MB, and it has been increasing at a rate of about 165KB per year for the past 10 years<sup><a href="https://httparchive.org/reports/state-of-the-web">1</a></sup>. It is now 800 times larger than Tim's original homepage.</p>
 <p>In what follows, we'll explore the cause of this newfound corpulence, its repercussions, and my own struggles with website weight as I attempted to create a metronome web app in less than 1KB.</p>
-<h3>Weight of the web</h3>
+<h3 id="weight-of-the-web">Weight of the web</h3>
 <p>Why is the web so much heavier, these days? That's one of the questions that the <a href="https://httparchive.org">HTTP Archive</a> attempts to answer. It's a community-run initiative to capture the state of the web over time. They catalogue millions of websites every month and publish the results as a database.</p>
 <p>After removing the smallest 10% and largest 10% of webpages from the HTTP Archive database for April 2020, we see that images account for almost 60% of the collective mass of the web. A further 25% is taken up by JavaScript, 6% by custom fonts, 5% by CSS, and 3% by video, until finally, a mere 2% of the pie is left for HTML.</p>
 <figure>
@@ -71,11 +74,11 @@
 <p>And let's be honest with ourselves: most images on the internet have less utility and aesthetic value than Taft. If you've ever read a Medium article about a technical subject, headed by a high-resolution photograph of a windmill, then you know what I'm talking about.</p>
 <p>More offensive still, the "average" webpage is now bundled with 500KB of JavaScript. If you wrote 200 lines of code per day at 80 characters per line, it would take a whole month to write a 500KB program. This is surprising to me, considering that the average website is less interactive than a tree stump. You could fit 15 copies of the original Super Mario Bros into 500KB. Yet, rather than a delightful platforming adventure worth hours of fun, we are instead subjected to ads, tracking scripts, and <a href="http://lea.verou.me/2020/05/todays-javascript-from-an-outsiders-perspective/">mountains of garbage</a> pulled in from the JavaScript ecosystem.</p>
 <p>To summarise our survey of the modern web: it's fat. Unhealthily so.</p>
-<h3>The cost of the fat web</h3>
+<h3 id="the-cost-of-the-fat-web">The cost of the fat web</h3>
 <p>While some of us live in parts of the world with affordable, fast internet, others are not so fortunate. As of May 2020, the download of a 2MB webpage in Mauritania is worth approximately 6 minutes of labour. More specifically, <a href="https://whatdoesmysitecost.com/#gniCost">whatdoesmysitecost.com</a> estimates that the download would cost 1.29% of Mauritania's daily gross national income per capita, and 1.29% of an 8-hour workday is ~6 minutes.</p>
 <p>Obviously, there are more pressing issues in Mauritania than fat websites, but it pays to consider that by playing fast and loose with the weight of your website, you may be making it inaccessible to large numbers of people. <a href="https://blog.chriszacharias.com/page-weight-matters">This post</a> by an ex-YouTube engineer explains how a lightweight version of YouTube's video player made the site accessible to users in remote regions of Siberia.</p>
 <p>The overweight web also has an environmental impact. The internet as a whole consumes more electricity than the entire United Kingdom<sup><a href="https://www.websitecarbon.com/">2</a></sup>. So, if you're the sort of person who gets excited about recycling, then you should also consider shedding some of that dead weight from your website.</p>
-<h3>Making an Earth-sized web app</h3>
+<h3 id="making-an-earth-sized-web-app">Making an Earth-sized web app</h3>
 <p>Recently, with this glum state of affairs at the back of my mind, I found myself in need of a metronome web app. A metronome, if you didn't know, is a tool that ticks at regular intervals.</p>
 <p>I didn't like any of the apps I found. They were grotesquely overweight (as large as 11.35MB), mobile-unfriendly (I can't express the horror of trying to set precise numeric values with a slider), and full of trackers (hi Google!).</p>
 <p>As a result, I set myself a challenge: to make my own, mobile-friendly, slider-free metronome app, with the constraint that it be less than 1KB in size. That's half the size of Tim Berners-Lee's original webpage. A tight margin, for sure, but this would be small fry compared to the <a href="https://js1k.com/">1KB JavaScript games</a> that some people make for fun.</p>
@@ -96,7 +99,7 @@
 
 
 <p>The purpose of this exercise? Mostly as a point of comparison for other online metronome apps, which I believe are symptomatic of the horrid state of the web, and which we will examine in the next section.</p>
-<h3>Comparing size</h3>
+<h3 id="comparing-size">Comparing size</h3>
 <p>Here's a size comparison of my metronome versus the top 7 metronomes, labelled A-G, that come up when you search "metronome online" with Generic Search Engine. The y-axis is on a logarithmic scale, which means that it counts from 1 to 10 to 100, instead of 1 to 2 to 3. Otherwise, some of the bars would be microscopically tiny. Metronome A is 11.35MB (around 10<sup>8</sup> bytes), metronome G is 217.56KB (10<sup>6</sup>), and my metronome is 981 bytes (10<sup>3</sup>).</p>
 <p><img src="/static/img/metronome/size.png"
      alt="Bar chart comparing sizes of various metronome apps to mine."
@@ -111,9 +114,9 @@
 </blockquote>
 <p>If my metronome app were Earth, then Metronome A would have the volume of <strong>eight Jupiters</strong>. As the article says, it is hard to imagine how large that actually is.</p>
 <p>Keep in mind that none of the larger metronomes offer any features besides ticking. Admittedly, they're much prettier, but my point is that the weight of these web apps is massively disproportionate to the functionality that they offer. And the same can be said for much of the modern web.</p>
-<h3>Final thoughts</h3>
+<h3 id="final-thoughts">Final thoughts</h3>
 <p>I'm not suggesting that we become leather-clad monks, purging strips of fat from our websites with puritan fury. While fun, compressing a website takes a lot of effort, and the end result tends to <a href="/apps/metronome.html">look like shit</a>. Let's just try to keep our websites Earth-sized, please. Or even Neptune-sized. Not everyone can afford to download Jupiter.</p>
-<h3>Appendix A: Page weight breakdown</h3>
+<h3 id="appendix-a-page-weight-breakdown">Appendix A: Page weight breakdown</h3>
 <p>After loading the HTTP Archive database into Google BigQuery (it's free and takes 5 minutes, instructions <a href="https://github.com/HTTPArchive/httparchive.org/blob/master/docs/gettingstarted_bigquery.md">here</a>), I ran this query to fetch the data I needed for my bar chart. </p>
 <div class="codehilite"><pre><span></span><span class="k">SELECT</span>
   <span class="k">SUM</span><span class="p">(</span><span class="n">bytesHtml</span><span class="p">)</span> <span class="k">as</span> <span class="n">html</span><span class="p">,</span>
@@ -155,7 +158,7 @@ count 3728058
 
 
 <p>The answer turns out to be 4,658,956. There are ~4,660,072 webpages in the database, meaning that more than 99.9% of webpages have image data. And, according to the reports of the HTTP Archive, the median image weight of webpages is 950KB, or thereabouts. This means that 50% of webpages have 950KB or more of image data, and our figure of 1.2MB isn't far off the mark, skewed though it may be.</p>
-<h3>Appendix B: clocks and golf</h3>
+<h3 id="appendix-b-clocks-and-golf">Appendix B: clocks and golf</h3>
 <p>Here I'll describe how the <a href="/apps/metronome.html">metronome web app</a> works, and also the series of gruesome hacks I employed to shrink it below 1KB.</p>
 <p>Humans are <a href="https://meowni.ca/posts/metronomes/">highly sensitive</a> to audio delay, so it's important for a metronome app to tick as reliably as a Swiss clock. If you play audio directly in the main thread, which is what I tried before <a href="https://www.html5rocks.com/en/tutorials/audio/scheduling/">finding enlightenment</a>, then you're going to suffer from unacceptable delays in sound whenever you lose control to the browser's UI and book-keeping functions.</p>
 <p>Instead, when you start the metronome, it kicks off a scheduling function in the main thread that runs every 25 milliseconds. The scheduling function calls JavaScript's WebAudio interface to schedule any beeps that are due to play in the next 100 milliseconds. WebAudio plays the beeps in a separate thread. Even if the scheduling function is delayed by 50ms or so, there's enough of a buffer that the next beep can still be scheduled on time.</p>

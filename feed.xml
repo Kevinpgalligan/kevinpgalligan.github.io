@@ -19,7 +19,7 @@ even wish to know of his existence but would now have been offended
 
 
 &lt;p&gt;Why Python? Python&#39;s &lt;code&gt;argparse&lt;/code&gt; package makes it easy to handle the parsing side of things. And using the Python Package Index (PyPI), you can easily deliver a CLI tool to the writhing masses of humanity.&lt;/p&gt;
-&lt;h3&gt;Baby steps 👶&lt;/h3&gt;
+&lt;h3 id=&#34;baby-steps&#34;&gt;Baby steps 👶&lt;/h3&gt;
 &lt;p&gt;You&#39;ll need Python 3 if you want to follow along. For reference, the full program is available &lt;a href=&#34;https://github.com/Kevinpgalligan/dumbgrep&#34;&gt;here&lt;/a&gt;. Shamefully, I&#39;ve only tested it on Linux, so there might be extra hoop-jumping required to set it up on Windows.&lt;/p&gt;
 &lt;p&gt;Here&#39;s the skeleton of our project.&lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;dumbgrep/
@@ -86,7 +86,7 @@ even wish to know of his existence but would now have been offended
 
 
 &lt;p&gt;That&#39;s the boring stuff out of the way! Now we can move on to plagiarising grep.&lt;/p&gt;
-&lt;h3&gt;G(lobally search for a) R(egular) E(xpression and) P(rint matching lines)&lt;/h3&gt;
+&lt;h3 id=&#34;globally-search-for-a-regular-expression-and-print-matching-lines&#34;&gt;G(lobally search for a) R(egular) E(xpression and) P(rint matching lines)&lt;/h3&gt;
 &lt;p&gt;Here&#39;s how we start our implementation of grep in &lt;strong&gt;__init__.py&lt;/strong&gt;.&lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;argparse&lt;/span&gt;
 
@@ -150,7 +150,7 @@ hello
 
 &lt;p&gt;We create a &lt;code&gt;Pattern&lt;/code&gt; object based on the pattern provided by the user, and all lines of input that match this pattern are printed to standard output.&lt;/p&gt;
 &lt;p&gt;And that&#39;s it! We&#39;ve recreated grep. Let&#39;s set up a virtual environment where we can install this bad boy and test it out. (A virtual environment is a self-contained Python installation that you can experiment on without mucking up your main Python installation).&lt;/p&gt;
-&lt;h5&gt;Create and activate the environment&lt;/h5&gt;
+&lt;h5 id=&#34;create-and-activate-the-environment&#34;&gt;Create and activate the environment&lt;/h5&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ pwd
 /home/kevingal/proyectos/dumbgrep
 $ mkdir env
@@ -161,7 +161,7 @@ $ source env/bin/activate
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h5&gt;Install dumbgrep&lt;/h5&gt;
+&lt;h5 id=&#34;install-dumbgrep&#34;&gt;Install dumbgrep&lt;/h5&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;(env) $ python3 setup.py install
 running install
 running bdist_egg
@@ -172,7 +172,7 @@ running egg_info
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h5&gt;Test it out, then deactivate the environment&lt;/h5&gt;
+&lt;h5 id=&#34;test-it-out-then-deactivate-the-environment&#34;&gt;Test it out, then deactivate the environment&lt;/h5&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;(env) $ dumbgrep existence &amp;lt;/tmp/war-and-peace.txt
 in this part of the house and did not even know of the existence of
 even wish to know of his existence but would now have been offended
@@ -183,7 +183,7 @@ $
 
 
 &lt;p&gt;In the next section we&#39;ll explore &lt;code&gt;argparse&lt;/code&gt; a bit more by adding some bells and whistles to dumbgrep.&lt;/p&gt;
-&lt;h3&gt;Milk and sugar&lt;/h3&gt;
+&lt;h3 id=&#34;milk-and-sugar&#34;&gt;Milk and sugar&lt;/h3&gt;
 &lt;p&gt;Let&#39;s say we want to recreate grep&#39;s &#34;-v&#34; flag, which means that only lines NOT matching the input pattern are printed. All we have to do is add a boolean flag to our argument parser to check whether we should invert the matches. And then tweak the matching logic to use that flag.&lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;
 &lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
@@ -265,7 +265,7 @@ $
 
 &lt;/figure&gt;
 
-&lt;h3&gt;Distribute to the clammering public&lt;/h3&gt;
+&lt;h3 id=&#34;distribute-to-the-clammering-public&#34;&gt;Distribute to the clammering public&lt;/h3&gt;
 &lt;p&gt;If we&#39;re feeling particularly benevolent and charitable, then we can upload our nifty tool to PyPI. After all, why would anyone want to use the original grep when they could use our version?&lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ time python3 src/dumbgrepcli/__init__.py existence &amp;lt;/tmp/war-and-peace.txt &amp;gt;/dev/null
 user    0m0.086s
@@ -286,10 +286,7 @@ $ bs FFFE
   decimal     65534
   binary      1111111111111110
   octal       177776
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;hr&gt;</description>
+&lt;/pre&gt;&lt;/div&gt;</description>
         <link>https://kevingal.com/blog/cli-tools.html</link>
         <pubDate>Fri, 27 Nov 2020 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/cli-tools.html</guid>
@@ -482,7 +479,7 @@ P(F \leq s) = \sum_{f=0}^s P(F=f).
 
 &lt;p&gt;Our expectations of the World Wide Web have grown since then, and so have websites. The median webpage size in 2020 is 2MB, and it has been increasing at a rate of about 165KB per year for the past 10 years&lt;sup&gt;&lt;a href=&#34;https://httparchive.org/reports/state-of-the-web&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. It is now 800 times larger than Tim&#39;s original homepage.&lt;/p&gt;
 &lt;p&gt;In what follows, we&#39;ll explore the cause of this newfound corpulence, its repercussions, and my own struggles with website weight as I attempted to create a metronome web app in less than 1KB.&lt;/p&gt;
-&lt;h3&gt;Weight of the web&lt;/h3&gt;
+&lt;h3 id=&#34;weight-of-the-web&#34;&gt;Weight of the web&lt;/h3&gt;
 &lt;p&gt;Why is the web so much heavier, these days? That&#39;s one of the questions that the &lt;a href=&#34;https://httparchive.org&#34;&gt;HTTP Archive&lt;/a&gt; attempts to answer. It&#39;s a community-run initiative to capture the state of the web over time. They catalogue millions of websites every month and publish the results as a database.&lt;/p&gt;
 &lt;p&gt;After removing the smallest 10% and largest 10% of webpages from the HTTP Archive database for April 2020, we see that images account for almost 60% of the collective mass of the web. A further 25% is taken up by JavaScript, 6% by custom fonts, 5% by CSS, and 3% by video, until finally, a mere 2% of the pie is left for HTML.&lt;/p&gt;
 &lt;figure&gt;
@@ -506,11 +503,11 @@ P(F \leq s) = \sum_{f=0}^s P(F=f).
 &lt;p&gt;And let&#39;s be honest with ourselves: most images on the internet have less utility and aesthetic value than Taft. If you&#39;ve ever read a Medium article about a technical subject, headed by a high-resolution photograph of a windmill, then you know what I&#39;m talking about.&lt;/p&gt;
 &lt;p&gt;More offensive still, the &#34;average&#34; webpage is now bundled with 500KB of JavaScript. If you wrote 200 lines of code per day at 80 characters per line, it would take a whole month to write a 500KB program. This is surprising to me, considering that the average website is less interactive than a tree stump. You could fit 15 copies of the original Super Mario Bros into 500KB. Yet, rather than a delightful platforming adventure worth hours of fun, we are instead subjected to ads, tracking scripts, and &lt;a href=&#34;http://lea.verou.me/2020/05/todays-javascript-from-an-outsiders-perspective/&#34;&gt;mountains of garbage&lt;/a&gt; pulled in from the JavaScript ecosystem.&lt;/p&gt;
 &lt;p&gt;To summarise our survey of the modern web: it&#39;s fat. Unhealthily so.&lt;/p&gt;
-&lt;h3&gt;The cost of the fat web&lt;/h3&gt;
+&lt;h3 id=&#34;the-cost-of-the-fat-web&#34;&gt;The cost of the fat web&lt;/h3&gt;
 &lt;p&gt;While some of us live in parts of the world with affordable, fast internet, others are not so fortunate. As of May 2020, the download of a 2MB webpage in Mauritania is worth approximately 6 minutes of labour. More specifically, &lt;a href=&#34;https://whatdoesmysitecost.com/#gniCost&#34;&gt;whatdoesmysitecost.com&lt;/a&gt; estimates that the download would cost 1.29% of Mauritania&#39;s daily gross national income per capita, and 1.29% of an 8-hour workday is ~6 minutes.&lt;/p&gt;
 &lt;p&gt;Obviously, there are more pressing issues in Mauritania than fat websites, but it pays to consider that by playing fast and loose with the weight of your website, you may be making it inaccessible to large numbers of people. &lt;a href=&#34;https://blog.chriszacharias.com/page-weight-matters&#34;&gt;This post&lt;/a&gt; by an ex-YouTube engineer explains how a lightweight version of YouTube&#39;s video player made the site accessible to users in remote regions of Siberia.&lt;/p&gt;
 &lt;p&gt;The overweight web also has an environmental impact. The internet as a whole consumes more electricity than the entire United Kingdom&lt;sup&gt;&lt;a href=&#34;https://www.websitecarbon.com/&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;. So, if you&#39;re the sort of person who gets excited about recycling, then you should also consider shedding some of that dead weight from your website.&lt;/p&gt;
-&lt;h3&gt;Making an Earth-sized web app&lt;/h3&gt;
+&lt;h3 id=&#34;making-an-earth-sized-web-app&#34;&gt;Making an Earth-sized web app&lt;/h3&gt;
 &lt;p&gt;Recently, with this glum state of affairs at the back of my mind, I found myself in need of a metronome web app. A metronome, if you didn&#39;t know, is a tool that ticks at regular intervals.&lt;/p&gt;
 &lt;p&gt;I didn&#39;t like any of the apps I found. They were grotesquely overweight (as large as 11.35MB), mobile-unfriendly (I can&#39;t express the horror of trying to set precise numeric values with a slider), and full of trackers (hi Google!).&lt;/p&gt;
 &lt;p&gt;As a result, I set myself a challenge: to make my own, mobile-friendly, slider-free metronome app, with the constraint that it be less than 1KB in size. That&#39;s half the size of Tim Berners-Lee&#39;s original webpage. A tight margin, for sure, but this would be small fry compared to the &lt;a href=&#34;https://js1k.com/&#34;&gt;1KB JavaScript games&lt;/a&gt; that some people make for fun.&lt;/p&gt;
@@ -531,7 +528,7 @@ P(F \leq s) = \sum_{f=0}^s P(F=f).
 
 
 &lt;p&gt;The purpose of this exercise? Mostly as a point of comparison for other online metronome apps, which I believe are symptomatic of the horrid state of the web, and which we will examine in the next section.&lt;/p&gt;
-&lt;h3&gt;Comparing size&lt;/h3&gt;
+&lt;h3 id=&#34;comparing-size&#34;&gt;Comparing size&lt;/h3&gt;
 &lt;p&gt;Here&#39;s a size comparison of my metronome versus the top 7 metronomes, labelled A-G, that come up when you search &#34;metronome online&#34; with Generic Search Engine. The y-axis is on a logarithmic scale, which means that it counts from 1 to 10 to 100, instead of 1 to 2 to 3. Otherwise, some of the bars would be microscopically tiny. Metronome A is 11.35MB (around 10&lt;sup&gt;8&lt;/sup&gt; bytes), metronome G is 217.56KB (10&lt;sup&gt;6&lt;/sup&gt;), and my metronome is 981 bytes (10&lt;sup&gt;3&lt;/sup&gt;).&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;/static/img/metronome/size.png&#34;
      alt=&#34;Bar chart comparing sizes of various metronome apps to mine.&#34;
@@ -546,9 +543,9 @@ P(F \leq s) = \sum_{f=0}^s P(F=f).
 &lt;/blockquote&gt;
 &lt;p&gt;If my metronome app were Earth, then Metronome A would have the volume of &lt;strong&gt;eight Jupiters&lt;/strong&gt;. As the article says, it is hard to imagine how large that actually is.&lt;/p&gt;
 &lt;p&gt;Keep in mind that none of the larger metronomes offer any features besides ticking. Admittedly, they&#39;re much prettier, but my point is that the weight of these web apps is massively disproportionate to the functionality that they offer. And the same can be said for much of the modern web.&lt;/p&gt;
-&lt;h3&gt;Final thoughts&lt;/h3&gt;
+&lt;h3 id=&#34;final-thoughts&#34;&gt;Final thoughts&lt;/h3&gt;
 &lt;p&gt;I&#39;m not suggesting that we become leather-clad monks, purging strips of fat from our websites with puritan fury. While fun, compressing a website takes a lot of effort, and the end result tends to &lt;a href=&#34;/apps/metronome.html&#34;&gt;look like shit&lt;/a&gt;. Let&#39;s just try to keep our websites Earth-sized, please. Or even Neptune-sized. Not everyone can afford to download Jupiter.&lt;/p&gt;
-&lt;h3&gt;Appendix A: Page weight breakdown&lt;/h3&gt;
+&lt;h3 id=&#34;appendix-a-page-weight-breakdown&#34;&gt;Appendix A: Page weight breakdown&lt;/h3&gt;
 &lt;p&gt;After loading the HTTP Archive database into Google BigQuery (it&#39;s free and takes 5 minutes, instructions &lt;a href=&#34;https://github.com/HTTPArchive/httparchive.org/blob/master/docs/gettingstarted_bigquery.md&#34;&gt;here&lt;/a&gt;), I ran this query to fetch the data I needed for my bar chart. &lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;SELECT&lt;/span&gt;
   &lt;span class=&#34;k&#34;&gt;SUM&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bytesHtml&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;html&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
@@ -590,7 +587,7 @@ count 3728058
 
 
 &lt;p&gt;The answer turns out to be 4,658,956. There are ~4,660,072 webpages in the database, meaning that more than 99.9% of webpages have image data. And, according to the reports of the HTTP Archive, the median image weight of webpages is 950KB, or thereabouts. This means that 50% of webpages have 950KB or more of image data, and our figure of 1.2MB isn&#39;t far off the mark, skewed though it may be.&lt;/p&gt;
-&lt;h3&gt;Appendix B: clocks and golf&lt;/h3&gt;
+&lt;h3 id=&#34;appendix-b-clocks-and-golf&#34;&gt;Appendix B: clocks and golf&lt;/h3&gt;
 &lt;p&gt;Here I&#39;ll describe how the &lt;a href=&#34;/apps/metronome.html&#34;&gt;metronome web app&lt;/a&gt; works, and also the series of gruesome hacks I employed to shrink it below 1KB.&lt;/p&gt;
 &lt;p&gt;Humans are &lt;a href=&#34;https://meowni.ca/posts/metronomes/&#34;&gt;highly sensitive&lt;/a&gt; to audio delay, so it&#39;s important for a metronome app to tick as reliably as a Swiss clock. If you play audio directly in the main thread, which is what I tried before &lt;a href=&#34;https://www.html5rocks.com/en/tutorials/audio/scheduling/&#34;&gt;finding enlightenment&lt;/a&gt;, then you&#39;re going to suffer from unacceptable delays in sound whenever you lose control to the browser&#39;s UI and book-keeping functions.&lt;/p&gt;
 &lt;p&gt;Instead, when you start the metronome, it kicks off a scheduling function in the main thread that runs every 25 milliseconds. The scheduling function calls JavaScript&#39;s WebAudio interface to schedule any beeps that are due to play in the next 100 milliseconds. WebAudio plays the beeps in a separate thread. Even if the scheduling function is delayed by 50ms or so, there&#39;s enough of a buffer that the next beep can still be scheduled on time.&lt;/p&gt;
@@ -601,8 +598,7 @@ count 3728058
 &lt;li&gt;Various &lt;a href=&#34;https://dev.to/emnudge/js-code-golfing-how-to-ruin-everyone-s-day-40h3&#34;&gt;JavaScript golf techniques&lt;/a&gt;, such as replacing regular functions with arrow functions, replacing local variables with global ones, and reducing names to 1 letter.&lt;/li&gt;
 &lt;li&gt;Running the HTML, CSS and JavaScript through minifiers to remove whitespace. The &lt;a href=&#34;https://javascript-minifier.com/&#34;&gt;JavaScript one&lt;/a&gt; in particular introduced some neat abbreviations, like replacing &lt;code&gt;false&lt;/code&gt; with &lt;code&gt;!1&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;Programmatically generating some of the buttons on page load, saving about 50 bytes.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;</description>
+&lt;/ul&gt;</description>
         <link>https://kevingal.com/blog/metronome.html</link>
         <pubDate>Sun, 07 Jun 2020 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/metronome.html</guid>
@@ -624,7 +620,7 @@ count 3728058
 &lt;p&gt;&lt;img src=&#34;/static/img/beatles-and-you/sad-ringo.jpeg&#34;
      alt=&#34;Ringo Starr with a sad expression on his face in black &amp; white.&#34;
      class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;h3&gt;How many Lennon-McCartney songs are addressed to &#34;you&#34;?&lt;/h3&gt;
+&lt;h3 id=&#34;how-many-lennon-mccartney-songs-are-addressed-to-you&#34;&gt;How many Lennon-McCartney songs are addressed to &#34;you&#34;?&lt;/h3&gt;
 &lt;p&gt;I downloaded the lyrics of the Beatles&#39; &#34;core catalogue&#34; studio albums (&lt;a href=&#34;https://github.com/Kevinpgalligan/BeatlesAndYou/blob/master/beatles_lyrics_scraper.py&#34;&gt;code&lt;/a&gt;). Instrumental songs, cover songs and songs credited to Ringo Starr / George Harrison were removed manually. This left a total of 138 songs, about 3/4 of the full ~180 songs published by Lennon-McCartney.&lt;/p&gt;
 &lt;p&gt;Analysis of the lyrics (&lt;a href=&#34;https://github.com/Kevinpgalligan/BeatlesAndYou/blob/master/lyrics_analysis.py&#34;&gt;code&lt;/a&gt;) shows that &lt;strong&gt;29%&lt;/strong&gt; of the songs contain &#34;you&#34; in the first line (or any of its related forms: &#34;your&#34;, &#34;yours&#34; and &#34;yourself&#34;). This is somewhat short of &#34;around half&#34;, as claimed by David Rowley, but since &lt;strong&gt;82%&lt;/strong&gt; of the songs contain &#34;you&#34; &lt;em&gt;somewhere&lt;/em&gt; in the lyrics, I&#39;m willing to give him a pass. Lennon-McCartney did, in fact, love &#34;you&#34;.&lt;/p&gt;
 &lt;p&gt;Here&#39;s a comparison with some other words. Surprisingly, Lennon-McCartney&#39;s love of the second person was outstripped by their love of themselves, as &lt;strong&gt;86%&lt;/strong&gt; of lyrics contain the word &#34;I&#34; (or &#34;me&#34;, or &#34;my&#34;, or &#34;myself&#34;).&lt;/p&gt;
@@ -632,7 +628,7 @@ count 3728058
      alt=&#34;Percentage of Lennon-McCartney songs that various words appear in; I 86.2%, you 81.9%, love 44.2%, day 23.9%, friend 8.7%, life 7.2%, road 5.1%, guitar 0.7%, mustard 0.7%, beatle 0.0%.&#34;
      class=&#34;centered&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Other observations: in 138 songs, they never once mentioned the Beatles. Not even in Glass Onion. And roads, or the things that are done in them, are almost as popular a theme as life itself.&lt;/p&gt;
-&lt;h3&gt;Chart success and you&lt;/h3&gt;
+&lt;h3 id=&#34;chart-success-and-you&#34;&gt;Chart success and you&lt;/h3&gt;
 &lt;p&gt;Lennon-McCartney loved &#34;you&#34;, evidently, but can we show that this aspect of their style is worth copying? Does it lead to more successful songs?&lt;/p&gt;
 &lt;p&gt;To this end, I downloaded the songs in the weekly &lt;a href=&#34;https://en.wikipedia.org/wiki/Billboard_Hot_100&#34;&gt;Billboard Hot 100&lt;/a&gt; from the start of 1962 until the start of 1970 (&lt;a href=&#34;https://github.com/Kevinpgalligan/BeatlesAndYou/blob/master/chart_scrape.py&#34;&gt;code&lt;/a&gt;). That&#39;s the active period of the Beatles, roughly speaking, spanning 417 weeks and a total of 5681 unique songs in the charts. On average, ~86% of the songs on the Billboard Hot 100 were actually repeats from previous weeks.&lt;/p&gt;
 &lt;p&gt;As a measure of success, I assigned a score to each of the songs: 100 points for a week in the #1 position on the charts, 99 points for #2, and so on. For example, a song that charted at #50, #76 and #98 over a period of 3 weeks would receive a total of (101-50)+(101-76)+(101-98) = 51+25+3 = 79 points.&lt;/p&gt;
@@ -655,18 +651,17 @@ count 3728058
      alt=&#34;box plot comparing success scores of songs containing you in the first line vs songs that don&#39;t; the distributions are similar, but the songs with you in the first line have a slightly higher median.&#34;
      class=&#34;centered&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Songs with &#34;you&#34; in the first line actually have a 9% higher median success score than those without (302 vs 276). It seems that there are a number of lower-scoring &#34;you&#34; songs that don&#39;t have &#34;you&#34; in the first line, which drag down the median of whichever category they&#39;re in.&lt;/p&gt;
-&lt;h3&gt;Conclusions&lt;/h3&gt;
+&lt;h3 id=&#34;conclusions&#34;&gt;Conclusions&lt;/h3&gt;
 &lt;p&gt;We have seen that the second person perspective was overwhelmingly common in 60s song lyrics. More than Lennon-McCartney secret sauce, it was standard songwriting practice. Furthermore, our overanalysis hasn&#39;t shown the use of &#34;you&#34; to have a correlation with chart success. Considering that it was used in almost 90% of chart songs, however, there has to be something of secret sauce about it. Chart-hitting 60s songwriters must have known what they were doing... right?&lt;/p&gt;
-&lt;h3&gt;Fun bonus reads&lt;/h3&gt;
+&lt;h3 id=&#34;fun-bonus-reads&#34;&gt;Fun bonus reads&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.kaylinpavlik.com/50-years-of-pop-music/&#34;&gt;50 Years of Pop Music&lt;/a&gt; (cool data analysis and visualisation of song lyrics)&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://aeon.co/ideas/why-are-pop-songs-getting-sadder-than-they-used-to-be&#34;&gt;Why are pop songs getting sadder than they used to be?&lt;/a&gt; (sentiment analysis)&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://medium.com/@latenightfroyo/the-6-types-of-billboard-hits-e0cb2987abf&#34;&gt;The 6 Types of Billboard Hits&lt;/a&gt; (song clustering)&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.npr.org/sections/allsongs/2013/05/29/187168874/the-good-listener-whats-more-important-lyrics-or-music?t=1585780553905&#34;&gt;The Good Listener: What&#39;s More Important, Lyrics Or Music?&lt;/a&gt; (relevant NPR article)&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3&gt;The code&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&#34;https://github.com/Kevinpgalligan/BeatlesAndYou&#34;&gt;It&#39;s all here&lt;/a&gt;.&lt;/p&gt;
-&lt;hr&gt;</description>
+&lt;h3 id=&#34;the-code&#34;&gt;The code&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/Kevinpgalligan/BeatlesAndYou&#34;&gt;It&#39;s all here&lt;/a&gt;.&lt;/p&gt;</description>
         <link>https://kevingal.com/blog/beatles-and-you.html</link>
         <pubDate>Wed, 01 Apr 2020 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/beatles-and-you.html</guid>
@@ -690,7 +685,7 @@ count 3728058
 &lt;p&gt;If not, then you&#39;ve fallen victim to one of the 2 hard problems&lt;sup id=&#34;fnref:joke&#34;&gt;&lt;a class=&#34;footnote-ref&#34; href=&#34;#fn:joke&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; in computer science: the off-by-1 error.&lt;/p&gt;
 &lt;p&gt;Off-by-1 errors have been written about since before Jesus Christ. At the latest, they were mentioned by &lt;a href=&#34;https://web.archive.org/web/20160305221341/http://www.dsm.fordham.edu/~moniot/Opinions/fencepost-error-history.shtml&#34;&gt;a Roman named Vitruvius&lt;/a&gt;, who served in the army of Julius Caesar. He was talking about the number of fenceposts around a temple, but the principle is the same. The problem is old, and you shouldn&#39;t feel bad if it caught you out.&lt;/p&gt;
 &lt;p&gt;The good news is that there&#39;s a simple, easy-to-remember formula that applies to all of the above calculations. Once you&#39;ve learned it, you&#39;ll never again suffer from this particular brand of off-by-1 horror. Nor will you miscount the number of days until Aunt Catherine&#39;s birthday.&lt;/p&gt;
-&lt;h3&gt;Give me the formula!&lt;/h3&gt;
+&lt;h3 id=&#34;give-me-the-formula&#34;&gt;Give me the formula!&lt;/h3&gt;
 &lt;p&gt;Let&#39;s reconsider all of the above problems as calculations of interval length.&lt;/p&gt;
 &lt;p&gt;What&#39;s an interval? It&#39;s a set of integers that lies between a lower and upper bound. For example, the interval &lt;code&gt;[3, 7]&lt;/code&gt; contains the numbers 3, 4, 5, 6 and 7. It&#39;s a set, so we write it using the set notation &lt;code&gt;{3,4,5,6,7}&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;The bounds of an interval can be &lt;em&gt;open&lt;/em&gt; or &lt;em&gt;closed&lt;/em&gt;. If a bound is open, it means that the bound itself is excluded from the interval. If a bound is closed, it&#39;s included. In the above example, both bounds were closed. The same interval with open bounds, written &lt;code&gt;(3, 7)&lt;/code&gt;, is the set &lt;code&gt;{4,5,6}&lt;/code&gt;.&lt;/p&gt;
@@ -708,7 +703,7 @@ count 3728058
 &lt;p&gt;That&#39;s it. I was going to make this into a whole big thing, but it&#39;s really that simple. I used to come up with small example cases and finger-count in order to figure out interval length. This way is easier.&lt;/p&gt;
 &lt;!-- Fuck Shane! --&gt;
 
-&lt;h3&gt;Farewell to Fencepostia&lt;/h3&gt;
+&lt;h3 id=&#34;farewell-to-fencepostia&#34;&gt;Farewell to Fencepostia&lt;/h3&gt;
 &lt;p&gt;You should now be able to count the number of days until your birthday with full confidence, and perhaps more usefully, avoid annoying off-by-1 errors in your programming. Happy counting, and say hello to Aunt Catherine.&lt;/p&gt;
 &lt;div class=&#34;footnote&#34;&gt;
 &lt;hr /&gt;
@@ -745,7 +740,7 @@ count 3728058
      class=&#34;centered&#34;&gt;&lt;/p&gt;
 &lt;p&gt;This looks kinda cool, but what if we want to find a Life state that eventually, after following the rules of Life for a few rounds, reaches a state that looks like Mona Lisa? This requires working backwards instead of forwards from the target picture, which is a &lt;strong&gt;much&lt;/strong&gt; more difficult problem.&lt;/p&gt;
 &lt;p&gt;In this article, we&#39;re going to explore just how difficult this problem is, and how it can be attempted using what are known as &#34;SAT solvers&#34;. We&#39;ll then look at animations of flowers, Steve Buscemi, and other objects of interest that we can generate with the solution.&lt;/p&gt;
-&lt;h3&gt;Life, the Universe and SAT Solvers&lt;/h3&gt;
+&lt;h3 id=&#34;life-the-universe-and-sat-solvers&#34;&gt;Life, the Universe and SAT Solvers&lt;/h3&gt;
 &lt;p&gt;We call Life state A the &#34;parent&#34; of state B if A turns into B by following the rules of Life. The reason that it&#39;s difficult to find the parent of a state is that the rules of Life are non-reversible. There&#39;s no direct way to go from a Life state to its parent, and in fact, it&#39;s possible for a state to have multiple parents or even no parents.&lt;/p&gt;
 &lt;p&gt;What we &lt;em&gt;can&lt;/em&gt; do is construct a boolean equation that captures the conditions that any parent state of our target state must satisfy, then solve it to find a parent, if a parent exists.&lt;/p&gt;
 &lt;p&gt;(Note: a boolean equation is an equation where the variables take on true / false values, and where the operators, instead of the pluses and minuses that we usually see, are replaced by boolean operators such as AND and OR. For example, the equation &lt;code&gt;sour AND (NOT sweet)&lt;/code&gt; is solved by setting &lt;code&gt;sour:=true&lt;/code&gt; and &lt;code&gt;sweet:=false&lt;/code&gt;. &lt;a href=&#34;https://en.wikipedia.org/wiki/Boolean_algebra&#34;&gt;Read more here&lt;/a&gt;).&lt;/p&gt;
@@ -780,7 +775,7 @@ OR
 &lt;p&gt;&lt;img src=&#34;/static/img/mona-lisa-gol/girl-with-a-pearl-earring.gif&#34;
      alt=&#34;Evolution of the Girl With a Pearl Earring painting as a Life state&#34;
      class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;h3&gt;Great, let&#39;s move on to the pretty pictures&lt;/h3&gt;
+&lt;h3 id=&#34;great-lets-move-on-to-the-pretty-pictures&#34;&gt;Great, let&#39;s move on to the pretty pictures&lt;/h3&gt;
 &lt;p&gt;WAIT. While this is nice in theory, there are significant &#34;buts&#34;.&lt;/p&gt;
 &lt;p&gt;The first &#34;but&#34; is that, as we touched on in the previous section, &lt;em&gt;not all Life states have parents&lt;/em&gt;. Such states are known as &lt;a href=&#34;https://en.wikipedia.org/wiki/Garden_of_Eden_(cellular_automaton)&#34;&gt;Gardens of Eden&lt;/a&gt;. Here&#39;s an example of a Garden of Eden from Wikipedia. It&#39;s impossible to reach this state from any other 9x33 Life state.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;/static/img/mona-lisa-gol/garden-of-eden-example.png&#34;
@@ -800,7 +795,7 @@ OR
 &lt;p&gt;&lt;img src=&#34;/static/img/mona-lisa-gol/sadface.gif&#34;
      alt=&#34;Life state becomes sad face, found using backsearch&#34;
      class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;h3&gt;The results&lt;/h3&gt;
+&lt;h3 id=&#34;the-results&#34;&gt;The results&lt;/h3&gt;
 &lt;p&gt;Here&#39;s the result of running backsearch on Mona Lisa&#39;s face. The parent we find looks nothing like Mona Lisa. It&#39;s also a Garden of Eden, so we&#39;ve run into a dead-end and can&#39;t backsearch any further.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;/static/img/mona-lisa-gol/mona.gif&#34;
      alt=&#34;Life becomes Mona Lisa&#34;
@@ -822,7 +817,7 @@ OR
      alt=&#34;Life becomes a puppy&#34;
      class=&#34;centered&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Unfortunately, besides the sad face, we only ever manage a single successful backsearch before running into a dead-end.&lt;/p&gt;
-&lt;h3&gt;Conclusions&lt;/h3&gt;
+&lt;h3 id=&#34;conclusions&#34;&gt;Conclusions&lt;/h3&gt;
 &lt;p&gt;It&#39;s possible to find parents of Game of Life states, although it&#39;s a difficult problem for computers to solve. We could possibly speed up the search by using a different SAT encoding of the problem. We could also replace MiniSAT with a different SAT solver.&lt;/p&gt;
 &lt;p&gt;The parents found by our backsearch barely resemble the target picture and often turn out to be Gardens of Eden. To find longer chains of Life states that gradually turn into the target picture, we could identify multiple parent states and pick the one that a) most resembles the target picture, and b) has some property that&#39;s less common in Gardens of Eden (more clustered live cells, perhaps?).&lt;/p&gt;
 &lt;p&gt;Finally, the Game of Life is just one of &lt;a href=&#34;https://en.wikipedia.org/wiki/Cellular_automaton&#34;&gt;many possible rulesets&lt;/a&gt; that define the behaviour of petri dishes. It would be interesting to experiment with different rulesets and see if they&#39;re more amenable to the goal of gradually evolving chaos into a picture.&lt;/p&gt;
@@ -830,13 +825,13 @@ OR
 &lt;p&gt;&lt;img src=&#34;/static/img/mona-lisa-gol/message.png&#34;
      alt=&#34;Secret message&#34;
      class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;h3&gt;Technical details&lt;/h3&gt;
+&lt;h3 id=&#34;technical-details&#34;&gt;Technical details&lt;/h3&gt;
 &lt;p&gt;&lt;a href=&#34;https://github.com/Kevinpgalligan/MonaLisaGameOfLife&#34;&gt;Here&#39;s the code&lt;/a&gt; to run Life simulations, do backsearch and create GIFs. It&#39;s all in Common Lisp. I&#39;ve only tested it using the SBCL implementation of Common Lisp. The cl-sat library was used as a wrapper to call the MiniSat SAT solver, while the skippy library was used to create GIFs. Credit to the #lispgames IRC community for helping me with my silly questions.&lt;/p&gt;
-&lt;h3&gt;Addendum (July 18th 2020)&lt;/h3&gt;
+&lt;h3 id=&#34;addendum-july-18th-2020&#34;&gt;Addendum (July 18th 2020)&lt;/h3&gt;
 &lt;p&gt;On further reflection, the main limit on size seemed to be cl-sat, both because it was slow to convert the SAT expression to the form expected by SAT solvers and because it exhausted memory rather easily. I imagine it would be possible to handle much larger Life grids by cutting out cl-sat and writing the SAT constraints directly to a file, which could then be passed to your SAT solver of choice.&lt;/p&gt;
 &lt;p&gt;Also, based on Reddit conversation, it seems that you can avoid Gardens of Eden by searching multiple generations into the past in the same SAT expression. To clarify: if you go original -&amp;gt; parent -&amp;gt; grandparent, then parent can turn out to be a Garden of Eden. The proposal is to go directly from original -&amp;gt; grandparent. I don&#39;t know to what extent this would increase the complexity of the expression.&lt;/p&gt;
 &lt;p&gt;Maybe I&#39;ll come back to this some day and find a giant Life state that turns into a detailed portrait of John Conway.&lt;/p&gt;
-&lt;h3&gt;Further reading&lt;/h3&gt;
+&lt;h3 id=&#34;further-reading&#34;&gt;Further reading&lt;/h3&gt;
 &lt;p&gt;Some fun stuff I came across while researching this article.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;My first idea was to use evolutionary algorithms for finding patterns in Life, but &lt;a href=&#34;https://pdfs.semanticscholar.org/ba77/59e4d871d09459e3751d110137a8434591f6.pdf&#34;&gt;this turned out to have been done already&lt;/a&gt; in a paper titled &#34;Generating Interesting Patterns in Conway’s Game of Life Through a Genetic Algorithm&#34; by Alfaro, Mendoza and Tice.&lt;/li&gt;
@@ -845,7 +840,7 @@ OR
 &lt;li&gt;A cool thing: &lt;a href=&#34;https://codegolf.stackexchange.com/questions/38573/paint-a-still-life-or-a-moving-one-draw-an-image-in-the-game-of-life&#34;&gt;still life paintings in Life&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;Another cool thing: &lt;a href=&#34;http://tlrobinson.net/blog/2009/02/game-of-life-generator/&#34;&gt;text &amp;amp; image generator in Life&lt;/a&gt;.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3&gt;Discussion&lt;/h3&gt;
+&lt;h3 id=&#34;discussion&#34;&gt;Discussion&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.reddit.com/r/programming/comments/ev5nv2/finding_mona_lisa_in_the_game_of_life/&#34;&gt;reddit&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://news.ycombinator.com/item?id=22552006&#34;&gt;Hacker News&lt;/a&gt;&lt;/li&gt;
@@ -853,9 +848,7 @@ OR
 &lt;p&gt;&lt;img src=&#34;/static/img/mona-lisa-gol/venus.gif&#34;
      alt=&#34;Life state becomes the Birth of Venus&#34;
      class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p class=&#34;tiny&#34;&gt;&lt;a href=&#34;/static/img/mona-lisa-gol/message.gif&#34;&gt;parting gift spoiler&lt;/a&gt;&lt;/p&gt;
-
-&lt;hr&gt;</description>
+&lt;p class=&#34;tiny&#34;&gt;&lt;a href=&#34;/static/img/mona-lisa-gol/message.gif&#34;&gt;parting gift spoiler&lt;/a&gt;&lt;/p&gt;</description>
         <link>https://kevingal.com/blog/mona-lisa-gol.html</link>
         <pubDate>Tue, 28 Jan 2020 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/mona-lisa-gol.html</guid>
@@ -867,7 +860,7 @@ OR
 &lt;p&gt;Generate a random RGB value where the average of R, G and B is A, A being an integer from 0-255.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;In other words, we have to generate a random RGB value so that (R+G+B)/3=A, or equivalently, R+G+B=3A. We&#39;ll solve this problem using the Python programming language and learn some neat &lt;a href=&#34;https://en.wikipedia.org/wiki/Combinatorics&#34;&gt;combinatorics&lt;/a&gt; along the way.&lt;/p&gt;
-&lt;h3&gt;An attempt&lt;/h3&gt;
+&lt;h3 id=&#34;an-attempt&#34;&gt;An attempt&lt;/h3&gt;
 &lt;p&gt;The first algorithm that might come to mind is to generate R, G and B one at a time, ensuring that we satisfy the constrants of the problem at each step. Being RGB, they have to be in the range 0-255. We must also ensure that it remains possible to satisfy R+G+B=3A. If we stay within these constraints, then we will always end up with a valid RGB value with an average of A, no matter what value A has. Note that there&#39;s always at least one solution to R+G+B=3A, and that&#39;s the RGB value (A,A,A).&lt;/p&gt;
 &lt;p&gt;Here&#39;s this simple algorithm in Python code.&lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;random&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;rd&lt;/span&gt;
@@ -906,7 +899,7 @@ OR
      alt=&#34;bug visualisation pie chart&#34;
      class=&#34;centered&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Our algorithm picks an R value from 0, 1, 2 and 3 with equal probability, so 25% of the probability pie is assigned to each possible R value. The quarter slices of pie are then further divided by the number of possible GBs that satisfy R+G+B=3A. For R=3, the only valid GB value is (0,0), and so the RGB value (3,0,0) ends up with a whole 25% slice of probability. For R=1, the possible GBs are (0,2), (2,0) and (1,1), so the 25% slice is divided between the RGB values of (1,0,2), (1,2,0) and (1,1,1), giving them each a probability of ~8.3%.&lt;/p&gt;
-&lt;h3&gt;Well, I&#39;ll be damned! What&#39;s the darn-tootin&#39; solution, then?&lt;/h3&gt;
+&lt;h3 id=&#34;well-ill-be-damned-whats-the-darn-tootin-solution-then&#34;&gt;Well, I&#39;ll be damned! What&#39;s the darn-tootin&#39; solution, then?&lt;/h3&gt;
 &lt;p&gt;The issue with the first algorithm is our false assumption that all possible R values are equally likely. In the case of A=1, P(R=3) -- the probability that R is 3 -- is 0.1, since 1/10 of the possible RGB values have R=3. Meanwhile, P(R=1)=0.3, since 3/10 of the possible RGB values have R=1.&lt;/p&gt;
 &lt;p&gt;Hence, before picking R at random, we have to calculate the probability of each of its possible values.&lt;/p&gt;
 &lt;p&gt;P(R=r) for some r is given by:&lt;/p&gt;
@@ -914,7 +907,7 @@ OR
 &lt;p&gt;(Syntax note: #{blah} here means &#34;the number of blah&#34;, so #{GB values that sum to 3A-r} is the same as saying &#34;the number of GB values that sum to 3A-r&#34;).&lt;/p&gt;
 &lt;p&gt;You can see why this gives P(R=3)=0.1 and P(R=1)=0.3, given that #{GB values that sum to 2}=3, #{GB values that sum to 0}=1, and #{RGB values that average to 1}=10.&lt;/p&gt;
 &lt;p&gt;How do we calculate this for any &#39;r&#39; and any &#39;A&#39;? Let&#39;s consider the numerator and the denominator separately.&lt;/p&gt;
-&lt;h3&gt;P(R=r): the numerator&lt;/h3&gt;
+&lt;h3 id=&#34;prr-the-numerator&#34;&gt;P(R=r): the numerator&lt;/h3&gt;
 &lt;p&gt;Here&#39;s the value of #{GB values that sum to 3A-r}:&lt;/p&gt;
 &lt;p&gt;
 &lt;script type=&#34;math/tex; mode=display&#34;&gt;
@@ -923,7 +916,7 @@ OR
 &lt;/p&gt;
 &lt;p&gt;G and B can be any value in the interval $[\text{max}(3A-r-255, 0), \text{min}(3A-r, 255)]$, so all we&#39;re doing is calculating the length of this interval. It&#39;s similar to what we did in the first algorithm.&lt;/p&gt;
 &lt;p&gt;To convince yourself that it&#39;s correct, consider the case where A=87, 3A=261 and r=1. We have 3A-r=260. The GB values that sum to 260 are (255,5), (254,6), ..., (5,255). There are 255-5+1=251 such values. This agrees with the expression above. Repeat for various values of A and r.&lt;/p&gt;
-&lt;h3&gt;P(R=r): the denominator&lt;/h3&gt;
+&lt;h3 id=&#34;prr-the-denominator&#34;&gt;P(R=r): the denominator&lt;/h3&gt;
 &lt;p&gt;The expression for #{RGB values that average to A} is below. It looks scary, but we&#39;ll explain each part in an intuitive manner.&lt;/p&gt;
 &lt;p&gt;
 &lt;script type=&#34;math/tex; mode=display&#34;&gt;
@@ -960,7 +953,7 @@ OR
      class=&#34;centered&#34;&amp;gt;&lt;/p&gt;
 &lt;p&gt;There are 3A+3-1-2*256 spaces, of which we pick 2. There are &lt;font color=&#34;red&#34;&gt;{3A+3-1-2*256}C{2}&lt;/font&gt; ways to do this. Multiply by 3 because there are 3 different pairs of R, G &amp;amp; B that can both be &amp;gt;255, and out pops the &lt;font color=&#34;red&#34;&gt;final part&lt;/font&gt;.&lt;/p&gt;
 &lt;p&gt;And with that, we understand how to calculate #{RGB values that average to A}. Which, in turn, allows us to calculate P(R=r)!&lt;/p&gt;
-&lt;h3&gt;Putting it all together: using P(R=r) to generate random RGB values&lt;/h3&gt;
+&lt;h3 id=&#34;putting-it-all-together-using-prr-to-generate-random-rgb-values&#34;&gt;Putting it all together: using P(R=r) to generate random RGB values&lt;/h3&gt;
 &lt;p&gt;The hardest part is done. Now we pick R randomly based on P(R=r). After that, G and B can be determined from a random choice with uniform probability like in the &#34;first attempt&#34; algorithm.&lt;/p&gt;
 &lt;p&gt;Here it is in Python code.&lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;random&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;rd&lt;/span&gt;
@@ -1009,16 +1002,15 @@ OR
 &lt;p&gt;&lt;img src=&#34;/static/img/rgb-average/rgb-value-distribution.png&#34;
      alt=&#34;distribution of RGB values&#34;
      class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;h3&gt;Conclusion&lt;/h3&gt;
+&lt;h3 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h3&gt;
 &lt;p&gt;We&#39;ve battled through the combinatorics and come out the other side with a working algorithm. An extension to the algorithm that might be interesting would be to make it work for the &#34;general&#34; case. That is, generate a random tuple V = (V1, V2, ..., Vn) such that the average (V1+...+Vn)/n is A, and where Bl &amp;lt;= Vi, A &amp;lt;= Bu. The combinatorics behind this would be similar to what we did above.&lt;/p&gt;
 &lt;p&gt;A different approach to the problem would be to generate random RGB values directly from the sequence of valid values rather than going through the rigmarole of calculating probability distributions. In other words, if there are N possible RGB values, we generate a random number &#39;k&#39; between 1 and N and pass it to our magic function &#39;f&#39; so that f(k) outputs the kth RGB value with the target average.&lt;/p&gt;
 &lt;p&gt;That&#39;s all for now. Tune in for the next episode of Problems That Don&#39;t Need to Be Solved, where we&#39;ll be looking at Rubix Cubes.&lt;/p&gt;
-&lt;h3&gt;Discussion&lt;/h3&gt;
+&lt;h3 id=&#34;discussion&#34;&gt;Discussion&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.reddit.com/r/programming/comments/e03k3p/random_rgb_values_that_average_to_n_or/&#34;&gt;reddit&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://news.ycombinator.com/item?id=21607401&#34;&gt;Hacker News&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;</description>
+&lt;/ul&gt;</description>
         <link>https://kevingal.com/blog/rgb-average.html</link>
         <pubDate>Fri, 22 Nov 2019 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/rgb-average.html</guid>
@@ -1047,9 +1039,9 @@ Are twins once you taste them, though different at first sight.&lt;/p&gt;
 &lt;p&gt;&lt;img alt=&#34;Some potions&#34; src=&#34;/static/img/potter-puzzle/some-potions.png&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Put simply, they have to figure out which potions are in which bottles.&lt;/p&gt;
 &lt;p&gt;In this post, we&#39;re going to solve all 42 possible versions of the puzzle via programming and create a diagram of the results. A diagram like the picture above, but much bigger.&lt;/p&gt;
-&lt;h3&gt;Wait, why are there 42 versions?&lt;/h3&gt;
+&lt;h3 id=&#34;wait-why-are-there-42-versions&#34;&gt;Wait, why are there 42 versions?&lt;/h3&gt;
 &lt;p&gt;It&#39;s because the positions of the &#34;giant&#34; and &#34;dwarf&#34; potion bottles are not specified. There are 7 possible positions for the giant, and for each of those, there are 6 remaining positions for the dwarf, which gives &lt;code&gt;7 * 6 = 42&lt;/code&gt;. There&#39;s no way to know which one J.K. Rowling had in mind when she wrote the puzzle, unless she retcons it through Twitter. We could pick a random version and have a crack at it, but there would be no guarantee that the version we picked would be solvable. That&#39;s why we&#39;re performing the public service of solving, or proving unsolvable, all 42 versions.&lt;/p&gt;
-&lt;h3&gt;JUST SOLVE IT&lt;/h3&gt;
+&lt;h3 id=&#34;just-solve-it&#34;&gt;JUST SOLVE IT&lt;/h3&gt;
 &lt;p&gt;First, here are the constraints of the puzzle, reworded in plainer terms:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;There are 2 harmless potions, 3 poison ones, 1 that lets you move forward and 1 that lets you move backward.&lt;/li&gt;
@@ -1075,9 +1067,9 @@ Are twins once you taste them, though different at first sight.&lt;/p&gt;
 &lt;p&gt;Of course, we weren&#39;t guaranteed to find a solution. There might have been no solution, or multiple solutions. Having multiple solutions is equivalent to the puzzle being unsolvable because you can&#39;t tell which is the correct one.&lt;/p&gt;
 &lt;p&gt;Applying our algorithm to all puzzle versions gives us the following solutions. 8 versions of the puzzle are solvable, 8 have no solutions and 26 have multiple solutions.&lt;/p&gt;
 &lt;p&gt;&lt;img alt=&#34;All solutions&#34; src=&#34;/static/img/potter-puzzle/potions-puzzle-solutions.png&#34; /&gt;&lt;/p&gt;
-&lt;h3&gt;A closer look at the solutions&lt;/h3&gt;
+&lt;h3 id=&#34;a-closer-look-at-the-solutions&#34;&gt;A closer look at the solutions&lt;/h3&gt;
 &lt;p&gt;Is there something that all of the solvable variations of the puzzle have in common? Yes! Notice that either the small bottle or the big bottle have to be in 2nd or 6th position. This allows us to deduce that the 2nd and 6th bottles contain harmless potion, due to constraints #4 and #5. Without this deductive step, we can&#39;t eliminate the possibility that those bottles contain poison and we end up with multiple possible solutions. The solvable variations also require that the other &#34;special&#34; bottle (small or big) is in 3rd or 4th position. Otherwise, we can&#39;t pin down the exact location of the move-forward potion.&lt;/p&gt;
-&lt;h3&gt;Closing comments&lt;/h3&gt;
+&lt;h3 id=&#34;closing-comments&#34;&gt;Closing comments&lt;/h3&gt;
 &lt;p&gt;I leave you with a quote I like from the book.&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Hermione let out a great sigh and Harry, amazed, saw that she was smiling, the very last thing he felt like doing. ‘Brilliant,’ said Hermione. ‘This isn’t magic – it’s logic – a puzzle. A lot of the greatest wizards haven’t got an ounce of logic, they’d be stuck in here for ever.’&lt;/p&gt;
@@ -1091,15 +1083,14 @@ Are twins once you taste them, though different at first sight.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;Drats. This still leaves 4 candidates:&lt;/p&gt;
 &lt;p&gt;&lt;img alt=&#34;Canonical versions, which match the dialogue from the book&#34; src=&#34;/static/img/potter-puzzle/canonical.png&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;Get retconning, J.K.&lt;/p&gt;
-&lt;h3&gt;The code&lt;/h3&gt;
+&lt;p&gt;Time for J.K. to do some more retconning.&lt;/p&gt;
+&lt;h3 id=&#34;the-code&#34;&gt;The code&lt;/h3&gt;
 &lt;p&gt;If you&#39;re curious about the code for solving the puzzles / drawing the diagram of solutions, see &lt;a href=&#34;https://github.com/Kevinpgalligan/KevingalWebsite/blob/master/experiments/hp.py&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
-&lt;h3&gt;Discussion&lt;/h3&gt;
+&lt;h3 id=&#34;discussion&#34;&gt;Discussion&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.reddit.com/r/programming/comments/deauxe/solving_all_42_versions_of_the_harry_potter/&#34;&gt;reddit&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://habr.com/ru/post/471856/&#34;&gt;habr&lt;/a&gt; (Russian translation)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;</description>
+&lt;/ul&gt;</description>
         <link>https://kevingal.com/blog/potter-puzzle.html</link>
         <pubDate>Thu, 03 Oct 2019 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/potter-puzzle.html</guid>
@@ -1136,8 +1127,7 @@ Are twins once you taste them, though different at first sight.&lt;/p&gt;
 &lt;p&gt;Eventually, the bot made enemies with too many important people and its account was banned permanently. For being spammy and annoying, apparently. Nobody could have seen it coming.&lt;/p&gt;
 &lt;p&gt;It was fun while it lasted, however, and rather than let the code go to waste, I recently resurrected it &lt;a href=&#34;/apps/emojipasta.html&#34;&gt;as a web app&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;For the interested, here&#39;s a brief description of how it worked (and how it still works in the web app). I wrote a script to download a few thousand comments off r/emojipasta. These were used to create &#34;mappings&#34; from words to the emojis that tend to appear beside them. When it was summoned, the bot broke up comments into chunks of text and emojis were inserted randomly between the chunks using the word-&gt;emoji mappings, with a maximum of 2 emojis after each chunk. Only the alphanumeric prefix of each chunk of text was considered, so that &#34;I&#39;ll&#34; would give the same emoji mappings as &#34;I&#34;.&lt;/p&gt;
-&lt;p&gt;That&#39;s about it. The code was pretty simple. The original source code of the bot, in Python, can be found &lt;a href=&#34;https://github.com/Kevinpgalligan/EmojipastaBot&#34;&gt;here&lt;/a&gt;. The JavaScript version that I ported recently can be found &lt;a href=&#34;https://github.com/Kevinpgalligan/KevingalWebsite/blob/master/static/js/apps/emojipasta/emojipasta.js&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
-&lt;hr&gt;</description>
+&lt;p&gt;That&#39;s about it. The code was pretty simple. The original source code of the bot, in Python, can be found &lt;a href=&#34;https://github.com/Kevinpgalligan/EmojipastaBot&#34;&gt;here&lt;/a&gt;. The JavaScript version that I ported recently can be found &lt;a href=&#34;https://github.com/Kevinpgalligan/KevingalWebsite/blob/master/static/js/apps/emojipasta/emojipasta.js&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;</description>
         <link>https://kevingal.com/blog/emojipasta.html</link>
         <pubDate>Sun, 29 Sep 2019 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/emojipasta.html</guid>

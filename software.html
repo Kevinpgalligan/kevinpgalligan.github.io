@@ -7,7 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/static/css/style.css">
     
-    
+
+
+
+
     <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon.ico">
     
 </head>
@@ -24,20 +27,66 @@
         </nav>
         </div>
     </header>
-
-<h4>Web apps:</h4>
+ <h2>Software</h2>
+<p>I've developed some free software, typically because it's useful or amusing to me. Below is a selection of that software. Projects marked with 🌎 are web apps, i.e. you can use them in your browser. Projects marked with 📥 are desktop apps. The (potentially external) link to each project is in its title.</p>
+<p>Quick list:</p>
+<div class="toc">
 <ul>
-    <li><a href="/apps/emojipasta.html">Emojipasta 🤖 Generator ️✨</a>: add word-relevant emojis to text.</li>
-    <li><a href="/apps/pixelate.html">Pixelate</a>: make images more pixely.</li>
-    <li><a href="/apps/metronome.html">Tiny metronome</a>: a mobile-friendly, 981-byte metronome.</li>
+<li><a href="#emojipasta-generator">Emojipasta Generator 🌎</a></li>
+<li><a href="#pixelate">Pixelate 🌎</a></li>
+<li><a href="#tiny-metronome">Tiny Metronome 🌎</a></li>
+<li><a href="#bs">bs 📥</a></li>
+<li><a href="#pseu">pseu 📥</a></li>
 </ul>
+</div>
+<hr>
 
-<h4>Desktop:</h4>
-<ul>
-  <li><a href="https://github.com/Kevinpgalligan/bs">bs</a>: no-bullshit CLI tool for converting numbers between bases.</li>
-  <li><a href="https://github.com/Kevinpgalligan/pseu">pseu</a>: CLI tool for indecisive people. Pseudorandomly generates numbers, shuffles, picks, and rolls dice.</li>
-</ul>
+<h3 id="emojipasta-generator"><a href="/apps/emojipasta.html">Emojipasta Generator</a> 🌎</h3>
+<p>Add word-relevant 🤖 emojis ✨ to text with sometimes hilarious results. Based on <a href="https://github.com/Kevinpgalligan/EmojipastaBot">AnEmojipastaBot</a>, which I unleashed on Reddit a few years ago.</p>
+<h3 id="pixelate"><a href="/apps/pixelate.html">Pixelate</a> 🌎</h3>
+<p>Make images more pixely, make them black &amp; white, or resize them. I used it for <a href="/blog/mona-lisa-gol.html">this</a> blog post.</p>
+<p><img alt="dog from CIFAR-10, I think" src="/static/img/pixelate/dog-before.png" /><img alt="pixelated version" src="/static/img/pixelate/dog-after.png" /><img alt="black &amp; white version" src="/static/img/pixelate/dog-after-bw.png" /></p>
+<h3 id="tiny-metronome"><a href="/apps/metronome.html">Tiny Metronome</a> 🌎</h3>
+<p>A mobile-friendly, 981-byte metronome. I made it because most of the metronome web apps I found on the internet were bloated, or clunky on mobile. I also wrote about this app in a <a href="/blog/metronome.html">blog post</a>.</p>
+<h3 id="bs"><a href="https://github.com/Kevinpgalligan/bs">bs</a> 📥</h3>
+<p>A Python CLI tool that converts numbers between bases with as little typing as possible. If you don't specify the base, it does all valid conversions between common ones.</p>
+<p>Installation:</p>
+<div class="codehilite"><pre><span></span>pip3 install base-convert-cli
+</pre></div>
 
 
+<p>Examples (more in the README):</p>
+<div class="codehilite"><pre><span></span>$ bs FFFE
+[from hexadecimal]
+  decimal     65534
+  binary      1111111111111110
+  octal       177776
+$ bs -t d F
+15
+</pre></div>
+
+
+<h3 id="pseu"><a href="https://github.com/Kevinpgalligan/pseu">pseu</a> 📥</h3>
+<p>A Python CLI tool that randomly generates numbers, shuffles, picks, and rolls dice. Possible uses: picking someone to do a shitty job, relieving yourself of the agony of deciding which movie to watch, making life choices.</p>
+<p>Installation:</p>
+<div class="codehilite"><pre><span></span>pip3 install pseu-cli
+</pre></div>
+
+
+<p>Examples (more in the README):</p>
+<div class="codehilite"><pre><span></span>$ pseu pick &quot;good life choice&quot; &quot;bad life choice&quot;
+bad life choice
+$ pseu pick --n 2 &lt;/tmp/movies.txt
+Boogie Nights
+The Hunt for the Wilderpeople
+$ pseu roll 1d6
+3
+$ pseu rand 100
+42
+$ pseu shuffle alice sue bob
+bob
+sue
+alice
+</pre></div> 
 </body>
 </html>

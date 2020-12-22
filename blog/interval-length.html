@@ -7,10 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/static/css/style.css">
     
-<link rel="stylesheet" href="/static/css/blog.css">
+
 
 <meta property="description" content="There&#39;s a formula for interval length that saves you from finger-counting.">
 
+
+<link rel="stylesheet" href="/static/css/blog.css">
 
     <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon.ico">
     
@@ -29,7 +31,8 @@
         </div>
     </header>
 
-<h2 class="post-title">Counting the number of days until your birthday and why it&#39;s a useful programming trick <span class="post-date">2020-02-01</span></h2>
+<h2 class="post-title">Counting the number of days until your birthday and why it&#39;s a useful programming trick </h2>
+<h3 class="post-date">2020-02-01</h3>
 <hr>
 <p>Spot quiz! See how many of these calculations you get right. No calculator necessary.</p>
 <ol>
@@ -48,7 +51,7 @@
 <p>If not, then you've fallen victim to one of the 2 hard problems<sup id="fnref:joke"><a class="footnote-ref" href="#fn:joke">1</a></sup> in computer science: the off-by-1 error.</p>
 <p>Off-by-1 errors have been written about since before Jesus Christ. At the latest, they were mentioned by <a href="https://web.archive.org/web/20160305221341/http://www.dsm.fordham.edu/~moniot/Opinions/fencepost-error-history.shtml">a Roman named Vitruvius</a>, who served in the army of Julius Caesar. He was talking about the number of fenceposts around a temple, but the principle is the same. The problem is old, and you shouldn't feel bad if it caught you out.</p>
 <p>The good news is that there's a simple, easy-to-remember formula that applies to all of the above calculations. Once you've learned it, you'll never again suffer from this particular brand of off-by-1 horror. Nor will you miscount the number of days until Aunt Catherine's birthday.</p>
-<h3>Give me the formula!</h3>
+<h3 id="give-me-the-formula">Give me the formula!</h3>
 <p>Let's reconsider all of the above problems as calculations of interval length.</p>
 <p>What's an interval? It's a set of integers that lies between a lower and upper bound. For example, the interval <code>[3, 7]</code> contains the numbers 3, 4, 5, 6 and 7. It's a set, so we write it using the set notation <code>{3,4,5,6,7}</code>.</p>
 <p>The bounds of an interval can be <em>open</em> or <em>closed</em>. If a bound is open, it means that the bound itself is excluded from the interval. If a bound is closed, it's included. In the above example, both bounds were closed. The same interval with open bounds, written <code>(3, 7)</code>, is the set <code>{4,5,6}</code>.</p>
@@ -66,7 +69,7 @@
 <p>That's it. I was going to make this into a whole big thing, but it's really that simple. I used to come up with small example cases and finger-count in order to figure out interval length. This way is easier.</p>
 <!-- Fuck Shane! -->
 
-<h3>Farewell to Fencepostia</h3>
+<h3 id="farewell-to-fencepostia">Farewell to Fencepostia</h3>
 <p>You should now be able to count the number of days until your birthday with full confidence, and perhaps more usefully, avoid annoying off-by-1 errors in your programming. Happy counting, and say hello to Aunt Catherine.</p>
 <div class="footnote">
 <hr />
@@ -76,6 +79,7 @@
 </li>
 </ol>
 </div>
+<hr>
 <p><a href="/blog.html">Back to blog</a></p>
 <p><a href="/feed.xml"><img src="/static/img/rss.png"></a> <a href="https://twitter.com/KevinGalligan2"><img src="/static/img/twitter.png"></a> <a href="https://github.com/Kevinpgalligan"><img src="/static/img/github.png"></a></p>
 <p>Contact at <i>galligankevinp@gmail.com</i>.</p>

@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/static/css/style.css">
     
-<link rel="stylesheet" href="/static/css/blog.css">
+
 <link rel="stylesheet" href="/static/css/pygments.css">
 <meta property="description" content="How you can estimate a mathematical constant using only darts and a dartboard.">
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js" async></script>
@@ -22,6 +22,8 @@ MathJax.Hub.Config({
 	"HTML-CSS": { availableFonts: ["TeX"] }
 });
 </script>
+
+<link rel="stylesheet" href="/static/css/blog.css">
 
     <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon.ico">
     
@@ -40,10 +42,11 @@ MathJax.Hub.Config({
         </div>
     </header>
 
-<h2 class="post-title">The darts player who estimated π <span class="post-date">2020-08-05</span></h2>
+<h2 class="post-title">The darts player who estimated π </h2>
+<h3 class="post-date">2020-08-05</h3>
 <hr>
 <p><em>This article introduces a method for approximating π using darts and a dartboard. There are 3 parts: 1) a story, to introduce the method; 2) a computer program that implements it; and 3) a short mathematical analysis.</em></p>
-<h3>The story</h3>
+<h3 id="the-story">The story</h3>
 <p>A darts player and a mathematician walk into a bar. The mathematician takes a seat and orders cranberry juice, while the darts player starts practising at the dartboard.</p>
 <p>After a while, the mathematician looks over. "You're not very good, are you?" she says, as another dart whizzes uselessly into the backboard.</p>
 <p>"No," says the darts player miserably. "It's almost like playing bingo."</p>
@@ -86,7 +89,7 @@ MathJax.Hub.Config({
 <p>Eventually, after extensive, self-congratulatory back-patting, they settle down into a relaxed stupor. The bartender servers them both a round of cranberry juice, on the house.</p>
 <p>"That was fantastic!" says the darts player contentedly. "What can we do next?"</p>
 <p>"Well... have you heard of <em>e</em>?"</p>
-<h3>The code</h3>
+<h3 id="the-code">The code</h3>
 <p>The story above was inspired by exercise 3.5 of the computer science textbook, <em>Structure and Interpretation of Computer Programs</em>. It asks you to estimate π using a Monte Carlo algorithm, which just means that you simulate throwing a dart a bunch of times.</p>
 <p>In this section, we'll look at a Common Lisp program that can estimate π. If you know a bit about programming but nothing about Common Lisp, then Appendix B provides a step-by-step walkthrough of the code. If you don't care about programming, you can skip to the next section for some maths fun.</p>
 <p>Caveats out of the way, here's the full program. It defines a function, <code>estimate-pi</code>, that takes a single parameter <code>n</code>. The function returns an estimate of π based on <code>n</code> simulated throws of a dart at a dartboard of radius 1/2.</p>
@@ -134,7 +137,7 @@ MathJax.Hub.Config({
 
 <p>Hmmm. After throwing 10 MILLION darts, our approximation is still only accurate to 2 decimal places! That's a lot of throws for a kinda rubbish estimate of π.</p>
 <p>Now, if we want to figure out how many darts we need to throw in order to (probably) achieve a certain level of accuracy in our estimate, we'll need to delve into probability theory. And that is the topic of the next section.</p>
-<h3>The maths</h3>
+<h3 id="the-maths">The maths</h3>
 <p>In the real world, to get our approximation accurate to 4 decimal places, we'd have to throw about 1 billion darts. So, believe it or not, throwing darts at a board is a crappy method of estimating π. We'll have to look at some probability theory to understand exactly how crappy it is.</p>
 <p>Let's say we throw $n$ darts. Let $X$ be the number of darts that hit the dartboard. $X$ is what's known as a binomial random variable. "Random variable" means that it has a random value, while "binomial" means that it's equivalent to a bunch of coin flips. In our case, $X$'s random value is between 0 and $n$, and each "coin flip" has probability $p=\pi/4$ of landing on heads (a.k.a. hitting the dartboard).</p>
 <p>WHY SHOULD WE CARE ABOUT THIS RANDOM VARIABLE CRAP? Our end goal here is to calculate the probability of our estimate being within a small distance, $\epsilon$, of π. We can use the power of random variables to calculate this. Just bear with me for one more minute.</p>
@@ -152,9 +155,9 @@ P(-\epsilon < Y-\pi < \epsilon) &= 1-2P(Y-\pi < -\epsilon) \\
 <p><img src="/static/img/darts/graph.png"
      alt="Plot of the probability of our approximation having a certain level of accuracy given 'n' throws."
      class="centered"></p>
-<h3>Appendix A: in the real world</h3>
+<h3 id="appendix-a-in-the-real-world">Appendix A: in the real world</h3>
 <p>To see the darts experiment in action, watch <a href="https://www.youtube.com/watch?v=M34TO71SKGk">this video</a> (Physics Girl, "Calculating Pi with Darts").</p>
-<h3>Appendix B: the code, in depth</h3>
+<h3 id="appendix-b-the-code-in-depth">Appendix B: the code, in depth</h3>
 <p>If you're familiar with programming but not the Common Lisp programming language, this appendix will guide you through the full program for estimating π.</p>
 <p>First, we define the radius as a constant. <code>defparameter</code> is the keyword for defining variables. <code>+r+</code> is the name of the constant, which, as described in the story, has a value of 1/2. By convention, constant names are surrounded by '+'.</p>
 <div class="codehilite"><pre><span></span><span class="p">(</span><span class="nb">defparameter</span> <span class="nv">+r+</span> <span class="m">1/2</span><span class="p">)</span>
