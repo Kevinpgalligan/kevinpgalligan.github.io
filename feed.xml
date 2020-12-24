@@ -162,7 +162,7 @@ $ source env/bin/activate
 
 
 &lt;h5 id=&#34;install-dumbgrep&#34;&gt;Install dumbgrep&lt;/h5&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;(env) $ python3 setup.py install
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;(env) $ pip install .
 running install
 running bdist_egg
 running egg_info
