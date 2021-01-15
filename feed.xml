@@ -122,7 +122,7 @@ P(E &lt; \epsilon) &amp;= 1-2P(Y-\pi &lt; -\epsilon) \\
 
 
 &lt;p&gt;We &lt;code&gt;let&lt;/code&gt; a local variable, &lt;code&gt;in-circle-count&lt;/code&gt;, equal the number of darts that land on the dartboard. This number is calculated by looping &lt;code&gt;n&lt;/code&gt; times and summing 1 if a dart throw lands on the board, or 0 if it doesn&#39;t. &lt;code&gt;apply&lt;/code&gt; takes each pair of coordinates that we generate, &lt;code&gt;(x y)&lt;/code&gt;, and passes it to &lt;code&gt;is-in-circle-p&lt;/code&gt;. Finally, within the body of the &lt;code&gt;let&lt;/code&gt;, and using the value of &lt;code&gt;in-circle-count&lt;/code&gt;, we calculate our estimate.&lt;/p&gt;
-&lt;p&gt;If you want to learn more about Lisp, I recommend taking a look  &lt;em&gt;The Little Schemer&lt;/em&gt;. It&#39;s an entertaining, hands-on introduction to Scheme, another language in the Lisp family.&lt;/p&gt;</description>
+&lt;p&gt;If you want to learn more about Lisp, I recommend taking a look at &lt;em&gt;The Little Schemer&lt;/em&gt;. It&#39;s an entertaining, hands-on introduction to Scheme, another language in the Lisp family.&lt;/p&gt;</description>
         <link>https://kevingal.com/blog/darts.html</link>
         <pubDate>Fri, 15 Jan 2021 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/darts.html</guid>
