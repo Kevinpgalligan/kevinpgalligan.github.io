@@ -66,11 +66,11 @@
      class="centered"></p>
 <p>In the boolean equation that we construct, each variable corresponds to a cell and the value of the variable indicates the health of the cell. False means that the cell is dead, while true means that it's alive. If we find a set of variable assignments that causes the equation to evaluate to true, then the corresponding Life state (with false/true variables corresponding to dead/live cells) is a parent of our target state.</p>
 <p>What will the equation look like? Let's consider a 3x3 Life grid as an example.</p>
-<div class="codehilite"><pre><span></span>  1 2 3
+<div class="codehilite"><pre><span></span><code>  1 2 3
 a o x x
 b x x x
 c x o x
-</pre></div>
+</code></pre></div>
 
 
 <p>The middle cell, b2, is alive. For it to be alive in this state, one of the following must be true:</p>
@@ -79,13 +79,13 @@ c x o x
 <li>It was dead in the previous state and 3 of its neighbours were alive.</li>
 </ol>
 <p>Keeping in mind that true means alive and false means dead, this can be translated to a boolean equation in a fairly literal way.</p>
-<div class="codehilite"><pre><span></span>(b2 AND ((a1 AND a2 AND !a3 AND !b1 AND !b3 AND !c1 AND !c2 AND !c3)
+<div class="codehilite"><pre><span></span><code>(b2 AND ((a1 AND a2 AND !a3 AND !b1 AND !b3 AND !c1 AND !c2 AND !c3)
          OR (a1 AND !a2 AND a3 AND !b1 AND !b3 AND !c1 AND !c2 AND !c3)
          OR ...repeat 82 more times for other valid neighbour combinations))
 OR
 (!b2 AND ((a1 AND a2 AND a3 AND !b1 AND !b3 AND !c1 AND !c2 AND !c3)
           OR ...repeat 55 more times for other valid neighbour combinations))
-</pre></div>
+</code></pre></div>
 
 
 <p>If we repeat this construction for every cell in the grid and chain them together using ANDs, we end up with an equation that we can solve to find a parent of the target state. And, as it happens, there are many "SAT-solving" programs that search for solutions to boolean equations. Once we have our equation, we can ship it off to our SAT solver of choice and sit back, relaxedly sipping our lattes until it gets back to us with a result.</p>
