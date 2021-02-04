@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title> A Farewell to JavaScript </title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+
+<meta property="og:description" content="I purged the use of JavaScript CDNs from my site." /> 
+<meta property="og:image" content="https://kevingal.com/static/img/farewell-to-js/thumbnail.jpg" />
+<meta name="thumbnail" content="/static/img/farewell-to-js/thumbnail.jpg" />
+
+
+
+<meta property="description" content="I purged the use of JavaScript CDNs from my site.">
+
+<link rel="stylesheet" href="/static/css/blog.css">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon.ico">
+</head>
+<body>
+    <header>
+        <div data-nosnippet class="navbar">
+        <nav>
+        <a href="/index.html" class="navlink">about</a>
+        • <a href="/blog.html" class="navlink">blog</a>
+        • <a href="/software.html" class="navlink">software</a>
+        • <a href="/feed.xml"><img class="navbar-img" src="/static/img/rss.png"></a>
+        • <a href="https://github.com/Kevinpgalligan"><img class="navbar-img" src="/static/img/github.png"></a>
+        </nav>
+        </div>
+    </header>
+
+<h2 class="post-title">A Farewell to JavaScript </h2>
+<h3 class="post-date">2021-02-03</h3>
+<p>Tags: <a href="/blog/tags/web.html">web</a> <a href="/blog/tags/meta.html">meta</a> </p>
+<hr>
+<p>I feel uneasy making people download MathJax from a content delivery network (CDN) in order to render the LaTeX on my blog. What if the CDN disappears or gets hacked? Why should someone have to interact a server other than the one that hosts my blog? It's unnecessary, because in theory I could render the LaTeX at build time.</p>
+<p>So today, I purged it. I now use <a href="https://github.com/mbarkhau/markdown-katex">markdown-katex</a>, an extension for Python Markdown.</p>
+<p>TODO:</p>
+<ul>
+<li>fix thumbnail link.</li>
+</ul>
+<hr>
+<p><a href="/blog.html">Back to blog</a></p>
+<p><a href="/feed.xml"><img src="/static/img/rss.png"></a> <a href="https://github.com/Kevinpgalligan"><img src="/static/img/github.png"></a></p>
+<p>Contact at <i>galligankevinp@gmail.com</i>. I'm always happy to receive emails!</p>
+
+</body>
+</html>

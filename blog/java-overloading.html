@@ -2,44 +2,70 @@
 <html lang="en">
 
 <head>
-    <title> It&#39;s 2020 and Java doesn&#39;t have operator overloading </title>
+    <title> 20 years without operator overloading in Java </title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/static/css/style.css">
     
 
+<meta property="og:description" content="20 years have passed since Guy Steele&#39;s talk, &#34;Growing a Language&#34;, and Java still doesn&#39;t have operator overloading." /> 
 
-
-
+<link rel="stylesheet" href="/static/css/pygments.css">
+<link rel="stylesheet" href="/static/katex/katex.min.css">
+<meta property="description" content="20 years have passed since Guy Steele&#39;s talk, &#34;Growing a Language&#34;, and Java still doesn&#39;t have operator overloading.">
 
 <link rel="stylesheet" href="/static/css/blog.css">
 
     <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon.ico">
-    
 </head>
 <body>
     <header>
         <div data-nosnippet class="navbar">
         <nav>
         <a href="/index.html" class="navlink">about</a>
-        | <a href="/blog.html" class="navlink">blog</a>
-        | <a href="/software.html" class="navlink">software</a>
-        | <a href="/feed.xml"><img class="navbar-img" src="/static/img/rss.png"></a>
-        | <a href="https://github.com/Kevinpgalligan"><img class="navbar-img" src="/static/img/github.png"></a>
+        • <a href="/blog.html" class="navlink">blog</a>
+        • <a href="/software.html" class="navlink">software</a>
+        • <a href="/feed.xml"><img class="navbar-img" src="/static/img/rss.png"></a>
+        • <a href="https://github.com/Kevinpgalligan"><img class="navbar-img" src="/static/img/github.png"></a>
         </nav>
         </div>
     </header>
 
-<h2 class="post-title">It&#39;s 2020 and Java doesn&#39;t have operator overloading </h2>
-<h3 class="post-date">2020-12-29</h3>
+<h2 class="post-title">20 years without operator overloading in Java </h2>
+<h3 class="post-date">2021-01-15</h3>
+<p>Tags: </p>
 <hr>
-<p>In the year 2-0-0-0, Guy Steele gave his talk "blah". He did not use any words of more than one syllable (!!!) if he did not first say what they meant.</p>
-<p>A computer is blah. A language is a bunch of words and rules for how to use them. A programming language is a language that you can use to tell a computer what to do. In this post, I use the same schtick as Guy Steele while I talk about how the Java programming language has not changed since Guy Steele's talk. Java is a high-level (!!!) programming language that cleans up for you.</p>
-<p><blogs.oracle.com/javamagazine/is-it-time-for-overloading-in-java></p>
+<p>A <em>syllable</em> is a sound that makes up part of a word. In the year two nought nought nought (2000), Guy Steele gave a talk called <a href="https://www.youtube.com/watch?v=_ahvzDzKdB0">"Growing a Language"</a>. He used a schtick in his talk: he did not use a word of more than one syllable if he did not first say what it meant. In this post, I use the same schtick.</p>
+<p>As such, I will have to say what some words mean up-front, if you will bear with me.</p>
+<p>A <em>language</em> is a set of words and rules for how to use them.</p>
+<p>A <em>computer</em> is a tool that moves bits fast.</p>
+<p>A <em>programming language</em> is a language that you use to tell a computer what to do.</p>
+<p><em>Java</em> is a programming language that is a cinch to run on any computer. It cleans up the junk left by your code, and takes care of a lot of small stuff like that for you.</p>
+<p>Guy's talk was a talk on the Java programming language. He used the syllable schtick to show that if you take a small language, and you let folks add new rules and words to it, then they can turn it into a big, strong language. They can add what they need, and leave out what they don't need. They can grow the language in the way they want.</p>
+<p>An <em>operator</em> is a blah.</p>
+<p><em>Operator overloading</em> is where a programming language lets you add rules, so that the way an operator acts is based on the stuff that you give it. You can add rules for the "plus" operator so that it works when you add counts (<code>1+1</code>), or strings (<code>"hello " + "world"</code>), or complex numbers (<code>Complex(1, 1) + Complex(1, 1)</code>). Java has some of these rules, but the folks who make Java can't think of all the rules you'll need in your life. That's why it's good to let folks add their own rules.</p>
+<p>A <em>number</em>, by the way, is a count. A <em>complex number</em> is a number with a real and a non-real part.</p>
+<p>To show a case where operator overloading is of great use, let's look at <em>BigInteger</em>, a type in the Java programming language that can store a number of any size. If you do math with a lot of BigIntegers, it's a mess. Take a look and see. What do you think this BigInteger math does?</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">public</span> <span class="n">BigInteger</span> <span class="nf">f</span><span class="p">(</span><span class="n">BigInteger</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">x</span><span class="p">.</span><span class="na">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="na">multiply</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="na">plus</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="na">multiply</span><span class="p">(</span><span class="mi">3</span><span class="p">)).</span><span class="na">minus</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<p>Here is the same code but with operator overloading.</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">public</span> <span class="n">BigInteger</span> <span class="nf">f</span><span class="p">(</span><span class="n">BigInteger</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">x</span> <span class="o">-</span> <span class="mi">5</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<p>It is the quadratic equation <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">2x^2 + 3x - 5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord">2</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">3</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">5</span></span></span></span>. A <em>quadratic equation</em> is... well, let's leave that for the next day. With no operator overloading, the code is hard to read and bugs can slip in. It gets worse as the number of BigIntegers you use goes up.</p>
+<p>Some folks say that operator overloading is not worth it. Poor use of operator overloading is worse than any BigInteger mess, they say. But you can say that about any new thing that you might add to a programming language. And operator loading would be fab for those who want to use Java for math.</p>
+<p>There are signs that <a href="https://blogs.oracle.com/javamagazine/is-it-time-for-overloading-in-java">the folks who own Java</a> see the need for operating overloading. I sure hope that they, and the other Java folks, add operator overloading to Java, though I don't use Java so much these days.</p>
 <hr>
 <p><a href="/blog.html">Back to blog</a></p>
 <p><a href="/feed.xml"><img src="/static/img/rss.png"></a> <a href="https://github.com/Kevinpgalligan"><img src="/static/img/github.png"></a></p>
-<p>Contact at <i>galligankevinp@gmail.com</i>.</p>
+<p>Contact at <i>galligankevinp@gmail.com</i>. I'm always happy to receive emails!</p>
 
 </body>
 </html>
