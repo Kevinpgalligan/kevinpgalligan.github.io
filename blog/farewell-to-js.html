@@ -8,13 +8,13 @@
     <link rel="stylesheet" href="/static/css/style.css">
     
 
-<meta property="og:description" content="I purged the use of JavaScript CDNs from my site." /> 
+<meta property="og:description" content="I purged the use of JavaScript from my site." /> 
 <meta property="og:image" content="https://kevingal.com/static/img/farewell-to-js/thumbnail.jpg" />
 <meta name="thumbnail" content="/static/img/farewell-to-js/thumbnail.jpg" />
 
 
 
-<meta property="description" content="I purged the use of JavaScript CDNs from my site.">
+<meta property="description" content="I purged the use of JavaScript from my site.">
 
 <link rel="stylesheet" href="/static/css/blog.css">
 
@@ -34,19 +34,46 @@
     </header>
 
 <h2 class="post-title">A Farewell to JavaScript </h2>
-<h3 class="post-date">2021-02-03</h3>
-<p>Tags: <a href="/blog/tag/web.html">web</a> <a href="/blog/tag/meta.html">meta</a> </p>
+<h3 class="post-date">2021-02-06</h3>
+<p>Tags: <a href="/blog/tag/web.html">web</a> <a href="/blog/tag/meta.html">meta</a> <a href="/blog/tag/vim.html">vim</a> </p>
 <hr>
-<p>I feel uneasy making people download MathJax from a content delivery network (CDN) in order to render the LaTeX on my blog. What if the CDN disappears or gets hacked? Why should someone have to interact a server other than the one that hosts my blog? It's unnecessary, because in theory I could render the LaTeX at build time.</p>
-<p>So today, I purged it. I now use <a href="https://github.com/mbarkhau/markdown-katex">markdown-katex</a>, an extension for Python Markdown.</p>
-<p>TODO:</p>
+<p>The Board of Directors are pleased to announce that the blog's LaTeX rendering is now done at build time.</p>
+<p>Previously, readers had to download MathJax from a CDN somewhere. Well, their browsers did. Then the MathJax script converted all LaTeX on the page to HTML, and downloaded CSS files and fonts to make the HTML look pretty.</p>
+<p>This always stuck in my throat. It meant that the site couldn't render properly without JavaScript or without an internet connection. The CDN could vanish without warning. And it seemed unnecessary -- why shouldn't I be able to render when I build the site, rather than forcing people to download a (probably massive) rendering script?</p>
+<p>I came across a Flask plugin the other day called <a href="https://github.com/mbarkhau/markdown-katex">markdown-katex</a> that resolved this gag-worthy state of affairs.</p>
+<p>Here's the build process and how markdown-katex now fits into it:</p>
+<ol>
+<li>I push the shiny "build" button. This spins up a Flask server. Flask is a Python web server with lots of plugins.</li>
+<li>A Flask plugin called Frozen-Flask crawls the site and dumps all the files it finds to a folder.</li>
+<li>The blog posts are written in Markdown, which is like HTML but easier on the eyes. When Frozen-Flask hits a blog post, the post gets converted from Markdown to HTML. markdown-katex comes in here and handles the LaTeX parts. From what I understand, markdown-katex is bundled with a copy of KaTeX (a Node.js LaTeX renderer), and all it does is take the LaTeX bits from the Markdown document and pass them to KaTeX.</li>
+<li>I take the HTML files dumped by Frozen-Flask and upload them to a GitHub Pages repository where they're served to the world.</li>
+</ol>
+<p>Oh, I also needed to start serving the KaTeX CSS files and fonts, which was just a copy-and-paste job. The whole thing seems baroque when I write it out fully, but I'm happy that JavaScript is no longer required to read the blog.</p>
+<p>Now for some vim trivia. I had to go back and change the LaTeX delimiters in all the blog posts. MathJax uses $ as a delimiter for inline math mode, and $$ for display math mode. markdown-katex uses $` and `$ for inline math mode, and...</p>
+<div class="codehilite"><pre><span></span><code>```math
+{insert maths here}
+```
+</code></pre></div>
+
+
+<p>...for display math mode. I used a vim macro to replace the inline delimiters, with the following key presses: <code>qa/\$RETa`ESCni`ESCwq</code>. It finds the next pair of LaTeX delimiters (e.g. <code>$x^2+1$</code>) and converts them to the new format (<code>$`x^2+1`$</code>).</p>
+<p>Here's a breakdown of how that works.</p>
 <ul>
-<li>fix thumbnail link.</li>
+<li><code>qa</code> starts recording a macro in register <code>a</code>.</li>
+<li><code>/\$RET</code> searches for the next dollar sign and moves the cursor there. RET is the enter/return key.</li>
+<li><code>a`ESC</code> enters insert mode <em>after</em> the cursor, writes a backtick, and exits insert mode. ESC is the escape key. </li>
+<li><code>n</code> continues the search, moving the cursor to the next dollar sign.</li>
+<li><code>i`ESC</code> enters insert mode <em>before</em> the cursor, writes a backtick, and exits insert mode.</li>
+<li><code>w</code> moves the cursor forward by 1 word so that the macro doesn't get stuck on the $ we just processed.</li>
+<li><code>q</code> stops recording the macro.</li>
 </ul>
+<p>I could type <code>@a</code> to run the macro once, then <code>.</code> to repeat it after that. It's much faster and less error-prone than fixing such things manually, obviously, but I also feel that vim is more suited to this task than, say, a Python script. It's so easy to record a macro, and you can catch errors as they happen. I would go with Python if I had to change more than a handful of files, though.</p>
 <hr>
-<p><a href="/blog.html">Back to blog</a></p>
-<p><a href="/feed.xml"><img src="/static/img/rss.png"></a> <a href="https://github.com/Kevinpgalligan"><img src="/static/img/github.png"></a></p>
-<p>Contact at <i>galligankevinp@gmail.com</i>. I'm always happy to receive emails!</p>
+<ul>
+<li><a href="/blog.html">Back to blog</a></li>
+<li><a href="/feed.xml">RSS feed</a></li>
+</ul>
+<p>I'd be happy to hear from you at <i>galligankevinp@gmail.com</i>.</p>
 
 </body>
 </html>
