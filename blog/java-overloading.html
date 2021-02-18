@@ -25,8 +25,7 @@
         <a href="/index.html" class="navlink">about</a>
         • <a href="/blog.html" class="navlink">blog</a>
         • <a href="/software.html" class="navlink">software</a>
-        • <a href="/feed.xml"><img class="navbar-img" src="/static/img/rss.png"></a>
-        • <a href="https://github.com/Kevinpgalligan"><img class="navbar-img" src="/static/img/github.png"></a>
+        • <a href="/feed.xml" class="navlink">rss</a>
         </nav>
         </div>
     </header>
@@ -46,17 +45,17 @@
 <p><em>Operator overloading</em> is where a programming language lets you add rules, so that the way an operator acts is based on the stuff that you give it. You can add rules for the "plus" operator so that it works when you add counts (<code>1+1</code>), or strings (<code>"hello " + "world"</code>), or complex numbers (<code>Complex(1, 1) + Complex(1, 1)</code>). Java has some of these rules, but the folks who make Java can't think of all the rules you'll need in your life. That's why it's good to let folks add their own rules.</p>
 <p>A <em>number</em>, by the way, is a count. A <em>complex number</em> is a number with a real and a non-real part.</p>
 <p>To show a case where operator overloading is of great use, let's look at <em>BigInteger</em>, a type in the Java programming language that can store a number of any size. If you do math with a lot of BigIntegers, it's a mess. Take a look and see. What do you think this BigInteger math does?</p>
-<div class="codehilite"><pre><span></span><code><span class="kd">public</span> <span class="n">BigInteger</span> <span class="nf">f</span><span class="p">(</span><span class="n">BigInteger</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="n">x</span><span class="p">.</span><span class="na">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="na">multiply</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="na">plus</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="na">multiply</span><span class="p">(</span><span class="mi">3</span><span class="p">)).</span><span class="na">minus</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
-<span class="p">}</span>
-</code></pre></div>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="n">BigInteger</span> <span class="nf">f</span><span class="o">(</span><span class="n">BigInteger</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="mi">2</span><span class="o">).</span><span class="na">multiply</span><span class="o">(</span><span class="mi">2</span><span class="o">).</span><span class="na">plus</span><span class="o">(</span><span class="n">x</span><span class="o">.</span><span class="na">multiply</span><span class="o">(</span><span class="mi">3</span><span class="o">)).</span><span class="na">minus</span><span class="o">(</span><span class="mi">5</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
 
 
 <p>Here is the same code but with operator overloading.</p>
-<div class="codehilite"><pre><span></span><code><span class="kd">public</span> <span class="n">BigInteger</span> <span class="nf">f</span><span class="p">(</span><span class="n">BigInteger</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">x</span> <span class="o">-</span> <span class="mi">5</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="n">BigInteger</span> <span class="nf">f</span><span class="o">(</span><span class="n">BigInteger</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">x</span> <span class="o">-</span> <span class="mi">5</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
 
 
 <p>It is the quadratic equation <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>x</mi><mo>−</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">2x^2 + 3x - 5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord">2</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">3</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">5</span></span></span></span>. A <em>quadratic equation</em> is... well, let's leave that for the next day. With no operator overloading, the code is hard to read and bugs can slip in. It gets worse as the number of BigIntegers you use goes up.</p>

@@ -27,8 +27,7 @@
         <a href="/index.html" class="navlink">about</a>
         • <a href="/blog.html" class="navlink">blog</a>
         • <a href="/software.html" class="navlink">software</a>
-        • <a href="/feed.xml"><img class="navbar-img" src="/static/img/rss.png"></a>
-        • <a href="https://github.com/Kevinpgalligan"><img class="navbar-img" src="/static/img/github.png"></a>
+        • <a href="/feed.xml" class="navlink">rss</a>
         </nav>
         </div>
     </header>
@@ -40,7 +39,7 @@
 <p>The Board of Directors are pleased to announce that the blog's LaTeX rendering is now done at build time.</p>
 <p>Previously, readers had to download MathJax from a CDN somewhere. Well, their browsers did. Then the MathJax script converted all LaTeX on the page to HTML, and downloaded CSS files and fonts to make the HTML look pretty.</p>
 <p>This always stuck in my throat. It meant that the site couldn't render properly without JavaScript or without an internet connection. The CDN could vanish without warning. And it seemed unnecessary -- why shouldn't I be able to render when I build the site, rather than forcing people to download a (probably massive) rendering script?</p>
-<p>I came across a Flask plugin the other day called <a href="https://github.com/mbarkhau/markdown-katex">markdown-katex</a> that resolved this gag-worthy state of affairs.</p>
+<p>I came across a Python Markdown plugin the other day called <a href="https://github.com/mbarkhau/markdown-katex">markdown-katex</a> that resolved this gag-worthy state of affairs.</p>
 <p>Here's the build process and how markdown-katex now fits into it:</p>
 <ol>
 <li>I push the shiny "build" button. This spins up a Flask server. Flask is a Python web server with lots of plugins.</li>
@@ -50,10 +49,10 @@
 </ol>
 <p>Oh, I also needed to start serving the KaTeX CSS files and fonts, which was just a copy-and-paste job. The whole thing seems baroque when I write it out fully, but I'm happy that JavaScript is no longer required to read the blog.</p>
 <p>Now for some vim trivia. I had to go back and change the LaTeX delimiters in all the blog posts. MathJax uses $ as a delimiter for inline math mode, and $$ for display math mode. markdown-katex uses $` and `$ for inline math mode, and...</p>
-<div class="codehilite"><pre><span></span><code>```math
+<div class="codehilite"><pre><span></span>```math
 {insert maths here}
 ```
-</code></pre></div>
+</pre></div>
 
 
 <p>...for display math mode. I used a vim macro to replace the inline delimiters, with the following key presses: <code>qa/\$RETa`ESCni`ESCwq</code>. It finds the next pair of LaTeX delimiters (e.g. <code>$x^2+1$</code>) and converts them to the new format (<code>$`x^2+1`$</code>).</p>
