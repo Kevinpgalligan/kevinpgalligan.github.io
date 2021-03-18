@@ -49,11 +49,10 @@
 </ol>
 <p>Oh, I also needed to start serving the KaTeX CSS files and fonts, which was just a copy-and-paste job. The whole thing seems baroque when I write it out fully, but I'm happy that JavaScript is no longer required to read the blog.</p>
 <p>Now for some vim trivia. I had to go back and change the LaTeX delimiters in all the blog posts. MathJax uses $ as a delimiter for inline math mode, and $$ for display math mode. markdown-katex uses $` and `$ for inline math mode, and...</p>
-<div class="codehilite"><pre><span></span>```math
+<div class="codehilite"><pre><span></span><code>```math
 {insert maths here}
 ```
-</pre></div>
-
+</code></pre></div>
 
 <p>...for display math mode. I used a vim macro to replace the inline delimiters, with the following key presses: <code>qa/\$RETa`ESCni`ESCwq</code>. It finds the next pair of LaTeX delimiters (e.g. <code>$x^2+1$</code>) and converts them to the new format (<code>$`x^2+1`$</code>).</p>
 <p>Here's a breakdown of how that works.</p>

@@ -38,48 +38,42 @@
 <hr>
 <h3 id="get-the-last-element">Get the last element</h3>
 <p>0-indexing:</p>
-<div class="codehilite"><pre><span></span>arr[len(arr)-1]
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code>arr[len(arr)-1]
+</code></pre></div>
 
 <p>1-indexing:</p>
-<div class="codehilite"><pre><span></span>arr[len(arr)]
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code>arr[len(arr)]
+</code></pre></div>
 
 <p>There are <em>n</em> elements in the array. The <em>n</em>th element.</p>
 <h3 id="negative-indexing">Negative indexing</h3>
 <p>Symmetry when 1-indexing: arr[1] and arr[-1]</p>
 <h3 id="offsets">Offsets</h3>
 <p>You have index k, you wanna loop over 5 elements starting from k.</p>
-<div class="codehilite"><pre><span></span>for (i = k; i &lt; k+5; i++) {
+<div class="codehilite"><pre><span></span><code>for (i = k; i &lt; k+5; i++) {
     // do something with arr[i]
 }
-</pre></div>
-
+</code></pre></div>
 
 <h3 id="intervals">Intervals</h3>
 <p>It's the same regardless of the indexing scheme you use.</p>
 <p>Except... number of elements starting at index <em>n</em> and back to the start.</p>
 <p>0-indexing:</p>
-<div class="codehilite"><pre><span></span>n+1
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code>n+1
+</code></pre></div>
 
 <p>1-indexing:</p>
-<div class="codehilite"><pre><span></span>n
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code>n
+</code></pre></div>
 
 <p>Number of elements BEFORE index <em>n</em> (exclusive).</p>
 <p>0-indexing:</p>
-<div class="codehilite"><pre><span></span>n
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code>n
+</code></pre></div>
 
 <p>1-indexing:</p>
-<div class="codehilite"><pre><span></span>n-1
-</pre></div>
+<div class="codehilite"><pre><span></span><code>n-1
+</code></pre></div>
 <hr>
 <ul>
 <li><a href="/blog.html">Back to blog</a></li>

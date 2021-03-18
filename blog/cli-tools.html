@@ -37,26 +37,24 @@
 <p>Tags: <a href="/blog/tag/python.html">python</a> <a href="/blog/tag/tutorial.html">tutorial</a> </p>
 <hr>
 <p>Let's make our own version of grep, nicknamed dumbgrep. Along the way, we'll learn about 19th-century Russian literature and how to make command line interface (CLI) tools in Python.</p>
-<div class="codehilite"><pre><span></span>$ grep existence &lt;/tmp/war-and-peace.txt
+<div class="codehilite"><pre><span></span><code>$ grep existence &lt;/tmp/war-and-peace.txt
 in this part of the house and did not even know of the existence of
 even wish to know of his existence but would now have been offended
 [...]
-</pre></div>
-
+</code></pre></div>
 
 <p>Why Python? Python's <code>argparse</code> package makes it easy to handle the parsing side of things. And using the Python Package Index (PyPI), you can easily deliver a CLI tool to the writhing masses of humanity.</p>
 <h3 id="baby-steps">Baby steps 👶</h3>
 <p>You'll need Python 3 if you want to follow along. For reference, the full program is available <a href="https://github.com/Kevinpgalligan/dumbgrep">here</a>. Shamefully, I've only tested it on Linux, so there might be extra hoop-jumping required to set it up on Windows.</p>
 <p>Here's the skeleton of our project.</p>
-<div class="codehilite"><pre><span></span>dumbgrep/
+<div class="codehilite"><pre><span></span><code>dumbgrep/
 ├── scripts
 │   └── dumbgrep
 ├── setup.py
 └── src
     └── dumbgrepcli
             └── __init__.py
-</pre></div>
-
+</code></pre></div>
 
 <ul>
 <li><strong>dumbgrep</strong> is the Python script that a user can call from the CLI.</li>
@@ -65,15 +63,14 @@ even wish to know of his existence but would now have been offended
 </ul>
 <p>Why not dump all of our Python code into the <strong>dumbgrep</strong> file? This more complicated structure allows us to split the code into multiple files and even multiple subpackages, which will be useful if the codebase grows too big. It's also easier to add tests this way, if you're boring like that.</p>
 <p>Let's write the <strong>dumbgrep</strong> script. All it does is call the <code>main()</code> function of the <code>dumbgrepcli</code> package, which we'll write later.</p>
-<div class="codehilite"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/env python3</span>
 <span class="kn">import</span> <span class="nn">dumbgrepcli</span>
 <span class="n">dumbgrepcli</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>The only thing about this that might possibly be unusual to a Python afficionado is the so-called <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)">shebang</a> line at the start, which basically informs Unix-like systems that the script should be run using Python 3.</p>
 <p>Next, here's what we might write in <strong>setup.py</strong>. This determines how to build the package and how to upload it to PyPI.</p>
-<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span>
 <span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">find_packages</span>
 
 <span class="n">setup</span><span class="p">(</span>
@@ -93,12 +90,11 @@ even wish to know of his existence but would now have been offended
     <span class="p">],</span>
     <span class="n">install_requires</span><span class="o">=</span><span class="p">[]</span>
 <span class="p">)</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>Most of the fields are self-explanatory. "name" is the package's name on PyPI, which must be unique. The files under the "scripts" field will be installed to a place where the user can call them from the command line.</p>
 <p>As an aside: if you add a Markdown-formatted README to your project, then a useful trick is to reuse it as the long description of your package on PyPI.</p>
-<div class="codehilite"><pre><span></span><span class="o">...</span>
+<div class="codehilite"><pre><span></span><code><span class="o">...</span>
 <span class="hll"><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;README.md&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 </span><span class="hll">    <span class="n">long_description</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 </span>
@@ -108,28 +104,26 @@ even wish to know of his existence but would now have been offended
 </span><span class="hll">    <span class="n">long_description_content_type</span><span class="o">=</span><span class="s2">&quot;text/markdown&quot;</span><span class="p">,</span>
 </span>    <span class="o">...</span>
 <span class="p">)</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>That's the boring stuff out of the way! Now we can move on to plagiarising grep.</p>
 <h3 id="globally-search-for-a-regular-expression-and-print-matching-lines">G(lobally search for a) R(egular) E(xpression and) P(rint matching lines)</h3>
 <p>Here's how we start our implementation of grep in <strong>__init__.py</strong>.</p>
-<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">argparse</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">argparse</span>
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;A replacement for grep.&quot;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;pattern&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the pattern to search for&quot;</span><span class="p">)</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pattern</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pattern</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>We import Python's <code>argparse</code> module, which we'll use for argument-parsing. We define the long-awaited <code>main()</code> function. There's boilerplate code at the bottom that calls <code>main()</code> when we execute the file directly, just so we can test it. Within <code>main()</code>, we create an <code>ArgumentParser</code>, add a string argument called "pattern" to it, parse the command line arguments, and finally, print out the value of the "pattern" argument.</p>
 <p>This already gets us a lot of stuff. We have nicely-formatted help, by default.</p>
-<div class="codehilite"><pre><span></span>$ python3 src/dumbgrepcli/__init__.py -h
+<div class="codehilite"><pre><span></span><code>$ python3 src/dumbgrepcli/__init__.py -h
 usage: __init__.py [-h] pattern
 
 A replacement for grep.
@@ -139,24 +133,21 @@ positional arguments:
 
 optional arguments:
   -h, --help  show this help message and exit
-</pre></div>
-
+</code></pre></div>
 
 <p>If a user forgets to provide a pattern, they get a nice error message.</p>
-<div class="codehilite"><pre><span></span>$ python3 src/dumbgrepcli/__init__.py
+<div class="codehilite"><pre><span></span><code>$ python3 src/dumbgrepcli/__init__.py
 usage: __init__.py [-h] pattern
 __init__.py: error: the following arguments are required: pattern
-</pre></div>
-
+</code></pre></div>
 
 <p>And we can access the value of the "pattern" argument through <code>args.pattern</code>.</p>
-<div class="codehilite"><pre><span></span>$ python3 src/dumbgrepcli/__init__.py hello
+<div class="codehilite"><pre><span></span><code>$ python3 src/dumbgrepcli/__init__.py hello
 hello
-</pre></div>
-
+</code></pre></div>
 
 <p>All that remains is to code up the logic of grep. This is rather easy in Python, since it has a built-in regex package.</p>
-<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">argparse</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">argparse</span>
 <span class="hll"><span class="kn">import</span> <span class="nn">sys</span>
 </span><span class="hll"><span class="kn">import</span> <span class="nn">re</span>
 </span>
@@ -171,69 +162,63 @@ hello
 </span>
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>We create a <code>Pattern</code> object based on the pattern provided by the user, and all lines of input that match this pattern are printed to standard output.</p>
 <p>And that's it! We've recreated grep. Let's set up a virtual environment where we can install this bad boy and test it out. (A virtual environment is a self-contained Python installation that you can experiment on without mucking up your main Python installation).</p>
 <h5 id="create-and-activate-the-environment">Create and activate the environment</h5>
-<div class="codehilite"><pre><span></span>$ pwd
+<div class="codehilite"><pre><span></span><code>$ pwd
 /home/kevingal/proyectos/dumbgrep
 $ mkdir env
 $ python3 -m venv env/
 $ source env/bin/activate
 (env) $ which python3
 /home/kevingal/proyectos/dumbgrep/env/bin/python3
-</pre></div>
-
+</code></pre></div>
 
 <h5 id="install-dumbgrep">Install dumbgrep</h5>
-<div class="codehilite"><pre><span></span>(env) $ pip install .
+<div class="codehilite"><pre><span></span><code>(env) $ pip install .
 running install
 running bdist_egg
 running egg_info
 [...]
 (env) $ which dumbgrep
 /home/kevingal/proyectos/dumbgrep/env/bin/dumbgrep
-</pre></div>
-
+</code></pre></div>
 
 <h5 id="test-it-out-then-deactivate-the-environment">Test it out, then deactivate the environment</h5>
-<div class="codehilite"><pre><span></span>(env) $ dumbgrep existence &lt;/tmp/war-and-peace.txt
+<div class="codehilite"><pre><span></span><code>(env) $ dumbgrep existence &lt;/tmp/war-and-peace.txt
 in this part of the house and did not even know of the existence of
 even wish to know of his existence but would now have been offended
 [...]
 (env) $ deactivate
 $
-</pre></div>
-
+</code></pre></div>
 
 <p>In the next section we'll explore <code>argparse</code> a bit more by adding some bells and whistles to dumbgrep.</p>
 <h3 id="milk-and-sugar">Milk and sugar</h3>
 <p>Let's say we want to recreate grep's "-v" flag, which means that only lines NOT matching the input pattern are printed. All we have to do is add a boolean flag to our argument parser to check whether we should invert the matches. And then tweak the matching logic to use that flag.</p>
-<div class="codehilite"><pre><span></span><span class="o">...</span>
+<div class="codehilite"><pre><span></span><code><span class="o">...</span>
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="o">...</span>
-<span class="hll">    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;invert&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+<span class="hll">    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;invert&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 </span><span class="hll">        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;invert matches&quot;</span><span class="p">)</span>
 </span>    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
     <span class="n">regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pattern</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">:</span>
 <span class="hll">        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">invert</span> <span class="o">!=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">regex</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">line</span><span class="p">)):</span>
 </span>            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>Yippee.</p>
-<div class="codehilite"><pre><span></span>$ python3 src/dumbgrepcli/__init__.py -v existence &lt;/tmp/war-and-peace.txt
+<div class="codehilite"><pre><span></span><code>$ python3 src/dumbgrepcli/__init__.py -v existence &lt;/tmp/war-and-peace.txt
 The Project Gutenberg EBook of War and Peace, by Leo Tolstoy
 This eBook is for the use of anyone anywhere at no cost and with almost
 [...]
-</pre></div>
-
+</code></pre></div>
 
 <p>How about the "--max-count" parameter, which limits the number of lines that grep prints out? We accept the limit as an integer argument, and count the number of matched lines so that we can exit early once the limit has been reached.</p>
-<div class="codehilite"><pre><span></span><span class="o">...</span>
+<div class="codehilite"><pre><span></span><code><span class="o">...</span>
 <span class="hll"><span class="kn">import</span> <span class="nn">math</span>
 </span>
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
@@ -248,18 +233,16 @@ This eBook is for the use of anyone anywhere at no cost and with almost
 </span>            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 <span class="hll">        <span class="k">if</span> <span class="n">matches</span> <span class="o">&gt;=</span> <span class="n">args</span><span class="o">.</span><span class="n">max_count</span><span class="p">:</span>
 </span><span class="hll">            <span class="k">break</span>
-</span></pre></div>
-
+</span></code></pre></div>
 
 <p>It works!</p>
-<div class="codehilite"><pre><span></span>$ python3 src/dumbgrepcli/__init__.py -m 1 existence &lt;/tmp/war-and-peace.txt
+<div class="codehilite"><pre><span></span><code>$ python3 src/dumbgrepcli/__init__.py -m 1 existence &lt;/tmp/war-and-peace.txt
 in this part of the house and did not even know of the existence of
 $
-</pre></div>
-
+</code></pre></div>
 
 <p>Okay, okay. That's enough of that. There's one last trick I'd like to share before we finish, however: colour highlighting in the terminal. If we want to highlight the matching part of a line, then we can use escape codes to modify font colour in the terminal. First we store the <code>Match</code> object returned by <code>regex.search(...)</code> in its own variable, since we'll need it later to isolate the part of the line that matches the pattern. And we call a new function, <code>highlight()</code>, to format the output.</p>
-<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="o">...</span>
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">:</span>
 <span class="hll">        <span class="n">match</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
@@ -267,11 +250,10 @@ $
 </span>            <span class="o">...</span>
 <span class="hll">            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">highlight</span><span class="p">(</span><span class="n">match</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span>
 </span>        <span class="o">...</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>Here's the <code>highlight()</code> function. Main things to note: 1) to avoid having ugly escape codes in our output when we write to a file, we check whether we're writing to a terminal through <code>sys.stdout.isatty()</code>; 2) the first escape code we write changes the colour of all following text to red, and it's only after we write the reset escape code that this effect is undone.</p>
-<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">highlight</span><span class="p">(</span><span class="n">match</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">highlight</span><span class="p">(</span><span class="n">match</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">match</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">isatty</span><span class="p">():</span>
         <span class="k">return</span> <span class="n">line</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="n">match</span><span class="o">.</span><span class="n">start</span><span class="p">()]</span>
@@ -279,8 +261,7 @@ $
         <span class="o">+</span> <span class="n">line</span><span class="p">[</span><span class="n">match</span><span class="o">.</span><span class="n">start</span><span class="p">():</span><span class="n">match</span><span class="o">.</span><span class="n">end</span><span class="p">()]</span>
         <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[0m&quot;</span> <span class="c1"># reset</span>
         <span class="o">+</span> <span class="n">line</span><span class="p">[</span><span class="n">match</span><span class="o">.</span><span class="n">end</span><span class="p">():])</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>And the result:
 <figure></p>
@@ -288,22 +269,19 @@ $
      alt="Highlighted text from War & Peace, output of dumbgrep in the terminal."
      class="centered"></p>
 <figcaption>Heavy stuff.</figcaption>
-
 </figure>
-
 <h3 id="distribute-to-the-clammering-public">Distribute to the clammering public</h3>
 <p>If we're feeling particularly benevolent and charitable, then we can upload our nifty tool to PyPI. After all, why would anyone want to use the original grep when they could use our version?</p>
-<div class="codehilite"><pre><span></span>$ time python3 src/dumbgrepcli/__init__.py existence &lt;/tmp/war-and-peace.txt &gt;/dev/null
+<div class="codehilite"><pre><span></span><code>$ time python3 src/dumbgrepcli/__init__.py existence &lt;/tmp/war-and-peace.txt &gt;/dev/null
 user    0m0.086s
 $ time grep existence &lt;/tmp/war-and-peace.txt &gt;/dev/null
 user    0m0.000s
-</pre></div>
-
+</code></pre></div>
 
 <p>Oh, right...</p>
 <p>Anyway, here's an excellent guide that describes the whole process: <a href="https://packaging.python.org/tutorials/packaging-projects/">https://packaging.python.org/tutorials/packaging-projects/</a>. There's no point in duplicating the instructions here, since the guide is thorough and straightforward. Once dumbgrep is on PyPI, anyone can download it by running <code>pip3 install dumbgrep-cli</code>, as per the package name we defined in <strong>setup.py</strong>.</p>
 <p>That's it. The full dumbgrep code is available <a href="https://github.com/Kevinpgalligan/dumbgrep">here</a>. You can use it as a template for your own CLI tools. I've also created 2 actually kinda useful CLI tools that you can check out for inspiration: <a href="https://github.com/Kevinpgalligan/pseu">pseu</a> and <a href="https://github.com/Kevinpgalligan/bs">bs</a>.</p>
-<div class="codehilite"><pre><span></span>$ pseu pick &quot;good life choice&quot; &quot;bad life choice&quot;
+<div class="codehilite"><pre><span></span><code>$ pseu pick &quot;good life choice&quot; &quot;bad life choice&quot;
 bad life choice
 $ pseu roll 1d6
 3
@@ -312,7 +290,7 @@ $ bs FFFE
   decimal     65534
   binary      1111111111111110
   octal       177776
-</pre></div>
+</code></pre></div>
 <hr>
 <ul>
 <li><a href="/blog.html">Back to blog</a></li>
