@@ -4,10 +4,40 @@
     <title>Kevin's Blog</title>
     <link>https://kevingal.com</link>
     <description>Maths, computers and stuff.</description>
-    <pubDate>Wed, 17 Mar 2021 00:00:00 GMT</pubDate>
-    <lastBuildDate>Wed, 17 Mar 2021 00:00:00 GMT</lastBuildDate>
+    <pubDate>Fri, 02 Apr 2021 00:00:00 GMT</pubDate>
+    <lastBuildDate>Fri, 02 Apr 2021 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://kevingal.com/feed.xml" rel="self" type="application/rss+xml" />
     
+    <item>
+        <title>The grand stretch in the evening, visualised</title>
+        <description>&lt;p&gt;I made some graphs that show how much daylight there will be throughout 2021 in different parts of the world. I&#39;m sure it has been done before, but fuck it.&lt;/p&gt;
+&lt;p&gt;Here&#39;s Dublin, Ireland.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/static/img/daylight/ireland.png&#34;
+     alt=&#34;Ireland&#39;s daylight hours. Month on the x-axis, time of day on the y-axis. Daylight hours are shaded in yellow. It peaks at about 16 hours of daylight in summer, and drops to about 7 hours of daylight in winter.&#34;
+     class=&#34;centered&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Irish people speak with reverence of the &#34;grand stretch in the evening&#34; during summer months. That&#39;s because we have long sunny evenings, which last until 9 or 10 o&#39;clock in July. You can also see the sudden jumps caused by daylight savings (&#34;spring forward, fall back&#34;), and why that might be desirable. At the end of March, the little sunlight we have is being squandered during the early morning when everyone is still in bed. A clock shift avoids that.&lt;/p&gt;
+&lt;p&gt;In Kittilä, Finland, things are even more extreme. So extreme that it exposed several bugs in my plotting code.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/static/img/daylight/finland.png&#34;
+     alt=&#34;Finland&#39;s daylight hours. There are days during the summer where it&#39;s never dark, and days during the winter where it&#39;s always dark.&#34;
+     class=&#34;centered&#34;&gt;&lt;/p&gt;
+&lt;p&gt;They experience something called &#34;midnight sun&#34; during the summer, where the sun is visible 24/7. And &#34;polar night&#34; during the winter, where it&#39;s dark 24/7. Such is the fate of those who dwell near the north pole.&lt;/p&gt;
+&lt;p&gt;Then you have boring, plain-Jane Quito in Ecuador&lt;sup id=&#34;fnref:quito&#34;&gt;&lt;a class=&#34;footnote-ref&#34; href=&#34;#fn:quito&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. Daylight hours don&#39;t change much in Quito because it&#39;s near the equator. Truly no match for the grand stretch in Ireland.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/static/img/daylight/ecuador.png&#34;
+     alt=&#34;Ecuador&#39;s daylight hours. Remains constant at 12-ish hours&#34;
+     class=&#34;centered&#34;&gt;&lt;/p&gt;
+&lt;p&gt;The beautiful, industrial-strength code behind these powerful and insightful graphs can be found at &lt;a href=&#34;https://github.com/Kevinpgalligan/daylight-plots&#34;&gt;https://github.com/Kevinpgalligan/daylight-plots&lt;/a&gt;. There is no irony in the previous sentence. I pulled the sunrise and sunset data from &lt;a href=&#34;https://dateandtime.info/&#34;&gt;https://dateandtime.info/&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&#34;footnote&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:quito&#34;&gt;
+&lt;p&gt;I know nothing about Quito and I&#39;m sure it&#39;s a lovely place.&amp;#160;&lt;a class=&#34;footnote-backref&#34; href=&#34;#fnref:quito&#34; title=&#34;Jump back to footnote 1 in the text&#34;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</description>
+        <link>https://kevingal.com/blog/daylight.html</link>
+        <pubDate>Fri, 02 Apr 2021 00:00:00 GMT</pubDate>
+        <guid>https://kevingal.com/blog/daylight.html</guid>
+    </item>
     <item>
         <title>toki poems</title>
         <description>&lt;p&gt;I wrote a cute little program to generate poetry in toki pona, the 125-word language that was published by Sonja Lang in 2001.&lt;/p&gt;
@@ -79,7 +109,7 @@ tawa mi la tan.  &lt;/p&gt;
 
 &lt;p&gt;We can stop here, because &#34;pona&#34; happens to rhyme with &#34;sona&#34;. We&#39;d also have to backtrack if we exceeded the number of syllables allowed on the line.&lt;/p&gt;
 &lt;p&gt;That&#39;s pretty much how the poem generation works. A concise description would be: weighted random search through a graph, with backtracking.&lt;/p&gt;
-&lt;p&gt;Maybe, rather than throwing this poem generator on the trash heap of all the useless programs I&#39;ve written, it&#39;l be the basis for a Twitter or Mastodon bot. Stay tuned. In the meantime, &lt;a href=&#34;https://github.com/Kevinpgalligan/toki-poems&#34;&gt;here&#39;s the code&lt;/a&gt;, and below are a few more poems I&#39;ve generated.&lt;/p&gt;
+&lt;p&gt;Maybe, rather than throwing this poem generator on the trash heap of all the useless programs I&#39;ve written, it&#39;ll be the basis for a Twitter or Mastodon bot. Stay tuned. In the meantime, &lt;a href=&#34;https://github.com/Kevinpgalligan/toki-poems&#34;&gt;here&#39;s the code&lt;/a&gt;, and below are a few more poems I&#39;ve generated.&lt;/p&gt;
 &lt;p&gt;A limerick (rhyming scheme &lt;em&gt;aabba&lt;/em&gt;).&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;a a mama mije ala pali wan,&lt;br /&gt;
@@ -1060,140 +1090,6 @@ count 3728058
         <link>https://kevingal.com/blog/interval-length.html</link>
         <pubDate>Sat, 01 Feb 2020 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/interval-length.html</guid>
-    </item>
-    <item>
-        <title>Finding Mona Lisa in the Game of Life</title>
-        <description>&lt;p&gt;The &lt;a href=&#34;https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life&#34;&gt;Game of Life&lt;/a&gt; is a 2d, grid-shaped petri dish. Each grid square in the dish is a cell that can be either alive or dead.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/mona-lisa-gol/some-life.gif&#34;
-     alt=&#34;Evolution of Life for a number of states.&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;The petri dish changes state according to simple rules:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;A dead cell comes to life if it has 3 adjacent cells (or &#34;neighbours&#34;) that are alive, through reproduction.&lt;/li&gt;
-&lt;li&gt;A live cell with more than 3 live neighbours dies due to overcompetition.&lt;/li&gt;
-&lt;li&gt;A live cell with fewer than 2 live neighbours dies due to loneliness.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Every cell in the above animation lives and dies according to these rules.&lt;/p&gt;
-&lt;p&gt;Besides resulting in cool-looking patterns, it has been proven that the Game of Life (&#34;Life&#34; for short) can simulate anything that can be done by a computer, whether that&#39;s summing numbers or captioning images of cats. Not bad for a petri dish.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/mona-lisa-gol/spaceship.gif&#34;
-     alt=&#34;Spaceship pattern moving along in Life&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;What does this have to do with Mona Lisa? It&#39;s easy to load a black &amp;amp; white picture as a Life state, where black pixels are live cells and white pixels are dead cells. This allows us to run a Life simulation with a state that looks like Mona Lisa. The dark regions die off immediately due to overpopulation, leaving an outline, which then melts away further and leaves only hints of the original picture.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/mona-lisa-gol/mona-start.gif&#34;
-     alt=&#34;Evolution of Life with Mona Lisa picture as starting state&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;This looks kinda cool, but what if we want to find a Life state that eventually, after following the rules of Life for a few rounds, reaches a state that looks like Mona Lisa? This requires working backwards instead of forwards from the target picture, which is a &lt;strong&gt;much&lt;/strong&gt; more difficult problem.&lt;/p&gt;
-&lt;p&gt;In this article, we&#39;re going to explore just how difficult this problem is, and how it can be attempted using what are known as &#34;SAT solvers&#34;. We&#39;ll then look at animations of flowers, Steve Buscemi, and other objects of interest that we can generate with the solution.&lt;/p&gt;
-&lt;h3 id=&#34;life-the-universe-and-sat-solvers&#34;&gt;Life, the Universe and SAT Solvers&lt;/h3&gt;
-&lt;p&gt;We call Life state A the &#34;parent&#34; of state B if A turns into B by following the rules of Life. The reason that it&#39;s difficult to find the parent of a state is that the rules of Life are non-reversible. There&#39;s no direct way to go from a Life state to its parent, and in fact, it&#39;s possible for a state to have multiple parents or even no parents.&lt;/p&gt;
-&lt;p&gt;What we &lt;em&gt;can&lt;/em&gt; do is construct a boolean equation that captures the conditions that any parent state of our target state must satisfy, then solve it to find a parent, if a parent exists.&lt;/p&gt;
-&lt;p&gt;(Note: a boolean equation is an equation where the variables take on true / false values, and where the operators, instead of the pluses and minuses that we usually see, are replaced by boolean operators such as AND and OR. For example, the equation &lt;code&gt;sour AND (NOT sweet)&lt;/code&gt; is solved by setting &lt;code&gt;sour:=true&lt;/code&gt; and &lt;code&gt;sweet:=false&lt;/code&gt;. &lt;a href=&#34;https://en.wikipedia.org/wiki/Boolean_algebra&#34;&gt;Read more here&lt;/a&gt;).&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/mona-lisa-gol/scream.gif&#34;
-     alt=&#34;Evolution of the Scream painting as a Life state&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;In the boolean equation that we construct, each variable corresponds to a cell and the value of the variable indicates the health of the cell. False means that the cell is dead, while true means that it&#39;s alive. If we find a set of variable assignments that causes the equation to evaluate to true, then the corresponding Life state (with false/true variables corresponding to dead/live cells) is a parent of our target state.&lt;/p&gt;
-&lt;p&gt;What will the equation look like? Let&#39;s consider a 3x3 Life grid as an example.&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;  1 2 3
-a o x x
-b x x x
-c x o x
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;The middle cell, b2, is alive. For it to be alive in this state, one of the following must be true:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;It was alive in the previous state and 2-3 of its neighbours were also alive.&lt;/li&gt;
-&lt;li&gt;It was dead in the previous state and 3 of its neighbours were alive.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;Keeping in mind that true means alive and false means dead, this can be translated to a boolean equation in a fairly literal way.&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;(b2 AND ((a1 AND a2 AND !a3 AND !b1 AND !b3 AND !c1 AND !c2 AND !c3)
-         OR (a1 AND !a2 AND a3 AND !b1 AND !b3 AND !c1 AND !c2 AND !c3)
-         OR ...repeat 82 more times for other valid neighbour combinations))
-OR
-(!b2 AND ((a1 AND a2 AND a3 AND !b1 AND !b3 AND !c1 AND !c2 AND !c3)
-          OR ...repeat 55 more times for other valid neighbour combinations))
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;If we repeat this construction for every cell in the grid and chain them together using ANDs, we end up with an equation that we can solve to find a parent of the target state. And, as it happens, there are many &#34;SAT-solving&#34; programs that search for solutions to boolean equations. Once we have our equation, we can ship it off to our SAT solver of choice and sit back, relaxedly sipping our lattes until it gets back to us with a result.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/mona-lisa-gol/girl-with-a-pearl-earring.gif&#34;
-     alt=&#34;Evolution of the Girl With a Pearl Earring painting as a Life state&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;h3 id=&#34;great-lets-move-on-to-the-pretty-pictures&#34;&gt;Great, let&#39;s move on to the pretty pictures&lt;/h3&gt;
-&lt;p&gt;WAIT. While this is nice in theory, there are significant &#34;buts&#34;.&lt;/p&gt;
-&lt;p&gt;The first &#34;but&#34; is that, as we touched on in the previous section, &lt;em&gt;not all Life states have parents&lt;/em&gt;. Such states are known as &lt;a href=&#34;https://en.wikipedia.org/wiki/Garden_of_Eden_(cellular_automaton)&#34;&gt;Gardens of Eden&lt;/a&gt;. Here&#39;s an example of a Garden of Eden from Wikipedia. It&#39;s impossible to reach this state from any other 9x33 Life state.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/mona-lisa-gol/garden-of-eden-example.png&#34;
-     alt=&#34;An example of a Garden of Eden&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;If our target picture happens to be a Garden of Eden in Life, then the SAT solver will definitely fail to find a parent, because no parent will exist. And the larger a Life state, the more likely it is to be a Garden of Eden, because it has more sub-sections that can possibly be in impossible configurations.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/mona-lisa-gol/starry-night.gif&#34;
-     alt=&#34;Evolution of Starry Night as a Life state&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;The second &#34;but&#34; is that, as the number of cells increases, so too does the difficulty of the problem. Trying to generate a SAT equation for ~1800 cells blew up my program by consuming the entire 1GB of memory that was available to it. The time taken to find the parent of a Life state also starts to become prohibitive with more than ~400 cells. &lt;a href=&#34;https://en.wikipedia.org/wiki/Boolean_satisfiability_problem&#34;&gt;SAT problems&lt;/a&gt;, after all, are in the NP-complete class of problems, which means that they are damn hard to solve with current methods.&lt;/p&gt;
-&lt;p&gt;To demonstrate this, below are the timings I got after running backsearch on random Life states of varying sizes, backsearch being the process of finding a Life state&#39;s parent. This includes the time taken to generate the SAT encoding. For the record, my processor is a wimpy i3-8130U 2.20GHz.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/mona-lisa-gol/cells-vs-backsearch-time.png&#34;
-     alt=&#34;Time for backsearch vs number of cells, seems to grow exponentially&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;As a result of these &#34;buts&#34;, any pictures we use in this article will be 20x20 or less (&amp;lt;=400 cells). Beyond that, the problems take a long time for my computer to solve, and there is often no solution.&lt;/p&gt;
-&lt;p&gt;Here&#39;s the output of backsearch on a modest 13x11 sad face. It manages to find 2 previous states before landing in a Garden of Eden. Interestingly, there&#39;s no hint of the sad face in the first state, and not much more in the second state, although the live cells do seem to converge towards their final positions.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/mona-lisa-gol/sadface.gif&#34;
-     alt=&#34;Life state becomes sad face, found using backsearch&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;h3 id=&#34;the-results&#34;&gt;The results&lt;/h3&gt;
-&lt;p&gt;Here&#39;s the result of running backsearch on Mona Lisa&#39;s face. The parent we find looks nothing like Mona Lisa. It&#39;s also a Garden of Eden, so we&#39;ve run into a dead-end and can&#39;t backsearch any further.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/mona-lisa-gol/mona.gif&#34;
-     alt=&#34;Life becomes Mona Lisa&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;More results, this time on a flower. The parent state found by the SAT solver is, once again, a Garden of Eden. It contains a faint outline of the flower.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/mona-lisa-gol/flower.gif&#34;
-     alt=&#34;Life becomes a flower&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;Marilyn Monroe and her Garden of Eden parent.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/mona-lisa-gol/marilyn.gif&#34;
-     alt=&#34;Life becomes Marilyn Monroe&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;Steve Buscemi, who looks like a pissed-off &lt;a href=&#34;https://www.smbc-comics.com/&#34;&gt;SMBC&lt;/a&gt; character when in black and white.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/mona-lisa-gol/buscemi.gif&#34;
-     alt=&#34;Life becomes Steve Buscemi&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;Aaaaand a puppy.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/mona-lisa-gol/puppy.gif&#34;
-     alt=&#34;Life becomes a puppy&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;Unfortunately, besides the sad face, we only ever manage a single successful backsearch before running into a dead-end.&lt;/p&gt;
-&lt;h3 id=&#34;conclusions&#34;&gt;Conclusions&lt;/h3&gt;
-&lt;p&gt;It&#39;s possible to find parents of Game of Life states, although it&#39;s a difficult problem for computers to solve. We could possibly speed up the search by using a different SAT encoding of the problem. We could also replace MiniSAT with a different SAT solver.&lt;/p&gt;
-&lt;p&gt;The parents found by our backsearch barely resemble the target picture and often turn out to be Gardens of Eden. To find longer chains of Life states that gradually turn into the target picture, we could identify multiple parent states and pick the one that a) most resembles the target picture, and b) has some property that&#39;s less common in Gardens of Eden (more clustered live cells, perhaps?).&lt;/p&gt;
-&lt;p&gt;Finally, the Game of Life is just one of &lt;a href=&#34;https://en.wikipedia.org/wiki/Cellular_automaton&#34;&gt;many possible rulesets&lt;/a&gt; that define the behaviour of petri dishes. It would be interesting to experiment with different rulesets and see if they&#39;re more amenable to the goal of gradually evolving chaos into a picture.&lt;/p&gt;
-&lt;p&gt;On that note, here&#39;s a parting gift. Run this Life state through a 19x19 &lt;a href=&#34;https://www.dcode.fr/game-of-life&#34;&gt;Life simulator&lt;/a&gt; and see what happens.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/mona-lisa-gol/message.png&#34;
-     alt=&#34;Secret message&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;h3 id=&#34;technical-details&#34;&gt;Technical details&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&#34;https://github.com/Kevinpgalligan/MonaLisaGameOfLife&#34;&gt;Here&#39;s the code&lt;/a&gt; to run Life simulations, do backsearch and create GIFs. It&#39;s all in Common Lisp. I&#39;ve only tested it using the SBCL implementation of Common Lisp. The cl-sat library was used as a wrapper to call the MiniSat SAT solver, while the skippy library was used to create GIFs. Credit to the #lispgames IRC community for helping me with my silly questions.&lt;/p&gt;
-&lt;h3 id=&#34;addendum-july-18th-2020&#34;&gt;Addendum (July 18th 2020)&lt;/h3&gt;
-&lt;p&gt;On further reflection, the main limit on size seemed to be cl-sat, both because it was slow to convert the SAT expression to the form expected by SAT solvers and because it exhausted memory rather easily. I imagine it would be possible to handle much larger Life grids by cutting out cl-sat and writing the SAT constraints directly to a file, which could then be passed to your SAT solver of choice.&lt;/p&gt;
-&lt;p&gt;Also, based on Reddit conversation, it seems that you can avoid Gardens of Eden by searching multiple generations into the past in the same SAT expression. To clarify: if you go original -&amp;gt; parent -&amp;gt; grandparent, then parent can turn out to be a Garden of Eden. The proposal is to go directly from original -&amp;gt; grandparent. I don&#39;t know to what extent this would increase the complexity of the expression.&lt;/p&gt;
-&lt;p&gt;Maybe I&#39;ll come back to this some day and find a giant Life state that turns into a detailed portrait of John Conway.&lt;/p&gt;
-&lt;h3 id=&#34;further-reading&#34;&gt;Further reading&lt;/h3&gt;
-&lt;p&gt;Some fun stuff I came across while researching this article.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;My first idea was to use evolutionary algorithms for finding patterns in Life, but &lt;a href=&#34;https://pdfs.semanticscholar.org/ba77/59e4d871d09459e3751d110137a8434591f6.pdf&#34;&gt;this turned out to have been done already&lt;/a&gt; in a paper titled &#34;Generating Interesting Patterns in Conway’s Game of Life Through a Genetic Algorithm&#34; by Alfaro, Mendoza and Tice.&lt;/li&gt;
-&lt;li&gt;I then had the idea to look for specific patterns, such as pictures. I wasted a bunch of time on trying to do this using evolutionary algorithms until realising that the problem could be solved directly using SAT. A brief search brings up multiple backsearch programs for Life &lt;a href=&#34;https://github.com/flopp/gol-sat&#34;&gt;[1]&lt;/a&gt;&lt;a href=&#34;https://www.conwaylife.com/forums/viewtopic.php?f=9&amp;amp;t=3247&#34;&gt;[2]&lt;/a&gt;. They don&#39;t seem to have been applied to find pictures, however.&lt;/li&gt;
-&lt;li&gt;Backwards solver #2 (from the previous point) mentions The Art of Computer Science, Volume 4, Fascicle 6 as a source of information and exercises on backsearch in Life. In particular, it describes a more efficient SAT encoding. I haven&#39;t been able to get my hands on the full text, though.&lt;/li&gt;
-&lt;li&gt;A cool thing: &lt;a href=&#34;https://codegolf.stackexchange.com/questions/38573/paint-a-still-life-or-a-moving-one-draw-an-image-in-the-game-of-life&#34;&gt;still life paintings in Life&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;Another cool thing: &lt;a href=&#34;http://tlrobinson.net/blog/2009/02/game-of-life-generator/&#34;&gt;text &amp;amp; image generator in Life&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;discussion&#34;&gt;Discussion&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.reddit.com/r/programming/comments/ev5nv2/finding_mona_lisa_in_the_game_of_life/&#34;&gt;reddit&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://news.ycombinator.com/item?id=22552006&#34;&gt;Hacker News&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/mona-lisa-gol/venus.gif&#34;
-     alt=&#34;Life state becomes the Birth of Venus&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p class=&#34;tiny&#34;&gt;&lt;a href=&#34;/static/img/mona-lisa-gol/message.gif&#34;&gt;parting gift spoiler&lt;/a&gt;&lt;/p&gt;</description>
-        <link>https://kevingal.com/blog/mona-lisa-gol.html</link>
-        <pubDate>Tue, 28 Jan 2020 00:00:00 GMT</pubDate>
-        <guid>https://kevingal.com/blog/mona-lisa-gol.html</guid>
     </item>
 </channel>
 </rss> 
