@@ -4,13 +4,45 @@
     <title>Kevin's Blog</title>
     <link>https://kevingal.com</link>
     <description>Maths, computers and stuff.</description>
-    <pubDate>Fri, 02 Apr 2021 00:00:00 GMT</pubDate>
-    <lastBuildDate>Fri, 02 Apr 2021 00:00:00 GMT</lastBuildDate>
+    <pubDate>Sat, 03 Apr 2021 00:00:00 GMT</pubDate>
+    <lastBuildDate>Sat, 03 Apr 2021 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://kevingal.com/feed.xml" rel="self" type="application/rss+xml" />
     
     <item>
+        <title>Not Growing a Language</title>
+        <description>&lt;p&gt;A &lt;em&gt;syllable&lt;/em&gt; is a sound that makes up part of a word. In the year two nought nought nought (2000), Guy Steele gave a talk called &lt;a href=&#34;https://www.youtube.com/watch?v=_ahvzDzKdB0&#34;&gt;&#34;Growing a Language&#34;&lt;/a&gt;. He used a schtick in his talk, where he did not speak a word of more than one syllable if he did not first say what it meant.&lt;/p&gt;
+&lt;p&gt;In this post, I will use the same schtick. I have to say up front what some words mean, if you will bear with me.&lt;/p&gt;
+&lt;p&gt;A &lt;em&gt;language&lt;/em&gt; is a set of words and rules for how to use them.&lt;/p&gt;
+&lt;p&gt;A &lt;em&gt;computer&lt;/em&gt; is a tool that moves bits fast.&lt;/p&gt;
+&lt;p&gt;A &lt;em&gt;programming language&lt;/em&gt; is a language that you use to tell a computer what to do.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Java&lt;/em&gt; is a programming language that is a cinch to run on any computer. It cleans up the junk left by your code, and takes care of a lot of small stuff like that for you.&lt;/p&gt;
+&lt;p&gt;Guy&#39;s talk was a talk on the Java programming language. He used the syllable schtick to show that if you take a small language, and you let folks add new rules and words to it, then they can grow the language in the way they want. They can add what they need, and leave out what they don&#39;t need. This way of thought may have come from Guy&#39;s work on the Scheme programming language.&lt;/p&gt;
+&lt;p&gt;An &lt;em&gt;operator&lt;/em&gt; takes two things and maps them to a new thing. You will know the &lt;em&gt;addition&lt;/em&gt; operator, which takes two numbers and adds them. A &lt;em&gt;number&lt;/em&gt;, of course, is a count.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Operator overloading&lt;/em&gt; is where a programming language lets you add rules, so that the way an operator acts is based on the things that you give it. You can add rules for the addition operator so that it works when you add numbers (&lt;code&gt;1+1&lt;/code&gt;), or strings (&lt;code&gt;&#34;hello &#34; + &#34;world&#34;&lt;/code&gt;), or complex numbers (&lt;code&gt;Complex(1, 1) + Complex(1, 1)&lt;/code&gt;). Java doesn&#39;t have operator overloading. It has &lt;em&gt;some&lt;/em&gt;  rules for the addition operator, but the folks who make Java can&#39;t think of all the rules you&#39;ll need in your life. That&#39;s why it&#39;s good to let folks add their own rules.&lt;/p&gt;
+&lt;p&gt;A &lt;em&gt;complex number&lt;/em&gt;, by the way, is a number with a real and a non-real part.&lt;/p&gt;
+&lt;p&gt;Guy Steele thought it would be neat if Java had operator overloading. In his talk he tried to show why it would be neat. At the time, he was part of the team that makes Java. As of now, he still seems to be part of that team. And yet, a score of years have passed, and here we are with no operator overloading. If Guy had a grave, he would turn in it, though to be sure of that we might have to ask him.&lt;/p&gt;
+&lt;p&gt;Let&#39;s look at &lt;em&gt;BigInteger&lt;/em&gt;, a type in Java that can store a number of any size. If you do math with a lot of BigIntegers, it&#39;s a mess. Take a look and see. What do you think this BigInteger math does?&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;n&#34;&gt;BigInteger&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BigInteger&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+  &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;pow&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;multiply&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;plus&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;multiply&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)).&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;minus&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Here is the same code but with operator overloading.&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;n&#34;&gt;BigInteger&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BigInteger&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+  &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;It&#39;s the quadratic equation 2x&lt;sup&gt;2&lt;/sup&gt;+3x-5. A &lt;em&gt;quadratic equation&lt;/em&gt; is... well, let&#39;s leave that for the next day. With no operator overloading, the code is hard to read and bugs can slip in. It gets worse as you use more and more BigIntegers.&lt;/p&gt;
+&lt;p&gt;Some folks say that operator overloading is not worth it. Poor use of operator overloading is worse than any BigInteger mess, they say. But in that way you can nix &lt;em&gt;any&lt;/em&gt; new thing that you might add to a programming language, so I don&#39;t think it&#39;s a strong case. And the fact is, operator overloading would be great for those who want to use Java for math.&lt;/p&gt;
+&lt;p&gt;There are signs that &lt;a href=&#34;https://blogs.oracle.com/javamagazine/is-it-time-for-overloading-in-java&#34;&gt;the folks who own Java&lt;/a&gt; see the need for operator overloading. I sure hope that they, and the rest of the Java team, add it to Java some day, though I haven&#39;t used Java in 2 years.&lt;/p&gt;</description>
+        <link>https://kevingal.com/blog/java-overloading.html</link>
+        <pubDate>Sat, 03 Apr 2021 00:00:00 GMT</pubDate>
+        <guid>https://kevingal.com/blog/java-overloading.html</guid>
+    </item>
+    <item>
         <title>The grand stretch in the evening, visualised</title>
-        <description>&lt;p&gt;I made some graphs that show how much daylight there will be throughout 2021 in different parts of the world. I&#39;m sure it has been done before, but fuck it.&lt;/p&gt;
+        <description>&lt;p&gt;I made some graphs that show how much daylight there will be throughout 2021 in different parts of the world. I&#39;m sure it has been done before, but when has that ever stopped a shameless plagiarist like myself?&lt;/p&gt;
 &lt;p&gt;Here&#39;s Dublin, Ireland.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;/static/img/daylight/ireland.png&#34;
      alt=&#34;Ireland&#39;s daylight hours. Month on the x-axis, time of day on the y-axis. Daylight hours are shaded in yellow. It peaks at about 16 hours of daylight in summer, and drops to about 7 hours of daylight in winter.&#34;
@@ -1039,57 +1071,6 @@ count 3728058
         <link>https://kevingal.com/blog/beatles-and-you.html</link>
         <pubDate>Wed, 01 Apr 2020 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/beatles-and-you.html</guid>
-    </item>
-    <item>
-        <title>Counting the number of days until your birthday and why it&#39;s a useful programming trick</title>
-        <description>&lt;p&gt;Spot quiz! See how many of these calculations you get right. No calculator necessary.&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Today is March 2nd, your birthday is March 28th. How many days remain until your birthday, not including today and not including your birthday?&lt;/li&gt;
-&lt;li&gt;You have an array with 100 elements. How many elements are there between index 3 and index 97, not including the element at index 3 and including the element at index 97?&lt;/li&gt;
-&lt;li&gt;If you have 10 cabbages in a row, how many cabbages are there between the 2nd cabbage and the 9th cabbage, including the 2nd cabbage but not the 9th one?&lt;/li&gt;
-&lt;li&gt;A group of citizens in the Dystopian city of Fencepostia, with ID numbers from 50 to 60, have been selected for thought purging. How many citizens have been selected, including both citizen #50 and citizen #60?&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;Answers in 5...&lt;/p&gt;
-&lt;p&gt;4...&lt;/p&gt;
-&lt;p&gt;3...&lt;/p&gt;
-&lt;p&gt;2...&lt;/p&gt;
-&lt;p&gt;1...&lt;/p&gt;
-&lt;p&gt;&lt;small&gt;spoiler: 25, 94, 7 and 11.&lt;/small&gt;&lt;/p&gt;
-&lt;p&gt;If you got all of them correct without finger-counting, without drops of nervous sweat rolling down your neck, and without asking any questions on StackOverflow, then congratulations. You are an Übermensch of calculation, and there is nothing for you to learn here.&lt;/p&gt;
-&lt;p&gt;If not, then you&#39;ve fallen victim to one of the 2 hard problems&lt;sup id=&#34;fnref:joke&#34;&gt;&lt;a class=&#34;footnote-ref&#34; href=&#34;#fn:joke&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; in computer science: the off-by-1 error.&lt;/p&gt;
-&lt;p&gt;Off-by-1 errors have been written about since before Jesus Christ. At the latest, they were mentioned by &lt;a href=&#34;https://web.archive.org/web/20160305221341/http://www.dsm.fordham.edu/~moniot/Opinions/fencepost-error-history.shtml&#34;&gt;a Roman named Vitruvius&lt;/a&gt;, who served in the army of Julius Caesar. He was talking about the number of fenceposts around a temple, but the principle is the same. The problem is old, and you shouldn&#39;t feel bad if it caught you out.&lt;/p&gt;
-&lt;p&gt;The good news is that there&#39;s a simple, easy-to-remember formula that applies to all of the above calculations. Once you&#39;ve learned it, you&#39;ll never again suffer from this particular brand of off-by-1 horror. Nor will you miscount the number of days until Aunt Catherine&#39;s birthday.&lt;/p&gt;
-&lt;h3 id=&#34;give-me-the-formula&#34;&gt;Give me the formula!&lt;/h3&gt;
-&lt;p&gt;Let&#39;s reconsider all of the above problems as calculations of interval length.&lt;/p&gt;
-&lt;p&gt;What&#39;s an interval? It&#39;s a set of integers that lies between a lower and upper bound. For example, the interval &lt;code&gt;[3, 7]&lt;/code&gt; contains the numbers 3, 4, 5, 6 and 7. It&#39;s a set, so we write it using the set notation &lt;code&gt;{3,4,5,6,7}&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;The bounds of an interval can be &lt;em&gt;open&lt;/em&gt; or &lt;em&gt;closed&lt;/em&gt;. If a bound is open, it means that the bound itself is excluded from the interval. If a bound is closed, it&#39;s included. In the above example, both bounds were closed. The same interval with open bounds, written &lt;code&gt;(3, 7)&lt;/code&gt;, is the set &lt;code&gt;{4,5,6}&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;The bounds can also be half-open. The half-open intervals &lt;code&gt;(3, 7]&lt;/code&gt; and &lt;code&gt;[3, 7)&lt;/code&gt; are &lt;code&gt;{4,5,6,7}&lt;/code&gt; and &lt;code&gt;{3,4,5,6}&lt;/code&gt;, respectively.&lt;/p&gt;
-&lt;p&gt;Now, let&#39;s rephrase the problems from before in terms of intervals.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Birthday: the open interval &lt;code&gt;(2, 28)&lt;/code&gt;, contains 25=28-2-1 elements.&lt;/li&gt;
-&lt;li&gt;Array: the half-open interval &lt;code&gt;(3, 97]&lt;/code&gt;, contains 94=97-3 elements.&lt;/li&gt;
-&lt;li&gt;Cabbages: the half-open interval &lt;code&gt;[2, 9)&lt;/code&gt;, contains 7=9-2 elements.&lt;/li&gt;
-&lt;li&gt;Dystopia: the closed interval &lt;code&gt;[50, 60]&lt;/code&gt;, contains 11=60-50+1 elements.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;We have all 3 types of interval here: open, half-open and closed. If you look closely, you&#39;ll notice a pattern in how we calculate the number of elements: subtract the lower bound from the upper bound, then add -1, 0 or +1 depending on the type of interval.&lt;/p&gt;
-&lt;p&gt;Here it is more explicitly. If you have an open interval &lt;code&gt;(L, U)&lt;/code&gt;, then the number of elements is &lt;code&gt;U-L-1&lt;/code&gt;. If you have a half-open interval &lt;code&gt;(L, U]&lt;/code&gt; or &lt;code&gt;[L, U)&lt;/code&gt;, then it&#39;s &lt;code&gt;U-L&lt;/code&gt;. And finally, if you have a closed interval &lt;code&gt;[L, U]&lt;/code&gt;, it&#39;s &lt;code&gt;U-L+1&lt;/code&gt;. They&#39;re all the same formula, you just have to add 1 if both bounds are closed and subtract 1 if they&#39;re both open.&lt;/p&gt;
-&lt;p&gt;This is the reason why programming interfaces use half-open bounds for ranges. In Python, for example, you say &lt;code&gt;mylist[L:L+N]&lt;/code&gt; to copy the list items with indexes in the interval &lt;code&gt;[L, L+N)&lt;/code&gt;. That&#39;s (L+N)-L=N elements. Much neater than having rogue +1s and -1s floating around the place.&lt;/p&gt;
-&lt;p&gt;That&#39;s it. I was going to make this into a whole big thing, but it&#39;s really that simple. I used to come up with small example cases and finger-count in order to figure out interval length. This way is easier.&lt;/p&gt;
-&lt;!-- Fuck Shane! --&gt;
-
-&lt;h3 id=&#34;farewell-to-fencepostia&#34;&gt;Farewell to Fencepostia&lt;/h3&gt;
-&lt;p&gt;You should now be able to count the number of days until your birthday with full confidence, and perhaps more usefully, avoid annoying off-by-1 errors in your programming. Happy counting, and say hello to Aunt Catherine.&lt;/p&gt;
-&lt;div class=&#34;footnote&#34;&gt;
-&lt;hr /&gt;
-&lt;ol&gt;
-&lt;li id=&#34;fn:joke&#34;&gt;
-&lt;p&gt;From the over-used joke: &#34;There are 2 hard problems in computer science: cache invalidation, naming things, and off-by-1 errors.&#34;&amp;#160;&lt;a class=&#34;footnote-backref&#34; href=&#34;#fnref:joke&#34; title=&#34;Jump back to footnote 1 in the text&#34;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;</description>
-        <link>https://kevingal.com/blog/interval-length.html</link>
-        <pubDate>Sat, 01 Feb 2020 00:00:00 GMT</pubDate>
-        <guid>https://kevingal.com/blog/interval-length.html</guid>
     </item>
 </channel>
 </rss> 
