@@ -34,7 +34,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;It&#39;s the quadratic equation 2x&lt;sup&gt;2&lt;/sup&gt;+3x-5. A &lt;em&gt;quadratic equation&lt;/em&gt; is... well, let&#39;s leave that for the next day. With no operator overloading, the code is hard to read and bugs can slip in. It gets worse as you use more and more BigIntegers.&lt;/p&gt;
-&lt;p&gt;Some folks say that operator overloading is not worth it. Poor use of operator overloading is worse than any BigInteger mess, they say. But in that way you can nix &lt;em&gt;any&lt;/em&gt; new thing that you might add to a programming language, so I don&#39;t think it&#39;s a strong case. And the fact is, operator overloading would be great for those who want to use Java for math.&lt;/p&gt;
+&lt;p&gt;Some folks say that operator overloading is not worth it. Poor use of operator overloading is worse than any BigInteger mess, they say. But with that line of thought you can nix &lt;em&gt;any&lt;/em&gt; new tool that you might add to a programming language, so I don&#39;t think it&#39;s a strong case. And the fact is, operator overloading would be great for those who want to use Java for math.&lt;/p&gt;
 &lt;p&gt;There are signs that &lt;a href=&#34;https://blogs.oracle.com/javamagazine/is-it-time-for-overloading-in-java&#34;&gt;the folks who own Java&lt;/a&gt; see the need for operator overloading. I sure hope that they, and the rest of the Java team, add it to Java some day, though I haven&#39;t used Java in 2 years.&lt;/p&gt;</description>
         <link>https://kevingal.com/blog/java-overloading.html</link>
         <pubDate>Sat, 03 Apr 2021 00:00:00 GMT</pubDate>
