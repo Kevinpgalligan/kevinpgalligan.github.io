@@ -176,8 +176,12 @@ div.codehilite {
     text-align:center;
 }
 
-.bordered-centered-table th, td {
+.bordered-centered-table th {
     border-collapse: collapse;
     border: 1px solid black;
-    text-align:center;
+}
+
+.bordered-centered-table td {
+    border-collapse: collapse;
+    border: 1px solid black;
 }
