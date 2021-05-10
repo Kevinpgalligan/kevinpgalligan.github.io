@@ -4,10 +4,29 @@
     <title>Kevin's Blog</title>
     <link>https://kevingal.com</link>
     <description>Maths, computers and stuff.</description>
-    <pubDate>Sat, 03 Apr 2021 00:00:00 GMT</pubDate>
-    <lastBuildDate>Sat, 03 Apr 2021 00:00:00 GMT</lastBuildDate>
+    <pubDate>Mon, 10 May 2021 00:00:00 GMT</pubDate>
+    <lastBuildDate>Mon, 10 May 2021 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://kevingal.com/feed.xml" rel="self" type="application/rss+xml" />
     
+    <item>
+        <title>An easy solution is hard to find</title>
+        <description>&lt;p&gt;After a couple of weeks in Twitter&#39;s spam dragnet, &lt;a href=&#34;https://twitter.com/PonaBot&#34;&gt;TokiPonaPoemBot&lt;/a&gt; is now up and running! It&#39;s based on the &lt;a href=&#34;/blog/toki-poetry.html&#34;&gt;poem generator&lt;/a&gt; I wrote about in March. Twitter could have done a better job of letting me know why the account was blacklisted, and there was no indication that they would ever reply to my support request, but alas -- no billion-dollar megacorp is perfect. It probably got marked as spam because I registered with my university email address.&lt;/p&gt;
+&lt;p&gt;ANYWAY, what I actually wanted to write about today was an experience I had while developing TokiPonaPoemBot. In that experience, there&#39;s a lesson about being pragmatic versus being a single-minded dumbdumb, which I think is worth sharing.&lt;/p&gt;
+&lt;p&gt;Here&#39;s the background. Initially, I intended to run the bot as a systemd service, systemd being Linux software that can manage processes. My idea was that systemd would wake up the bot whenever I booted my computer. The bot would then ask itself &#34;Is it time to tweet yet?&#34; in a loop until it was time to tweet. The thing is, it wasn&#39;t working. The bot&#39;s systemd service always failed to start, and I couldn&#39;t figure out why. It appeared likely that my motivation would die and I would never finish the project.&lt;/p&gt;
+&lt;p&gt;Then a simpler solution occurred to me. There&#39;s another piece of Linux software called cron that runs tasks at regular intervals. With the following configuration, I could get cron to run the bot once per day at 4pm:&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;0 16 * * * cd /path/to/bot/ &amp;amp;&amp;amp; ./tweet.lisp &amp;gt;&amp;gt;tweet.log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Easy as pie! And by letting cron handle the schedule, I was able to rip out the part of the bot that asked &#34;Is it time to tweet yet?&#34;, which made the code much simpler.&lt;/p&gt;
+&lt;p&gt;There are pros and crons to both approaches. There might not be an equivalent of cron for Windows, for example, if I ever want to run the bot there. But cron was, unquestionably, the better and more pragmatic solution, because it got the job done and saved me from further frustration. It&#39;s good enough for now, and possibly forever.&lt;/p&gt;
+&lt;p&gt;My question for you is this: why was I fixated on doing it the systemd way, and why didn&#39;t I come up with the cron solution earlier? My brain latched on to the first design I came up with, and I didn&#39;t step back to look for a lazier (better) solution until I became super frustrated.&lt;/p&gt;
+&lt;p&gt;It&#39;s a pattern I&#39;ve noticed. You get trapped in a brain hole and forget the context of what you&#39;re doing: &#34;this needs to be a systemd service&#34;, &#34;this function needs to be optimised&#34;, &#34;this algorithm needs to be multi-threaded&#34;, &#34;my application needs this feature&#34;.&lt;/p&gt;
+&lt;p&gt;In each of those cases, there&#39;s a question you should be asking that could save you a lot of trouble. Is there a more lightweight alternative to systemd? Is that function going to be called often enough to make optimisation worthwhile? Could memory be the actual bottleneck of your algorithm, making multi-threading redundant? Would anyone actually use that feature if you added it to your application?&lt;/p&gt;
+&lt;p&gt;So besides developing our problem-solving skills, we (programmers, mathematicians, anyone) must strive to be pragmatic and to always keep in mind the wider context of what we&#39;re doing. Otherwise, we&#39;ll end up wasting our time. Even after nearly 10 years of programming, I still often make this mistake.&lt;/p&gt;</description>
+        <link>https://kevingal.com/blog/easy.html</link>
+        <pubDate>Mon, 10 May 2021 00:00:00 GMT</pubDate>
+        <guid>https://kevingal.com/blog/easy.html</guid>
+    </item>
     <item>
         <title>Not Growing a Language</title>
         <description>&lt;p&gt;A &lt;em&gt;syllable&lt;/em&gt; is a sound that makes up part of a word. In the year two nought nought nought (2000), Guy Steele gave a talk called &lt;a href=&#34;https://www.youtube.com/watch?v=_ahvzDzKdB0&#34;&gt;&#34;Growing a Language&#34;&lt;/a&gt;. He used a schtick in his talk, where he did not speak a word of more than one syllable if he did not first say what it meant.&lt;/p&gt;
@@ -1009,69 +1028,6 @@ count 3728058
         <link>https://kevingal.com/blog/metronome.html</link>
         <pubDate>Sun, 07 Jun 2020 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/metronome.html</guid>
-    </item>
-    <item>
-        <title>Did the Beatles love &#34;you&#34;?</title>
-        <description>&lt;p&gt;On page 3 of &lt;em&gt;Help! 50 Songwriting, Recording and Career Tips used by the Beatles&lt;/em&gt;, author David Rowley suggests that songwriters should put the word &#34;you&#34; in the first line of their songs:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Around half of all Lennon-McCartney lyrics use the magic songwriting words &#39;you&#39; or &#39;your&#39; in the first line.&lt;/p&gt;
-&lt;p&gt;These words, especially when used with the words &#39;I&#39; or &#39;me&#39;, allow the listener to imagine that the song is about them and allow the listener to imagine that they are singing the song to another person.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;For Beatles fans, this raises some incredibly unimportant questions.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Exactly how many Beatles songs refer to &#34;you&#34; in the first line?&lt;/li&gt;
-&lt;li&gt;Are there any other words that appear often in Beatles songs?&lt;/li&gt;
-&lt;li&gt;Does &#34;you&#34; lead to some measurable increase in song quality, or is the author of this book blowing hot steam out of his &lt;a href=&#34;https://www.youtube.com/watch?v=l-ekNlk5VDM&#34;&gt;honey pie&lt;/a&gt;?&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;To answer these questions, we&#39;ll do some analysis on the lyrics of Lennon-McCartney (because who cares about Ringo), and we&#39;ll see how the use of &#34;you&#34; (a.k.a. the second person perspective) has affected the success of songs in the Billboard music charts.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/beatles-and-you/sad-ringo.jpeg&#34;
-     alt=&#34;Ringo Starr with a sad expression on his face in black &amp; white.&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;h3 id=&#34;how-many-lennon-mccartney-songs-are-addressed-to-you&#34;&gt;How many Lennon-McCartney songs are addressed to &#34;you&#34;?&lt;/h3&gt;
-&lt;p&gt;I downloaded the lyrics of the Beatles&#39; &#34;core catalogue&#34; studio albums (&lt;a href=&#34;https://github.com/Kevinpgalligan/BeatlesAndYou/blob/master/beatles_lyrics_scraper.py&#34;&gt;code&lt;/a&gt;). Instrumental songs, cover songs and songs credited to Ringo Starr / George Harrison were removed manually. This left a total of 138 songs, about 3/4 of the full ~180 songs published by Lennon-McCartney.&lt;/p&gt;
-&lt;p&gt;Analysis of the lyrics (&lt;a href=&#34;https://github.com/Kevinpgalligan/BeatlesAndYou/blob/master/lyrics_analysis.py&#34;&gt;code&lt;/a&gt;) shows that &lt;strong&gt;29%&lt;/strong&gt; of the songs contain &#34;you&#34; in the first line (or any of its related forms: &#34;your&#34;, &#34;yours&#34; and &#34;yourself&#34;). This is somewhat short of &#34;around half&#34;, as claimed by David Rowley, but since &lt;strong&gt;82%&lt;/strong&gt; of the songs contain &#34;you&#34; &lt;em&gt;somewhere&lt;/em&gt; in the lyrics, I&#39;m willing to give him a pass. Lennon-McCartney did, in fact, love &#34;you&#34;.&lt;/p&gt;
-&lt;p&gt;Here&#39;s a comparison with some other words. Surprisingly, Lennon-McCartney&#39;s love of the second person was outstripped by their love of themselves, as &lt;strong&gt;86%&lt;/strong&gt; of lyrics contain the word &#34;I&#34; (or &#34;me&#34;, or &#34;my&#34;, or &#34;myself&#34;).&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/beatles-and-you/word-freq-beatles.png&#34;
-     alt=&#34;Percentage of Lennon-McCartney songs that various words appear in; I 86.2%, you 81.9%, love 44.2%, day 23.9%, friend 8.7%, life 7.2%, road 5.1%, guitar 0.7%, mustard 0.7%, beatle 0.0%.&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;Other observations: in 138 songs, they never once mentioned the Beatles. Not even in Glass Onion. And roads, or the things that are done in them, are almost as popular a theme as life itself.&lt;/p&gt;
-&lt;h3 id=&#34;chart-success-and-you&#34;&gt;Chart success and you&lt;/h3&gt;
-&lt;p&gt;Lennon-McCartney loved &#34;you&#34;, evidently, but can we show that this aspect of their style is worth copying? Does it lead to more successful songs?&lt;/p&gt;
-&lt;p&gt;To this end, I downloaded the songs in the weekly &lt;a href=&#34;https://en.wikipedia.org/wiki/Billboard_Hot_100&#34;&gt;Billboard Hot 100&lt;/a&gt; from the start of 1962 until the start of 1970 (&lt;a href=&#34;https://github.com/Kevinpgalligan/BeatlesAndYou/blob/master/chart_scrape.py&#34;&gt;code&lt;/a&gt;). That&#39;s the active period of the Beatles, roughly speaking, spanning 417 weeks and a total of 5681 unique songs in the charts. On average, ~86% of the songs on the Billboard Hot 100 were actually repeats from previous weeks.&lt;/p&gt;
-&lt;p&gt;As a measure of success, I assigned a score to each of the songs: 100 points for a week in the #1 position on the charts, 99 points for #2, and so on. For example, a song that charted at #50, #76 and #98 over a period of 3 weeks would receive a total of (101-50)+(101-76)+(101-98) = 51+25+3 = 79 points.&lt;/p&gt;
-&lt;p&gt;I then gathered the lyrics of 5184 (91.3%) of those songs (&lt;a href=&#34;https://github.com/Kevinpgalligan/BeatlesAndYou/blob/master/chart_lyrics_scrape.py&#34;&gt;code&lt;/a&gt;, &lt;a href=&#34;https://github.com/Kevinpgalligan/BeatlesAndYou/blob/master/google_lyrics_scrape.py&#34;&gt;more code&lt;/a&gt;, &lt;a href=&#34;https://github.com/Kevinpgalligan/BeatlesAndYou/blob/master/general_lyrics_scrape.py&#34;&gt;even more code&lt;/a&gt;). The ones I left out were by the Beatles, instrumental, or had lyrics that were difficult to track down on the internet.&lt;/p&gt;
-&lt;p&gt;Here are the success scores of the songs with lyrics, as a cumulative frequency plot.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/beatles-and-you/success-scores-cumulative.png&#34;
-     alt=&#34;Cumulative frequency graph of song success, as per the metric described above.&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;From left to right, the curve increases as the success score overtakes more and more songs. The curve starts off with a sharp rise, gobbling up songs that barely made it onto the chart, such as the slightly creepy Father Knows Best by the Radiants: &#34;Whenever I&#39;m in trouble I ask my dad / For his advice / ... / He said to make your girl love ya / ... / You got to get tough / And treat her wrong / And if she cries, so what / She&#39;s trying to put you to a test&#34;. It then has a long tail of extremely successful and enduring songs, such as Everyday People by Sly &amp;amp; The Family Stone and...&lt;/p&gt;
-&lt;p&gt;...&lt;a href=&#34;https://www.youtube.com/watch?v=p13yZAjhU0M&#34;&gt;Wipe Out&lt;/a&gt;!? That&#39;s right. Wipe Out is, by our metric, and among the songs we have selected, the most successful song of the 60s, at a total of 2019 points. And its 1-line lyrics are a mocking rejection of the second person perspective: &#34;Ah ha ha ha ha ha ha ha ha ha ha ha, wipe out!&#34;. The 60s certainly were wild.&lt;/p&gt;
-&lt;p&gt;Analysing the lyrics of all the songs, we see that Lennon-McCartney were not at all exceptional in their love of the second person perspective. &lt;strong&gt;27%&lt;/strong&gt; of the songs contain &#34;you&#34; in the first line, while &lt;strong&gt;88%&lt;/strong&gt; contain &#34;you&#34; somewhere in the lyrics.&lt;/p&gt;
-&lt;p&gt;Finally, to see if there&#39;s a relationship between use of the second person perspective and chart success, let&#39;s look at the distribution of success scores for songs that contain &#34;you&#34; (n=4564) versus songs that don&#39;t (n=620).&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/beatles-and-you/you-vs-notyou-boxplot.png&#34;
-     alt=&#34;box plot comparing success scores of songs containing you vs songs that don&#39;t; the distributions are similar but with the &#39;not you&#39; songs having a slightly higher median / middle value.&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;The coloured boxes show the range of success scores you would be left with if you dropped the 25% least successful and 25% most successful songs. The horizontal dark blue line is the median success score, which is better than exactly 50% of songs. The whiskers extending from the boxes represent the full range of the success scores -- except for outliers, which are represented by circles. Wipe Out sits triumphantly above them all.&lt;/p&gt;
-&lt;p&gt;As it turns out, songs that don&#39;t contain &#34;you&#34; have a higher median success score by 13% (278 vs 316), contrary to what we would expect if we believed David Rowley&#39;s songwriting tip.&lt;/p&gt;
-&lt;p&gt;Here&#39;s the distribution of songs that contain &#34;you&#34; in the first line (n=1412) versus those that don&#39;t (n=3772).&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/beatles-and-you/youfirstline-vs-notyoufirstline-boxplot.png&#34;
-     alt=&#34;box plot comparing success scores of songs containing you in the first line vs songs that don&#39;t; the distributions are similar, but the songs with you in the first line have a slightly higher median.&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;Songs with &#34;you&#34; in the first line actually have a 9% higher median success score than those without (302 vs 276). It seems that there are a number of lower-scoring &#34;you&#34; songs that don&#39;t have &#34;you&#34; in the first line, which drag down the median of whichever category they&#39;re in.&lt;/p&gt;
-&lt;h3 id=&#34;conclusions&#34;&gt;Conclusions&lt;/h3&gt;
-&lt;p&gt;We have seen that the second person perspective was overwhelmingly common in 60s song lyrics. More than Lennon-McCartney secret sauce, it was standard songwriting practice. Furthermore, our overanalysis hasn&#39;t shown the use of &#34;you&#34; to have a correlation with chart success. Considering that it was used in almost 90% of chart songs, however, there has to be something of secret sauce about it. Chart-hitting 60s songwriters must have known what they were doing... right?&lt;/p&gt;
-&lt;h3 id=&#34;fun-bonus-reads&#34;&gt;Fun bonus reads&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.kaylinpavlik.com/50-years-of-pop-music/&#34;&gt;50 Years of Pop Music&lt;/a&gt; (cool data analysis and visualisation of song lyrics)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://aeon.co/ideas/why-are-pop-songs-getting-sadder-than-they-used-to-be&#34;&gt;Why are pop songs getting sadder than they used to be?&lt;/a&gt; (sentiment analysis)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://medium.com/@latenightfroyo/the-6-types-of-billboard-hits-e0cb2987abf&#34;&gt;The 6 Types of Billboard Hits&lt;/a&gt; (song clustering)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.npr.org/sections/allsongs/2013/05/29/187168874/the-good-listener-whats-more-important-lyrics-or-music?t=1585780553905&#34;&gt;The Good Listener: What&#39;s More Important, Lyrics Or Music?&lt;/a&gt; (relevant NPR article)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;the-code&#34;&gt;The code&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&#34;https://github.com/Kevinpgalligan/BeatlesAndYou&#34;&gt;It&#39;s all here&lt;/a&gt;.&lt;/p&gt;</description>
-        <link>https://kevingal.com/blog/beatles-and-you.html</link>
-        <pubDate>Wed, 01 Apr 2020 00:00:00 GMT</pubDate>
-        <guid>https://kevingal.com/blog/beatles-and-you.html</guid>
     </item>
 </channel>
 </rss> 
