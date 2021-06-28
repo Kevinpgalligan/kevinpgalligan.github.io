@@ -29,12 +29,14 @@
 
 <table class="bordered-centered-table">
 <tr><th>Name</th><th>Type</th><th>Description</th><th>Quicklink</th></tr>
-<tr><td>Emojipasta Generator</td><td>🌎</td><td>convert text to emojipasta.</td><td><a href="#emojipasta-generator">goto</a></td>
-<tr><td>Pixelate</td><td>🌎</td><td>make images pixely, add dither, make them black &amp; white, etc.</td><td><a href="#pixelate">goto</a></td>
-<tr><td>Tiny Metronome</td><td>🌎</td><td>a mobile-friendly, 981-byte metronome.</td><td><a href="#tiny-metronome">goto</a></td>
-<tr><td>bs</td><td>📥</td><td>a CLI tool for quick number base conversion.</td><td><a href="#bs">goto</a></td>
-<tr><td>pseu</td><td>📥</td><td>a CLI tool for indecisive people.</td><td><a href="#pseu">goto</a></td>
-<tr><td>TokiPonaPoemBot</td><td>🌎</td><td>a bot that tweets random poems in toki pona.</td><td><a href="#tokiponapoembot">goto</a></td>
+<tr><td>Emojipasta Generator</td><td>🌎</td><td>Convert text to emojipasta.</td><td><a href="#emojipasta-generator">goto</a></td>
+<tr><td>Pixelate</td><td>🌎</td><td>Make images pixely, add dither, make them black &amp; white, etc.</td><td><a href="#pixelate">goto</a></td>
+<tr><td>Tiny Metronome</td><td>🌎</td><td>A mobile-friendly, 981-byte metronome.</td><td><a href="#tiny-metronome">goto</a></td>
+<tr><td>bs</td><td>📥</td><td>A CLI tool for quick number base conversion.</td><td><a href="#bs">goto</a></td>
+<tr><td>pseu</td><td>📥</td><td>A CLI tool for indecisive people.</td><td><a href="#pseu">goto</a></td>
+<tr><td>TokiPonaPoemBot</td><td>🌎</td><td>A bot that tweets random poems in toki pona.</td><td><a href="#tokiponapoembot">goto</a></td>
+<tr><td>MonaLisaGoL</td><td>📥</td><td>Common Lisp software for tinkering with the Game of Life.</td><td><a href="#monalisagol">goto</a></td>
+<tr><td>LOVETRIS</td><td>📥</td><td>An AI that plays a really hard version of Tetris called HATETRIS.</td><td><a href="#lovetris">goto</a></td>
 
 </table>
 
@@ -102,6 +104,15 @@ pi tomo suli ala,<br />
 e ni li tawa.  </p>
 <p>a a mi kala.</p>
 </blockquote>
+<hr>
+<h3>📥 MonaLisaGoL<span class="project-link">(<a id="monalisagol" href="https://github.com/Kevinpgalligan/MonaLisaGoL">github.com</a>)</span></h3>
+<p>Common Lisp code that searches for Game of Life states that turn into a given picture. It can also be used to create GIFs of the Game of Life. <a href="https://kevingal.com/blog/mona-lisa-gol.html">Write-up here</a>.</p>
+<p>Goes well with Pixelate, because you can: (1) take your own picture, (2) shrink it and turn it black &amp; white (using Pixelate), and then (3) pass it to MonaLisaGol to find a Life state that turns into your picture. Or just run your picture as a Life simulation, which is also cool.</p>
+<p><img alt="Example of a Game of Life state turning into a picture of Mona Lisa's face after 1 state change." src="/static/img/mona-lisa-gol/mona.gif" /></p>
+<hr>
+<h3>📥 LOVETRIS<span class="project-link">(<a id="lovetris" href="https://github.com/Kevinpgalligan/LOVETRIS">github.com</a>)</span></h3>
+<p>This is a Common Lisp-based AI for playing HATETRIS, which is a really hard version of Tetris. HATETRIS gives you the worst possible piece every time, "worst" meaning the one that maximises the minimum possible height of the tower after your next move. The current human record (as of June 29th 2021) is 45 lines; LOVETRIS can clear 12 lines. This has made me respect the human brain a lot more.</p>
+<p>I plan to improve the documentation and write a post about it at some point.</p>
 
 
 </body>
