@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title> Why doesn&#39;t the Moon crash into Earth? </title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+
+<meta property="og:description" content="Because it keeps missing." /> 
+<meta property="og:image" content="https://kevingal.com/static/img/mooncrash/thumbnail.jpg" />
+<meta name="thumbnail" content="/static/img/mooncrash/thumbnail.jpg" />
+
+
+<link rel="stylesheet" href="/static/katex/katex.min.css">
+<meta property="description" content="Because it keeps missing.">
+
+<link rel="stylesheet" href="/static/css/blog.css">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon.ico">
+</head>
+<body>
+    <header>
+        <div data-nosnippet class="navbar">
+        <nav>
+        <a href="/index.html" class="navlink">about</a>
+        • <a href="/blog.html" class="navlink">blog</a>
+        • <a href="/software.html" class="navlink">software</a>
+        • <a href="/feed.xml" class="navlink">rss</a>
+        </nav>
+        </div>
+    </header>
+
+<h2 class="post-title">Why doesn&#39;t the Moon crash into Earth? </h2>
+<h3 class="post-date">2021-07-04</h3>
+<h3 class="post-date">Because it keeps missing.</h3>
+<p>Tags: <a href="/blog/tag/simulation.html">simulation</a> </p>
+<hr>
+<p>This is one of the questions explored by Bill Bryson in <em><a href="/blog/shorthistory.html">A Short History of Nearly Everything</a></em>. It's a good question. Isn't there a force called gravity that keeps everything anchored to Earth? Yes, there is. And shouldn't that same force bring the Moon on a collision course directly towards us? Well, no. As we can all attest to, rather than crashing into Earth and sending us all to oblivion, the Moon continues to orbit us as it has done for the past billion-odd years.</p>
+<p>To explain this strange state of affairs, Bryson uses an analogy that I really like. Imagine a cannon on top of a mountain. If you fire the cannon with minimum power, the cannonball will quickly fall to the ground under the pull of gravity.</p>
+<p><img src="/static/img/mooncrash/minimum-power.png"
+     alt="A cannon is fired from a mountain with a minimum amount of power and falls straight to the ground."
+     class="centered"></p>
+<p>If you give it more juice, the cannonball will travel further before hitting the ground. In fact, it might even travel <em>around</em> the earth somewhat, since, to the best of my knowledge, the earth isn't flat.</p>
+<p><img src="/static/img/mooncrash/more-power.png"
+     alt="Cannon is fired with slightly more power, cannonball travels some of the way around Earth as it falls to the ground."
+     class="centered"></p>
+<p>If you fire the cannon with <strong>rocket launch</strong> levels of power, then the cannonball will escape Earth's gravitational pull and fly off into space.</p>
+<p><img src="/static/img/mooncrash/max-power.png"
+     alt="Cannon is fired with soooo much power that it escapes Earth's gravitational pull."
+     class="centered"></p>
+<p>Finally, what will happen if you fire the cannon with enough power that the cannonball won't fall to Earth, but not enough power that it can escape the pull of gravity? What will happen is that it will fall towards Earth, and <em>miss</em>. It will begin to orbit.</p>
+<p><img src="/static/img/mooncrash/orbit-power.png"
+     alt="Cannon is fired with just enough power so that the cannonball starts to orbit Earth."
+     class="centered"></p>
+<p>It's kind of amazing. The Moon is constantly falling towards Earth, and missing. This dance will continue <a href="https://www.spaceanswers.com/solar-system/will-the-moon-ever-leave-earths-orbit/">forever</a>, apparently, or at least until the Sun explodes and destroys everything.</p>
+<p>I'm writing about this today because I wanted to try the experiment for myself. Since there aren't any mountains nearby, and I don't have access to a sufficiently powerful cannon, I resorted to simulating it instead. Here's a demo.</p>
+<video width="560" height="315" class="centered" controls>
+    <source src="/static/video/mooncrash/sample.mp4" type="video/mp4">
+</video>
+
+<p>There aren't many details to explain. The Moon is fired as if from a cannon. Besides the initial velocity, its trajectory is determined by 3 physical phenomena:</p>
+<p>(1) Gravitational acceleration, given by the formula</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>a</mi><mo>=</mo><mfrac><mrow><mi>G</mi><msub><mi>m</mi><mn>1</mn></msub><msub><mi>m</mi><mn>2</mn></msub></mrow><msup><mi>r</mi><mn>2</mn></msup></mfrac><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">
+a = \frac{Gm_1m_2}{r^2}.
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.04633em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.36033em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.740108em;"><span style="top:-2.9890000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">G</span><span class="mord"><span class="mord mathnormal">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord">.</span></span></span></span></span></p>
+
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal">G</span></span></span></span> is the <a href="https://en.wikipedia.org/wiki/Gravitational_constant">gravitational constant</a>. <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>m</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">m_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>m</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">m_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> are the masses of Earth and the Moon. And <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi></mrow><annotation encoding="application/x-tex">r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span></span></span></span> is the distance between them.</p>
+<p>(2) Normal force. Like our ol' buddy Isaac Newton said, the collision of two objects due to some force causes an equal and opposite force, which stops the objects from passing through each other. To calculate this, you take the component of the Moon's velocity that points directly towards Earth and reverse it.</p>
+<p>(3) Friction. The Moon has to slow down as it rolls along the Earth, as otherwise there are hilarious consequences. Take the component of the Moon's velocity that is tangential to Earth, reverse it, and scale it by your preferred friction coefficient.</p>
+<p>Final thing to note: the Moon and Earth in the simulation are the same size relative to each other as they are in real life, which I find neat to see.</p>
+<p>The code is <a href="https://github.com/Kevinpgalligan/mooncrash">here</a>. If you come back later, I might have uploaded the simulation to itch.io, since getting it to run from the source code is a pain if you don't already have a Common Lisp setup.</p>
+<hr>
+<ul>
+<li><a href="/blog.html">Back to blog</a></li>
+<li><a href="/feed.xml">RSS feed</a></li>
+</ul>
+<p>I'd be happy to hear from you at <i>galligankevinp@gmail.com</i>.</p>
+
+</body>
+</html>
