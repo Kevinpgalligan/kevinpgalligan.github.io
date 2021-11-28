@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title> The probability of a hash collision </title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+
+<meta property="og:description" content="Exploring the math behind hash collisions." /> 
+<meta property="og:image" content="https://kevingal.com/static/img/hashcollisions/thumbnail.jpg" />
+<meta name="thumbnail" content="/static/img/hashcollisions/thumbnail.jpg" />
+
+
+<link rel="stylesheet" href="/static/katex/katex.min.css">
+<meta property="description" content="Exploring the math behind hash collisions.">
+
+<link rel="stylesheet" href="/static/css/blog.css">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon.ico">
+</head>
+<body>
+    <header>
+        <div data-nosnippet class="navbar">
+        <nav>
+        <a href="/index.html" class="navlink">about</a>
+        • <a href="/blog.html" class="navlink">blog</a>
+        • <a href="/software.html" class="navlink">software</a>
+        • <a href="/feed.xml" class="navlink">rss</a>
+        </nav>
+        </div>
+    </header>
+
+<h2 class="post-title">The probability of a hash collision </h2>
+<h3 class="post-date">2020-08-09</h3>
+<h3 class="post-date">Exploring the math behind hash collisions.</h3>
+<p>Tags: <a href="/blog/tag/probability.html">probability</a> </p>
+<hr>
+<p>A <a href="https://en.wikipedia.org/wiki/Hash_collision">hash collision</a> happens when two items turn out to have the same hash value. You take the first item, compute its hash value, and put it in the corresponding hash bucket. Then you take the second item, compute its hash value, and - woops, the first item is already in that bucket! This is bad because it can make your hash table run more slowly. It is also a problem if you intend to use an item's hash value as its unique identifier. Obviously, the identifier will no longer be unique if it's shared by two or more items!</p>
+<p>So, given <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> hash buckets and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span> items, what's the probability of a hash collision? Jeff Preshing wrote a <a href="https://preshing.com/20110504/hash-collision-probabilities/">neat article</a> on how to calculate hash collision probabilities, but there are some gaps in his explanation. This is my attempt to fill those gaps. To follow along you'll need a basic understanding of probability and an iron will.</p>
+<h3 id="the-birthday-problem">The Birthday Problem</h3>
+<p>Consider the following problems.</p>
+<ol>
+<li>
+<p>When you put 50 balls into 100 buckets at random, what's the probability that at least 2 balls will end up in the same bucket? (That would be 99.999969%).</p>
+</li>
+<li>
+<p>When there are 30 people in a room, what's the probability that at least 2 of them will share a birthday? (I'll take 70.6316% for 10, Alex).</p>
+</li>
+<li>
+<p>And when you compute the 32-bit hash value of 5000 different strings, what's the probability that at least 2 strings will have the same hash value? (TODO).</p>
+</li>
+</ol>
+<p>These are all versions of the <a href="http://en.wikipedia.org/wiki/Birthday_problem">birthday problem</a>, which is notorious for having an unintuitive answer. The key to understanding why the probability is so high is that, even though there might only be 50 balls in problem #1, there are 1275 <em>pairs</em> of balls, and only one of those pairs needs to be in the same bucket. Problems #2 and #3 have the exact same structure, because in problem #2, you can think of the people as balls and the days of the year as buckets. And in problem #3, you can think of the strings as balls and the possible hash values as buckets.</p>
+<p>The birthday problem IS the problem of calculating hash collision probability. Let's take a look at how to calculate it.</p>
+<h3 id="exact-calculation-of-birthday-probability">Exact calculation of birthday probability</h3>
+<p>To calculate the exact probability of two or more people sharing a birthday in a room of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span> people, you have to consider the probability of each person <em>not</em> sharing a birthday with anyone else who is already in the room.</p>
+<p>The first person to enter the room has a probability of</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mi>N</mi><mi>N</mi></mfrac><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">
+\frac{N}{N} = 1
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.04633em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.36033em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span></span></p>
+
+<p>of not sharing a birthday with anyone, because there's nobody else there!</p>
+<p>The probability that neither the first person nor the second person to enter the room will share a birthday is</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mi>N</mi><mi>N</mi></mfrac><mo>×</mo><mfrac><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow><mi>N</mi></mfrac><mo separator="true">,</mo></mrow><annotation encoding="application/x-tex">
+\frac{N}{N} \times \frac{N-1}{N},
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.04633em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.36033em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.04633em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.36033em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mpunct">,</span></span></span></span></span></p>
+
+<p>because there are <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">N-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> out of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> days free for the second person.</p>
+<h3 id="exponent-approach">Exponent approach</h3>
+<p>Show how to go from the above to e^(-k(k-1)/2N), using 1-x=e^-x for small x.</p>
+<p>Then hash collision probability is 1-e^(...)</p>
+<h3 id="simple-approximation">Simple approximation</h3>
+<p>We can use the exact same trick again; our hash collision probability is p=1-e^-y. We already know from above that (approximately) 1-y=e^-y when y is small; therefore we can rearrange to get p=1-e^-y=y.</p>
+<p>Plot ideas: 1-x versus full e^-x plot; plot all the different approximations (or some measure of how close they are).</p>
+<hr />
+<p><img src="/static/img/basketball/around-the-world.png"
+     alt="A variation of Around the World. 7 shooting positions, evenly spaced in a semi-circle around the hoop."
+     class="centered"></p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:infinite">
+<p>As you might have guessed, we don't compute the entire infinite sum to generate this graph. We stop after enough terms have been added that the error in the result is small.&#160;<a class="footnote-backref" href="#fnref:infinite" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+<hr>
+<ul>
+<li><a href="/blog.html">Back to blog</a></li>
+<li><a href="/feed.xml">RSS feed</a></li>
+</ul>
+<p>I'd be happy to hear from you at <i>galligankevinp@gmail.com</i>.</p>
+
+</body>
+</html>

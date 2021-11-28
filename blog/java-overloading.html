@@ -52,11 +52,13 @@
 <span class="p">}</span>
 </code></pre></div>
 
+
 <p>Here is the same code but with operator overloading.</p>
 <div class="codehilite"><pre><span></span><code><span class="n">BigInteger</span> <span class="nf">f</span><span class="p">(</span><span class="n">BigInteger</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">x</span> <span class="o">-</span> <span class="mi">5</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
+
 
 <p>It's the quadratic equation 2x<sup>2</sup>+3x-5. A <em>quadratic equation</em> is... well, let's leave that for the next day. With no operator overloading, the code is hard to read and bugs can slip in. It gets worse as you use more and more BigIntegers.</p>
 <p>Some folks say that operator overloading is not worth it. Poor use of operator overloading is worse than any BigInteger mess, they say. But with that line of thought you can nix <em>any</em> new tool that you might add to a programming language, so I don't think it's a strong case. And the fact is, operator overloading would be great for those who want to use Java for math.</p>

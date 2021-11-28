@@ -44,6 +44,7 @@
 <div class="codehilite"><pre><span></span><code>0 16 * * * cd /path/to/bot/ &amp;&amp; ./tweet.lisp &gt;&gt;tweet.log
 </code></pre></div>
 
+
 <p>Easy as pie! And by letting cron handle the schedule, I was able to rip out the part of the bot that asked "Is it time to tweet yet?", which made the code much cleaner.</p>
 <p>There are pros and crons to both approaches. There might not be an equivalent of cron for Windows, for example, if I ever want to run the bot there. But cron was, unquestionably, the better and more pragmatic solution, because it got the job done and saved me from further frustration. It's good enough for now, and possibly forever.</p>
 <p>My question for you is this: why was I fixated on doing it the systemd way, and why didn't I come up with the cron solution earlier? My brain latched on to the first design I came up with, and I didn't step back to look for a lazier (better) solution until I became super frustrated.</p>

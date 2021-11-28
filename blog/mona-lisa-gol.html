@@ -73,6 +73,7 @@ b x x x
 c x o x
 </code></pre></div>
 
+
 <p>The middle cell, b2, is alive. For it to be alive in this state, one of the following must be true:</p>
 <ol>
 <li>It was alive in the previous state and 2-3 of its neighbours were also alive.</li>
@@ -86,6 +87,7 @@ OR
 (!b2 AND ((a1 AND a2 AND a3 AND !b1 AND !b3 AND !c1 AND !c2 AND !c3)
           OR ...repeat 55 more times for other valid neighbour combinations))
 </code></pre></div>
+
 
 <p>If we repeat this construction for every cell in the grid and chain them together using ANDs, we end up with an equation that we can solve to find a parent of the target state. And, as it happens, there are many "SAT-solving" programs that search for solutions to boolean equations. Once we have our equation, we can ship it off to our SAT solver of choice and sit back, relaxedly sipping our lattes until it gets back to us with a result.</p>
 <p><img src="/static/img/mona-lisa-gol/girl-with-a-pearl-earring.gif"
