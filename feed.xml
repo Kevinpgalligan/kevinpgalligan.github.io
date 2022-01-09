@@ -9,7 +9,7 @@
     <atom:link href="https://kevingal.com/feed.xml" rel="self" type="application/rss+xml" />
     
     <item>
-        <title>Two&#39;s complement and its bit-twiddling, explained</title>
+        <title>The bit-twiddling magic of two&#39;s complement, explained</title>
         <description>&lt;p&gt;If you&#39;ve ever taken a computer science class, then you&#39;ve probably heard of &lt;a href=&#34;https://en.wikipedia.org/wiki/Two%27s_complement&#34;&gt;two&#39;s complement&lt;/a&gt;. What you might have been told is that it&#39;s a system for representing positive and negative numbers in computers, and that to convert a number to two&#39;s complement form, you invert all the bits and add 1.&lt;/p&gt;
 &lt;p&gt;&#34;Okay,&#34; you may have thought to yourself on hearing this information, unconvinced, &#34;but doesn&#39;t flipping the bits and adding 1 seem kinda arbitrary? And what&#39;s the POINT of two&#39;s complement?&#34;&lt;/p&gt;
 &lt;p&gt;These are the questions I will attempt to briefly answer.&lt;/p&gt;
