@@ -35,6 +35,7 @@
 <tr><td><a href="https://twitter.com/PonaBot">TokiPonaPoemBot</a></td><td>web</td><td>A bot that tweets random poems in toki pona.</td><td><a href="#tokiponapoembot">goto</a></td>
 <tr><td><a href="https://github.com/Kevinpgalligan/MonaLisaGoL">MonaLisaGoL</a></td><td>desktop</td><td>Common Lisp software for tinkering with the Game of Life.</td><td><a href="#monalisagol">goto</a></td>
 <tr><td><a href="/apps/collision.html">Collision Calculator</a></td><td>web</td><td>Calculate hash collision probabilities.</td><td><a href="#collision-calculator">goto</a></td>
+<tr><td><a href="https://github.com/Kevinpgalligan/ka">ka</a></td><td>desktop</td><td>A calculator tool with a CLI and GUI.</td><td><a href="#ka">goto</a></td>
 
 </table>
 
@@ -105,6 +106,32 @@ e ni li tawa.  </p>
 <hr>
 <h3>Collision Calculator<span class="project-link">(link: <a id="collision-calculator" href="/apps/collision.html">kevingal.com</a>)</span></h3>
 <p>If you put 'k' balls in 'N' buckets, what's the probability that at least 2 balls will end up in the same bucket? In other words, what's the probability of a <a href="https://kevingal.com/blog/collisions.html">hash collision</a>?</p>
+<hr>
+<h3>ka<span class="project-link">(link: <a id="ka" href="https://github.com/Kevinpgalligan/ka">github.com</a>)</span></h3>
+<p>ka is a small calculator language. It supports various useful features for day-to-day calculations, such as:</p>
+<ul>
+<li>Common math functions and constants.</li>
+<li>Fractions.</li>
+<li>Units and unit conversion.</li>
+<li>Variable assignment.</li>
+</ul>
+<p>There are 3 ways to interact with it: executing individual expressions through the CLI (<code>ka '1+1'</code>), a CLI interpreter (<code>ka</code>), and a GUI (<code>ka --gui</code>).</p>
+<div class="codehilite"><pre><span></span><code>&gt;&gt;&gt; 2 * (1/2)
+1
+&gt;&gt;&gt; 1 metre + 1 foot &gt; feet
+4.2808398950131235
+&gt;&gt;&gt; p = 0.7; C(10,3) * p^3 * (1-p)^7
+0.009001692000000007
+&gt;&gt;&gt; sin(90 deg)
+1 
+&gt;&gt;&gt; e^pi
+23.140692632779263
+</code></pre></div>
+
+
+<p>Installation:</p>
+<div class="codehilite"><pre><span></span><code>pip3 install ka-cli
+</code></pre></div>
 
 
 </body>
