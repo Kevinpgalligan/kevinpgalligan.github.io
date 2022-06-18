@@ -8,13 +8,13 @@
     <link rel="stylesheet" href="/static/css/style.css">
     
 
-<meta property="og:description" content="Thoughts on AoC 2021." /> 
+<meta property="og:description" content="My experience of it." /> 
 <meta property="og:image" content="https://kevingal.com/static/img/aoc2021/thumbnail.jpg" />
 <meta name="thumbnail" content="/static/img/aoc2021/thumbnail.jpg" />
 
 
 
-<meta property="description" content="Thoughts on AoC 2021.">
+<meta property="description" content="My experience of it.">
 
 <link rel="stylesheet" href="/static/css/blog.css">
 
@@ -33,26 +33,25 @@
     </header>
 
 <h2 class="post-title">Advent of Code 2021 </h2>
-<h3 class="post-date">2021-12-23</h3>
-<h3 class="post-date">Thoughts on AoC 2021.</h3>
+<h3 class="post-date">2022-06-18</h3>
+<h3 class="post-date">My experience of it.</h3>
 <p>Tags: <a href="/blog/tag/programming.html">programming</a> </p>
 <hr>
-<p>I got bitten quite badly by <a href="https://adventofcode.com/2021">Advent of Code 2021</a>, and ended up solving all the problems in Common Lisp. In case you don't know, Advent of Code is a programming competition where a new problem is released every day in the lead-up to Christmas, just like an advent calendar.</p>
-<h3 id="problem-review">Problem Review</h3>
-<p>Here are my linecounts! </p>
-<p>INSERT PICTURE HERE</p>
-<p>Commentary on the problems:</p>
-<ul>
-<li>Some copy/pasted code between days. Most notably, CL doesn't come with a split function like Python! This could easily be remedied by having a utilities library. Or using external libraries. If you're taking it seriously, you really wannamake things as convenient as possible (like the ints function).</li>
-<li>I overengineered day 17 (projectile), which basically turned into a mini equation solver / projectiles / engineering library. Useful to have that range code, though.</li>
-<li>Graph visualisation (can't remember which day).</li>
-</ul>
-<h3 id="other-observations">Other Observations</h3>
-<ul>
-<li>Data formats are useful to know (HTML, graphviz, that raytracing one).</li>
-<li>More generally: the toolbelt analogy.</li>
-<li>Competitive programming (link to betaveros; confirmed my ideas about what you would have to do to be Super Competitive, lots of practice and autodownload and utilities library)</li>
-</ul>
+<p>I got bitten quite badly by the <a href="https://adventofcode.com/2021">Advent of Code 2021</a> (AoC 2021) bug, and ended up solving all the problems in Common Lisp. Here's a short, long-delayed review.</p>
+<p>In case you don't know, Advent of Code is a programming competition where a new problem is released every day in the lead-up to Christmas, just like an advent calendar. The competitors are ranked according to how quickly they submit their solutions. I wasn't competing, and only finished the problems in late January.</p>
+<p>Here are my linecounts for each of the 25 days.</p>
+<p><img src="/static/img/aoc2021/linecount.png"
+     alt="Line counts by day. They range from about 10 lines to about 250 lines."
+     class="centered"></p>
+<p>Generally, the later problems took more lines of code, because they were more difficult, but this wasn't universally true. I massively over-engineered some of the later problems, and went outside the scope of others. <a href="https://adventofcode.com/2021/day/24">Day 24</a> includes the specification of a simple processing unit, for example, which I went ahead and implemented (unnecessarily). I also went completely overboard with <a href="https://adventofcode.com/2021/day/17">day 17</a>, which tasks you with calculating the trajectory of a projectile, and wrote a toy equation solver. Also bloating the line count is the fact that I usually copied helper functions between files rather than packaging them up for re-use.</p>
+<p>Common Lisp was pleasant to use. It doesn't come with as many batteries as Python, but even Python users who are taking the competition seriously (like <a href="https://blog.vero.site/post/advent-leaderboard">this person</a>) will want to have their own data structures and algorithms library to-hand. It shouldn't be too much of a burden on top of that to implement simple functions like <code>(read-lines file)</code> and <code>(split-string string)</code>. Speaking of <a href="https://blog.vero.site/post/advent-leaderboard">that person</a>, who happens to be the winner of AoC 2021, their post confirmed some of my ideas about what it would take to be competitive with the rest of the internet: lots of practice, a personal library that you know like the back of your hand, and automation software to download the problems at midnight and submit the solutions.</p>
+<p>The only day I really struggled with was <a href="https://adventofcode.com/2021/day/19">#19</a>, which required knowledge about 3d rotations that I just didn't have. I ended up asking the <a href="https://www.reddit.com/r/adventofcode/comments/s83n99/2021_day_19common_lisp_is_my_algorithm_wrong_or/">sages of reddit</a> for assistance. Oh, and I had a nasty bug on <a href="https://adventofcode.com/2021/day/18">day 18</a>, which was not triggered by the sample input. To debug it, I ended up taking someone else's solution, printing the data structure at each step of their code, and comparing the output to mine, which made it obvious what the bug was. Those were a rough 2 days.</p>
+<p>I didn't need graphviz to solve <a href="https://adventofcode.com/2021/day/12">day 12</a>, but it was cool to be able to visualise the cave (see below). Data formats in general are cool and powerful! If you know <a href="https://en.wikipedia.org/wiki/Netpbm#PPM_example">PPM</a>, for example, which is a simple ASCII storage format for images, then it's easy to visualise the output of a <a href="https://raytracing.github.io/">toy ray tracer</a> in any language, because you just have to save a list of numbers to a file. With graphviz, you can easily visualise graphs in any language by writing a 5-line function that saves your graph data structure to a file in a very simple format.</p>
+<p><img src="/static/img/aoc2021/graph.svg"
+     alt="Graph of the cave from day 12, it's just circles and lines connecting them."
+     class="centered"></p>
+<p>I don't plan to participate next year, but it's a nice thing to do if you want to get your hands dirty with a programming language. After the competition, I felt like I could blast out code in Common Lisp fairly fluently (though still not as fluently as Python). I'm pretty sure I went through a similar process with Python, back in the day, when I was solving programming challenges to prepare for interviews.</p>
+<p>Anyway, my solutions are <a href="https://github.com/Kevinpgalligan/advent-of-code-2021">here</a>, if anyone wants to take a peek.</p>
 <hr>
 <ul>
 <li><a href="/blog.html">Back to blog</a></li>

@@ -4,10 +4,31 @@
     <title>Kevin's Blog</title>
     <link>https://kevingal.com</link>
     <description>Maths, computers and stuff.</description>
-    <pubDate>Wed, 30 Mar 2022 00:00:00 GMT</pubDate>
-    <lastBuildDate>Wed, 30 Mar 2022 00:00:00 GMT</lastBuildDate>
+    <pubDate>Sat, 18 Jun 2022 00:00:00 GMT</pubDate>
+    <lastBuildDate>Sat, 18 Jun 2022 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://kevingal.com/feed.xml" rel="self" type="application/rss+xml" />
     
+    <item>
+        <title>Advent of Code 2021</title>
+        <description>&lt;p&gt;I got bitten quite badly by the &lt;a href=&#34;https://adventofcode.com/2021&#34;&gt;Advent of Code 2021&lt;/a&gt; (AoC 2021) bug, and ended up solving all the problems in Common Lisp. Here&#39;s a short, long-delayed review.&lt;/p&gt;
+&lt;p&gt;In case you don&#39;t know, Advent of Code is a programming competition where a new problem is released every day in the lead-up to Christmas, just like an advent calendar. The competitors are ranked according to how quickly they submit their solutions. I wasn&#39;t competing, and only finished the problems in late January.&lt;/p&gt;
+&lt;p&gt;Here are my linecounts for each of the 25 days.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/static/img/aoc2021/linecount.png&#34;
+     alt=&#34;Line counts by day. They range from about 10 lines to about 250 lines.&#34;
+     class=&#34;centered&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Generally, the later problems took more lines of code, because they were more difficult, but this wasn&#39;t universally true. I massively over-engineered some of the later problems, and went outside the scope of others. &lt;a href=&#34;https://adventofcode.com/2021/day/24&#34;&gt;Day 24&lt;/a&gt; includes the specification of a simple processing unit, for example, which I went ahead and implemented (unnecessarily). I also went completely overboard with &lt;a href=&#34;https://adventofcode.com/2021/day/17&#34;&gt;day 17&lt;/a&gt;, which tasks you with calculating the trajectory of a projectile, and wrote a toy equation solver. Also bloating the line count is the fact that I usually copied helper functions between files rather than packaging them up for re-use.&lt;/p&gt;
+&lt;p&gt;Common Lisp was pleasant to use. It doesn&#39;t come with as many batteries as Python, but even Python users who are taking the competition seriously (like &lt;a href=&#34;https://blog.vero.site/post/advent-leaderboard&#34;&gt;this person&lt;/a&gt;) will want to have their own data structures and algorithms library to-hand. It shouldn&#39;t be too much of a burden on top of that to implement simple functions like &lt;code&gt;(read-lines file)&lt;/code&gt; and &lt;code&gt;(split-string string)&lt;/code&gt;. Speaking of &lt;a href=&#34;https://blog.vero.site/post/advent-leaderboard&#34;&gt;that person&lt;/a&gt;, who happens to be the winner of AoC 2021, their post confirmed some of my ideas about what it would take to be competitive with the rest of the internet: lots of practice, a personal library that you know like the back of your hand, and automation software to download the problems at midnight and submit the solutions.&lt;/p&gt;
+&lt;p&gt;The only day I really struggled with was &lt;a href=&#34;https://adventofcode.com/2021/day/19&#34;&gt;#19&lt;/a&gt;, which required knowledge about 3d rotations that I just didn&#39;t have. I ended up asking the &lt;a href=&#34;https://www.reddit.com/r/adventofcode/comments/s83n99/2021_day_19common_lisp_is_my_algorithm_wrong_or/&#34;&gt;sages of reddit&lt;/a&gt; for assistance. Oh, and I had a nasty bug on &lt;a href=&#34;https://adventofcode.com/2021/day/18&#34;&gt;day 18&lt;/a&gt;, which was not triggered by the sample input. To debug it, I ended up taking someone else&#39;s solution, printing the data structure at each step of their code, and comparing the output to mine, which made it obvious what the bug was. Those were a rough 2 days.&lt;/p&gt;
+&lt;p&gt;I didn&#39;t need graphviz to solve &lt;a href=&#34;https://adventofcode.com/2021/day/12&#34;&gt;day 12&lt;/a&gt;, but it was cool to be able to visualise the cave (see below). Data formats in general are cool and powerful! If you know &lt;a href=&#34;https://en.wikipedia.org/wiki/Netpbm#PPM_example&#34;&gt;PPM&lt;/a&gt;, for example, which is a simple ASCII storage format for images, then it&#39;s easy to visualise the output of a &lt;a href=&#34;https://raytracing.github.io/&#34;&gt;toy ray tracer&lt;/a&gt; in any language, because you just have to save a list of numbers to a file. With graphviz, you can easily visualise graphs in any language by writing a 5-line function that saves your graph data structure to a file in a very simple format.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/static/img/aoc2021/graph.svg&#34;
+     alt=&#34;Graph of the cave from day 12, it&#39;s just circles and lines connecting them.&#34;
+     class=&#34;centered&#34;&gt;&lt;/p&gt;
+&lt;p&gt;I don&#39;t plan to participate next year, but it&#39;s a nice thing to do if you want to get your hands dirty with a programming language. After the competition, I felt like I could blast out code in Common Lisp fairly fluently (though still not as fluently as Python). I&#39;m pretty sure I went through a similar process with Python, back in the day, when I was solving programming challenges to prepare for interviews.&lt;/p&gt;
+&lt;p&gt;Anyway, my solutions are &lt;a href=&#34;https://github.com/Kevinpgalligan/advent-of-code-2021&#34;&gt;here&lt;/a&gt;, if anyone wants to take a peek.&lt;/p&gt;</description>
+        <link>https://kevingal.com/blog/aoc2021.html</link>
+        <pubDate>Sat, 18 Jun 2022 00:00:00 GMT</pubDate>
+        <guid>https://kevingal.com/blog/aoc2021.html</guid>
+    </item>
     <item>
         <title>Making a calculator</title>
         <description>&lt;p&gt;I&#39;ve released a &lt;a href=&#34;https://github.com/Kevinpgalligan/ka&#34;&gt;calculator language&lt;/a&gt;, codenamed &lt;em&gt;ka&lt;/em&gt;! It can do quick one-off calculations from the command line (such as &lt;code&gt;ka &#39;9*9&#39;&lt;/code&gt;), or it can be run as a command line interpreter:&lt;/p&gt;
@@ -667,43 +688,6 @@ e kon mun en tan.&lt;/p&gt;
         <link>https://kevingal.com/blog/toki-poetry.html</link>
         <pubDate>Wed, 17 Mar 2021 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/toki-poetry.html</guid>
-    </item>
-    <item>
-        <title>A Farewell to JavaScript</title>
-        <description>&lt;p&gt;The Board of Directors are pleased to announce that the blog&#39;s LaTeX rendering is now done at build time.&lt;/p&gt;
-&lt;p&gt;Previously, readers had to download MathJax from a CDN somewhere. Well, their browsers did. Then the MathJax script converted all LaTeX on the page to HTML, and downloaded CSS files and fonts to make the HTML look pretty.&lt;/p&gt;
-&lt;p&gt;This always stuck in my throat. It meant that the site couldn&#39;t render properly without JavaScript or without an internet connection. The CDN could vanish without warning. And it seemed unnecessary -- why shouldn&#39;t I be able to render when I build the site, rather than forcing people to download a (probably massive) rendering script?&lt;/p&gt;
-&lt;p&gt;I came across a Python Markdown plugin the other day called &lt;a href=&#34;https://github.com/mbarkhau/markdown-katex&#34;&gt;markdown-katex&lt;/a&gt; that resolved this gag-worthy state of affairs.&lt;/p&gt;
-&lt;p&gt;Here&#39;s the build process and how markdown-katex now fits into it:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;I push the shiny &#34;build&#34; button. This spins up a Flask server. Flask is a Python web server with lots of plugins.&lt;/li&gt;
-&lt;li&gt;A Flask plugin called Frozen-Flask crawls the site and dumps all the files it finds to a folder.&lt;/li&gt;
-&lt;li&gt;The blog posts are written in Markdown, which is like HTML but easier on the eyes. When Frozen-Flask hits a blog post, the post gets converted from Markdown to HTML. markdown-katex comes in here and handles the LaTeX parts. From what I understand, markdown-katex is bundled with a copy of KaTeX (a Node.js LaTeX renderer), and all it does is take the LaTeX bits from the Markdown document and pass them to KaTeX.&lt;/li&gt;
-&lt;li&gt;I take the HTML files dumped by Frozen-Flask and upload them to a GitHub Pages repository where they&#39;re served to the world.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;Oh, I also needed to start serving the KaTeX CSS files and fonts, which was just a copy-and-paste job. The whole thing seems baroque when I write it out fully, but I&#39;m happy that JavaScript is no longer required to read the blog.&lt;/p&gt;
-&lt;p&gt;Now for some vim trivia. I had to go back and change the LaTeX delimiters in all the blog posts. MathJax uses $ as a delimiter for inline math mode, and $$ for display math mode. markdown-katex uses $` and `$ for inline math mode, and...&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;```math
-{insert maths here}
-```
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;...for display math mode. I used a vim macro to replace the inline delimiters, with the following key presses: &lt;code&gt;qa/\$RETa`ESCni`ESCwq&lt;/code&gt;. It finds the next pair of LaTeX delimiters (e.g. &lt;code&gt;$x^2+1$&lt;/code&gt;) and converts them to the new format (&lt;code&gt;$`x^2+1`$&lt;/code&gt;).&lt;/p&gt;
-&lt;p&gt;Here&#39;s a breakdown of how that works.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;qa&lt;/code&gt; starts recording a macro in register &lt;code&gt;a&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;/\$RET&lt;/code&gt; searches for the next dollar sign and moves the cursor there. RET is the enter/return key.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;a`ESC&lt;/code&gt; enters insert mode &lt;em&gt;after&lt;/em&gt; the cursor, writes a backtick, and exits insert mode. ESC is the escape key. &lt;/li&gt;
-&lt;li&gt;&lt;code&gt;n&lt;/code&gt; continues the search, moving the cursor to the next dollar sign.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;i`ESC&lt;/code&gt; enters insert mode &lt;em&gt;before&lt;/em&gt; the cursor, writes a backtick, and exits insert mode.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;w&lt;/code&gt; moves the cursor forward by 1 word so that the macro doesn&#39;t get stuck on the $ we just processed.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;q&lt;/code&gt; stops recording the macro.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;I could type &lt;code&gt;@a&lt;/code&gt; to run the macro once, then &lt;code&gt;.&lt;/code&gt; to repeat it after that. It&#39;s much faster and less error-prone than fixing such things manually, obviously, but I also feel that vim is more suited to this task than, say, a Python script. It&#39;s so easy to record a macro, and you can catch errors as they happen. I would go with Python if I had to change more than a handful of files, though.&lt;/p&gt;</description>
-        <link>https://kevingal.com/blog/farewell-to-js.html</link>
-        <pubDate>Sat, 06 Feb 2021 00:00:00 GMT</pubDate>
-        <guid>https://kevingal.com/blog/farewell-to-js.html</guid>
     </item>
 </channel>
 </rss> 
