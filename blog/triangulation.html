@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title> Triangulation pillars: an alien technology? </title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+
+<meta property="og:description" content="A look at triangulation pillars and how they were used to create detailed maps before satellites." /> 
+<meta property="og:image" content="https://kevingal.com/static/img/thumbnail.jpg" />
+<meta name="thumbnail" content="/static/img/thumbnail.jpg" />
+
+
+<link rel="stylesheet" href="/static/katex/katex.min.css">
+<meta property="description" content="A look at triangulation pillars and how they were used to create detailed maps before satellites.">
+
+<link rel="stylesheet" href="/static/css/blog.css">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon.ico">
+</head>
+<body>
+    <header>
+        <div data-nosnippet class="navbar">
+        <nav>
+        <a href="/index.html" class="navlink">about</a>
+        • <a href="/blog.html" class="navlink">blog</a>
+        • <a href="/software.html" class="navlink">software</a>
+        • <a href="/feed.xml" class="navlink">rss</a>
+        </nav>
+        </div>
+    </header>
+
+<h2 class="post-title">Triangulation pillars: an alien technology? </h2>
+<h3 class="post-date">2023-09-26</h3>
+<h3 class="post-date">A look at triangulation pillars and how they were used to create detailed maps before satellites.</h3>
+<p>Tags: <a href="/blog/tag/data.html">data</a> <a href="/blog/tag/ireland.html">ireland</a> </p>
+<hr>
+<p>In the image below is a <a href="https://en.wikipedia.org/wiki/Triangulation_station">triangulation pillar</a>, or triangulation station. Thousands of years ago, aliens placed this pillar at the top of Benbulbin mountain in Ireland. It contains advanced technology that allows the aliens to monitor human civilisation from across the galaxy.</p>
+<figure>
+<img src="/static/img/triangulation/benbulben.jpeg"
+     alt="A concrete pillar at the top of a mountain."
+     class="centered">
+<figcaption>The peak of Benbulbin, Ireland.</figcaption>
+</figure>
+
+<p>Just kidding. It's a block of concrete that was placed there by humans in the past 200 years, and was used to create maps of Ireland in the time before satellites. In this article we'll see how those maps were constructed (using the law of sines from trigonometry!), and we'll also see how measurement error could affect the mapping.</p>
+<h3 id="how-it-works">How it works</h3>
+<p>To understand the idea behind triangulation pillars, let's see how they're distributed throughout Ireland. Here's a map of that distribution. The red triangle corresponds to the Benbulbin pillar shown above. I got the pillar coordinates from <a href="http://www.trigpointing-ireland.org.uk/index.php">here</a>, and the county boundary coordinates from <a href="https://www.townlands.ie/page/download/">here</a>.</p>
+<figure>
+<img src="/static/img/triangulation/map.jpg"
+     alt="A map of Ireland with a bunch of triangles marking the triangulation pillars."
+     class="centered">
+<figcaption>Ireland and its triangulation pillars.</figcaption>
+</figure>
+
+<p>The first step in creating a map is to form a triangle mesh between all the  pillars. Since I don't know how the pillars were connected in the past, I used Python's <code>scipy.spatial.Delaunay</code> to do so. Each pillar is part of at least one triangle in the mesh.</p>
+<p><img src="/static/img/triangulation/mesh-map.jpg"
+     alt="The same map but with red lines forming a mesh of triangles between all the pillars."
+     class="centered"></p>
+<p>By removing the county boundaries, it becomes clear that the shape of Ireland is captured quite well by the triangle mesh. If we could can figure out the positions of the pillars relative to each other, then we would be able to draw this mesh and it could form the basis of a map of Ireland.</p>
+<p><img src="/static/img/triangulation/mesh-only-map.jpg"
+     alt="Map of Ireland, but the lines marking the borders have been removed. Only the triangulation pillar triangle mesh remains."
+     class="centered"></p>
+<p>Here's how the mapping works in practice. Once the pillars are in place, the first step in a hypothetical survey is to take a single triangle and measure one of its side lengths. In the Irish Ordnance Survey, beginning around 1827, this base measurement was taken between two pillars along the shores of Lough Foyle in Northern Ireland. The next step in the hypothetical survey is to measure the internal angles of each triangle using a device called a <a href="https://en.wikipedia.org/wiki/Theodolite">theodolite</a>. Basically, you stand at one of the pillars, which for visibility should be built in a high place, and put light sources at two of its neighbouring pillars. The theodolite can accurately determine the angle between the neighbouring lights, thus enabling you to determine the angle at that corner of the triangle.</p>
+<p>Based on these measurements -- a single side length and the angles of all the triangles -- a full map of the country can be reconstructed based on the <a href="https://en.wikipedia.org/wiki/Law_of_sines">law of sines</a>. Given the internal angles of a triangle and a single side length, the law of sines yields the two remaining side lengths.</p>
+<p>This is easiest to explain through an example. Suppose we're standing at Benbulbin, which is neighboured by triangulation pillars at Mullaghmore and Truskmore. Let's say we want to calculate the distance to Truskmore, labelled <code>x</code> in the diagram below. We've already used our theodolite to measure the angles between the pillars, and we measured the straight-line distance from Benbulbin to Mullaghmore (here, 10km) using a really really long stick.</p>
+<p><img src="/static/img/triangulation/law-of-sines.jpg"
+     alt="Three points -- Benbulbin, Mullaghmore and Truskmore -- forming a triangle. Mullaghmore to Truskmore to Benbulbin has an angle of 45 degrees, while Benbulbin to Mullaghmore to Truskmore has an angle of 65 degrees."
+     class="centered"></p>
+<p>According to the law of sines, you can take the sine of any angle of a triangle and divide by the length of the opposite side, and it gives you the same result. Thus,</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mrow><mi>s</mi><mi>i</mi><mi>n</mi><mo stretchy="false">(</mo><mn>65</mn><mo stretchy="false">)</mo></mrow><mi>x</mi></mfrac><mo>=</mo><mfrac><mrow><mi>s</mi><mi>i</mi><mi>n</mi><mo stretchy="false">(</mo><mn>45</mn><mo stretchy="false">)</mo></mrow><mn>10</mn></mfrac><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">
+\frac{sin(65)}{x} = \frac{sin(45)}{10}.
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.113em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">x</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="mord mathnormal">in</span><span class="mopen">(</span><span class="mord">65</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.113em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">10</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="mord mathnormal">in</span><span class="mopen">(</span><span class="mord">45</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord">.</span></span></span></span></span></p>
+
+<p>Solving for <code>x</code> gives a distance of about 9.72km. Using this new distance estimate, we could then estimate the distance from Benbulbin and Mullaghmore to other pillars, and so on and so forth, until we know the relative positions of all the pillars in Ireland.</p>
+<p>What happens if we mess up the initial distance measurement? I'm glad you asked, because that's what we're going to examine next.</p>
+<h3 id="what-can-go-wrong">What can go wrong</h3>
+<p>Let's say we've accurately measured the angles between all the pillars on the map above. We don't know how far apart they are, though. So our next step is to measure the distance between a single pair of pillars. Let's say we measure the distance between Scalp Mountain and Creehennan Hill, both along the shores of Lough Foyle. Assuming the measurement has 0% error, that distance can be propagated through the whole triangle mesh using the law of sines, and the map of triangulation pillars can be reconstructed exactly. I'm not even going to bother showing the results of this process, because it would be an exact copy of the map from before.</p>
+<p>However, let's say the initial measurement is 25% shorter than it should be. The result is a shrunken triangle mesh that evidently does not capture the area of Ireland:</p>
+<p><img src="/static/img/triangulation/reconstructed_map.jpg"
+     alt="Triangle mesh superimposed over a map of Ireland. This time, the shape of the mesh, while still Ireland-like, appears to be somewhat smaller than it should be."
+     class="centered"></p>
+<p>Honestly, it's more robust than I expected. I thought it would explode in different directions. Perhaps the error cancels out as pillars get pulled in different directions. We do see that the individual triangles overlap, however, and so our hypothetical cartographer would at least be aware that they had made a serious error in their initial measurement.</p>
+<h3 id="closing-thoughts">Closing thoughts</h3>
+<p>I took that picture at Benbulbin, so I can appreciate how hard it must have been to capture so many measurements back in the day. There are 868 pillars in the dataset I looked at, and I wince at the thought of climbing Benbulbin 868 times.</p>
+<p>ANYWAY, follow-up links:</p>
+<ul>
+<li>All my drawing and triangulation code: <a href="https://github.com/Kevinpgalligan/triangulate">https://github.com/Kevinpgalligan/triangulate</a></li>
+<li>A more detailed history of the 1800s survey can be found at <a href="http://www.trigpointing-ireland.org.uk/trigpoints.php">tripointing-ireland.org.uk</a>. </li>
+<li><a href="https://www.revisitinghistory.com/maps/old-maps-of-ireland/">This page</a> has a bunch of old maps of Ireland. Pretty cool.</li>
+</ul>
+<hr>
+<ul>
+<li><a href="/blog.html">Back to blog</a></li>
+<li><a href="/feed.xml">RSS feed</a></li>
+</ul>
+<p>I'd be happy to hear from you at <i>galligankevinp@gmail.com</i>.</p>
+
+</body>
+</html>
