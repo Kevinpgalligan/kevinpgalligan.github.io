@@ -4,10 +4,151 @@
     <title>Kevin's Blog</title>
     <link>https://kevingal.com</link>
     <description>Maths, computers and stuff.</description>
-    <pubDate>Wed, 15 Nov 2023 00:00:00 GMT</pubDate>
-    <lastBuildDate>Wed, 15 Nov 2023 00:00:00 GMT</lastBuildDate>
+    <pubDate>Thu, 28 Dec 2023 00:00:00 GMT</pubDate>
+    <lastBuildDate>Thu, 28 Dec 2023 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://kevingal.com/feed.xml" rel="self" type="application/rss+xml" />
     
+    <item>
+        <title>A Recursive Christmas</title>
+        <description>&lt;p&gt;I&#39;m happy to report that this January I&#39;ll be starting a 3-month programming retreat at the &lt;a href=&#34;https://www.recurse.com/&#34;&gt;Recurse Center&lt;/a&gt; (RC)! It&#39;s basically like a writing retreat, but for programming. Since I got rejected the first time I applied, and I found it helpful when preparing my second application to read other people&#39;s experiences, I figured I&#39;d do the same thing here. I&#39;ll also list the &lt;a href=&#34;#project-ideas&#34;&gt;project ideas&lt;/a&gt; I have for my batch, which I find VERY EXCITING to think about.&lt;/p&gt;
+&lt;p&gt;By the way, in the spirit of Christmas, here&#39;s a Palestine-themed animation I made of nested Christmas trees. Source code &lt;a href=&#34;https://github.com/Kevinpgalligan/sketches/blob/master/src/thesketches/xmas.lisp&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;video width=&#34;200&#34; height=&#34;200&#34; class=&#34;centered&#34; controls&gt;
+    &lt;source src=&#34;/static/video/recurse/xmas.mp4&#34; type=&#34;video/mp4&#34;&gt;
+&lt;/video&gt;
+
+&lt;h3 id=&#34;first-application&#34;&gt;First Application&lt;/h3&gt;
+&lt;p&gt;There are three stages to the RC application process: a written application, a conversational interview, and a pair programming interview. The written application is meant to determine your motivations and your programming background. I felt like my attempt at the written application was pretty strong, and indeed, I managed to pass that stage of the interview. I&#39;ll share my final written application in the next section.&lt;/p&gt;
+&lt;p&gt;The conversational interview is where I got rejected. They don&#39;t provide feedback after the interview, but I can guess what went wrong. My motivations for attending RC were not clear or well thought-out. I said I liked the structure provided by RC, and that I thought it would help me to stay motivated -- but the RC website specifically says that they&#39;re looking for self-guided and self-motivated people! I also thought the interviewer would appreciate my openness when I shared my one worry about attending RC and said that, in the aftermath of my PhD experience, I sometimes find difficult programming to be anxiety-inducing, which makes me procrastinate and avoid it. In retrospect, I shouldn&#39;t have been so self-deprecating. An empathetic interviewer might even have rejected me for the good of my mental health!&lt;/p&gt;
+&lt;p&gt;Ultimately, I don&#39;t know why I got rejected, and I can only speculate. Needless to say, I was gutted, because I&#39;d been fantasising about attending RC for many years. The RC website says that 6% of attendees get in on their 2nd (or later) attempt, which is supposed to be encouraging, but seems like a pretty small percentage to me??? Still, I was determined to try again, and self-reflection had at least given me an idea of how to improve.&lt;/p&gt;
+&lt;h3 id=&#34;second-application&#34;&gt;Second Application&lt;/h3&gt;
+&lt;p&gt;I did a crapload of research for my second application. I combed through the RC website, and read upwards of 20 articles and blog posts by people who&#39;d applied to RC. I used these sources for inspiration and to better prepare myself. I also seriously reflected on my motivations, and concluded that the reason I wanted to attend RC specifically was for the community it provides. Anyone can go into the mountains and do a programming retreat by themselves, but it wouldn&#39;t be half as fun or as beneficial as working with other people!&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://gist.github.com/Kevinpgalligan/e03091ff2536f436c2fb56c16b6cdea1&#34;&gt;Here&lt;/a&gt; is my second written application, or something very close to it! Besides revising my motivations, I also tried to be more detailed about what I wanted to work on, and what types of projects I&#39;d worked on in the past.&lt;/p&gt;
+&lt;p&gt;The conversational interview was shorter this time, down from 30 minutes to 15 minutes. It also felt way less intense than the first one. I was prepared for all the questions, since either they were taken from the written application or I&#39;d encountered them during my preparations. The questions were:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;What&#39;s your programming background?&lt;/li&gt;
+&lt;li&gt;What do you want to work on at RC?&lt;/li&gt;
+&lt;li&gt;What was a programming problem you encountered, and how did you resolve it?&lt;/li&gt;
+&lt;li&gt;How will you tell that your batch has been a success?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;At the end, I had the opportunity to ask my own questions, so I asked the interviewer what their experience at RC had been; how people divide their time between programming and interacting with others; and how flexible RC is in terms of people attending remotely (answer: 100% flexible).&lt;/p&gt;
+&lt;p&gt;I managed not to self-deprecate this time. The interviewer was really friendly, and I think there was a lot of crossover between what they&#39;d worked on and what I wanted to work on. Also, I think I conveyed my enthusiasm and excitement for RC a lot better this time, since I remember smiling a lot (out of genuine enthusiasm) when the interviewer talked about their experience. Despite these positive signs, I had gotten good vibes from the interviewer during the first application, so my heart rate still doubled when I received a follow-up email from RC, to the extent that I could hear my heartbeat pounding in my ears. I hid in the bathroom to open the email, just in case I burst into tears. I was relieved to find, however, that I had passed the conversational interview this time!&lt;/p&gt;
+&lt;p&gt;Next up was the pair programming interview. Beforehand, you&#39;re required to write a short program. During the interview, you then pair up with your interviewer to add a small feature to that program. I chose to write a toy version of Space Invaders, where the aliens were circles and the player was a rectangle. I also prepared by skimming &lt;a href=&#34;https://martinfowler.com/articles/on-pair-programming.html&#34;&gt;this&lt;/a&gt; article on pair programming. At the start of the interview, I spent a lot of time talking through my program from top to bottom. Maybe too much time, but the interviewer gave the go-ahead and could&#39;ve interrupted me if I was taking too long. We then worked on adding the ability to shoot bullets, just about managing to complete the collision-detection logic before running out of time. The point of this interview isn&#39;t to complete the task, but to find out what you&#39;re like to work with, so I wasn&#39;t worried about how much progress I&#39;d made. My approach was basically to talk through every single thing I was doing and to regularly prompt the interviewer for feedback. In practice, this meant I ended a lot of sentences by saying &#34;if that makes sense&#34; or &#34;if that sounds good to you&#34;.&lt;/p&gt;
+&lt;p&gt;I somehow ended up enjoying this interview a lot, despite being tired and sick with a headcold. The programming went smoothly, the interviewer was nice, and they were helpful in catching a bug or two. It is, in fact, fun to program with other people! Still, the pounding in my ears returned when I received the follow-up email today, and I once again felt a wave of relief and happiness when it turned out to be good news.&lt;/p&gt;
+&lt;p&gt;The whole process took 1 week. My batch starts on January 3rd. For accountability, I&#39;m going to post a weekly update, so stay tuned! I&#39;m looking forward to meeting cool programmers and to 12 weeks of (hopefully) anxiety-free programming!&lt;/p&gt;
+&lt;h3 id=&#34;project-ideas&#34;&gt;Project Ideas&lt;/h3&gt;
+&lt;p&gt;Below are all the project ideas I have, grouped by the following categories: networking, systems, graphics, languages, software, workflow, music, computer science fundamentals, hacking, and maths &amp;amp; machine learning. (Yes, I have too many interests). I&#39;ve compiled them over many years, from many different sources -- including my brain.&lt;/p&gt;
+&lt;p&gt;There&#39;s no way I&#39;ll complete even half of them, so my plan is to do whatever makes me feel most excited on any particular day. The projects I&#39;m planning to start with are marked with a star emoji ⭐. If you have any suggestions or want to team up with me on any of these ideas, please let me know!&lt;/p&gt;
+&lt;h5 id=&#34;networking&#34;&gt;Networking&lt;/h5&gt;
+&lt;ul&gt;
+&lt;li&gt;⭐ Implement a BitTorrent client.&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://wiki.theory.org/BitTorrentSpecification&#34;&gt;http://wiki.theory.org/BitTorrentSpecification&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.kristenwidman.com/blog/how-to-write-a-bittorrent-client-part-1/&#34;&gt;http://www.kristenwidman.com/blog/how-to-write-a-bittorrent-client-part-1/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.bittorrent.org/beps/bep_0003.html&#34;&gt;http://www.bittorrent.org/beps/bep_0003.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Network traffic visualiser.&lt;/li&gt;
+&lt;li&gt;Reverse engineer a network protocol, e.g. for a web-based game.&lt;/li&gt;
+&lt;li&gt;Learn how to troubleshoot a network connection with dig, ping and traceroute.&lt;/li&gt;
+&lt;li&gt;Trace ping, traceroute, netstat, DHCP, DNS, ARP, SSL (SSLsniff &amp;amp; SSLstrip).&lt;/li&gt;
+&lt;li&gt;Implement a command-line SMTP mailer.&lt;/li&gt;
+&lt;li&gt;Play around with DNS, maybe implement it? (and see: &lt;a href=&#34;https://www.dns.toys/&#34;&gt;https://www.dns.toys/&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Implement a program to spy on local WiFi.&lt;/li&gt;
+&lt;li&gt;More project ideas: FTP-based file transfer program; a bandwidth monitor; a port scanner; a mail checker (enter POP or IMAP protocol, web server &amp;amp; IP, and application checks for mail); IP -&amp;gt; country; whois based on IP.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;systems&#34;&gt;Systems&lt;/h5&gt;
+&lt;ul&gt;
+&lt;li&gt;Reroute microphone input to another computer across the network.&lt;/li&gt;
+&lt;li&gt;Call a C function using assembly, and vice versa.&lt;/li&gt;
+&lt;li&gt;Device driver for my electronic piano.&lt;/li&gt;
+&lt;li&gt;C extension for higher level language.&lt;/li&gt;
+&lt;li&gt;Annotate the assembly output of a Hello World C program.&lt;/li&gt;
+&lt;li&gt;Hand-write an ELF binary file (inspired by: &lt;a href=&#34;https://blinry.org/rc-month-1/&#34;&gt;https://blinry.org/rc-month-1/&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Implement an assembler/linker from scratch (also &lt;a href=&#34;https://blinry.org/rc-month-1/&#34;&gt;https://blinry.org/rc-month-1/&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Parser for ELF file format.&lt;/li&gt;
+&lt;li&gt;Implement a debugger.&lt;/li&gt;
+&lt;li&gt;Print &#34;hello world&#34; during the boot process.&lt;/li&gt;
+&lt;li&gt;Try out alternative operating systems (Plan9, Free BSD).&lt;/li&gt;
+&lt;li&gt;Operating Systems books.&lt;ul&gt;
+&lt;li&gt;Operating System Design: The Xinu Approach.&lt;/li&gt;
+&lt;li&gt;The Design and Implementation of the FreeBSD Operating System.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Learn strace: &lt;a href=&#34;https://jvns.ca/blog/2021/04/03/what-problems-do-people-solve-with-strace/&#34;&gt;https://jvns.ca/blog/2021/04/03/what-problems-do-people-solve-with-strace/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Create my own filesystem (whatever that means).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;graphics&#34;&gt;Graphics&lt;/h5&gt;
+&lt;ul&gt;
+&lt;li&gt;⭐ Implement various generative art ideas, see: The Coding Train.&lt;/li&gt;
+&lt;li&gt;⭐ Add features to the sketch generative art framework (&lt;a href=&#34;https://github.com/vydd/sketch&#34;&gt;https://github.com/vydd/sketch&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;3d renderer using 2d graphics primitives (draw skyscrapers).&lt;/li&gt;
+&lt;li&gt;Implement a rasteriser.&lt;/li&gt;
+&lt;li&gt;Learn about shaders: shadertoy and Book of Shaders.&lt;/li&gt;
+&lt;li&gt;Write Common Lisp bindings for Godot game engine.&lt;/li&gt;
+&lt;li&gt;Make a game (e.g. chessbots, players program each type of piece using a DSL).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;languages&#34;&gt;Languages&lt;/h5&gt;
+&lt;ul&gt;
+&lt;li&gt;⭐ Implement a Forth interpreter in Lisp.&lt;/li&gt;
+&lt;li&gt;Implement a Forth compiler:&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/nornagon/jonesforth/blob/master/jonesforth.S&#34;&gt;https://github.com/nornagon/jonesforth/blob/master/jonesforth.S&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://ratfactor.com/forth/forth_talk_2023.html&#34;&gt;https://ratfactor.com/forth/forth_talk_2023.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Implement a machine code-generating compiler (book: Engineering a Compiler).&lt;/li&gt;
+&lt;li&gt;Read: On Lisp (macros).&lt;/li&gt;
+&lt;li&gt;Read: The Common Lisp Condition System.&lt;/li&gt;
+&lt;li&gt;Read: Lisp in Small Pieces (advanced implementation of Lisps).&lt;/li&gt;
+&lt;li&gt;Play around with: Smalltalk (&lt;a href=&#34;http://wiki.squeak.org/squeak/377&#34;&gt;http://wiki.squeak.org/squeak/377&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Use J/APL for mathsy stuff.&lt;/li&gt;
+&lt;li&gt;Other languages of interest: OCaml, Guile, Prolog.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;software&#34;&gt;Software&lt;/h5&gt;
+&lt;ul&gt;
+&lt;li&gt;⭐ Finish my &lt;a href=&#34;https://github.com/Kevinpgalligan/RewindRSS&#34;&gt;RSS feed generator&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Update my site generator to not regenerate pages that haven&#39;t changed.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;workflow&#34;&gt;Workflow&lt;/h5&gt;
+&lt;ul&gt;
+&lt;li&gt;Try out the Nyxt browser.&lt;/li&gt;
+&lt;li&gt;Learn Magit for Emacs.&lt;/li&gt;
+&lt;li&gt;Write an Emacs plugin.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;music&#34;&gt;Music&lt;/h5&gt;
+&lt;ul&gt;
+&lt;li&gt;⭐ Finish webcam theremin.&lt;/li&gt;
+&lt;li&gt;Read: &#34;Theory and Practice of Electronic Music&#34;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;hacking&#34;&gt;Hacking&lt;/h5&gt;
+&lt;ul&gt;
+&lt;li&gt;Maybe useful: &lt;a href=&#34;https://github.com/hackclub/some-assembly-required&#34;&gt;https://github.com/hackclub/some-assembly-required&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Read: &#34;Metasploit: The Penetration Tester&#39;s Guide&#34;&lt;/li&gt;
+&lt;li&gt;Do: &lt;a href=&#34;https://cryptopals.com/&#34;&gt;https://cryptopals.com/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Do: &lt;a href=&#34;https://github.com/guyinatuxedo/nightmare&#34;&gt;https://github.com/guyinatuxedo/nightmare&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Do: &lt;a href=&#34;https://overthewire.org/wargames/bandit/&#34;&gt;https://overthewire.org/wargames/bandit/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;CTF challenges.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;computer-science-fundamentals&#34;&gt;Computer science fundamentals&lt;/h5&gt;
+&lt;ul&gt;
+&lt;li&gt;⭐ Finish computer emulator based on Code: The Hidden Language of Computer Hardware and Software.&lt;/li&gt;
+&lt;li&gt;Write BASIC interpreter in assembly (for emulator?).&lt;/li&gt;
+&lt;li&gt;Read Paradigms of Artificial Intelligence Programming (algorithms in Common Lisp).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;maths-machine-learning&#34;&gt;Maths &amp;amp; machine learning&lt;/h5&gt;
+&lt;ul&gt;
+&lt;li&gt;Book: Learning From Data.&lt;/li&gt;
+&lt;li&gt;Andrew Ng&#39;s machine learning lectures.&lt;/li&gt;
+&lt;li&gt;Reinforcement Learning: An Introduction (a book that uses Lisp!).&lt;/li&gt;
+&lt;li&gt;Code up stuff from Martin Gardner articles.&lt;/li&gt;
+&lt;li&gt;Implement principal component analysis.&lt;/li&gt;
+&lt;li&gt;Implement BCH and other error correction codes.&lt;/li&gt;
+&lt;li&gt;Read: How to Solve It.&lt;/li&gt;
+&lt;li&gt;Implement Fourier transform algorithm.&lt;/li&gt;
+&lt;li&gt;Do more Project Euler problems.&lt;/li&gt;
+&lt;/ul&gt;</description>
+        <link>https://kevingal.com/blog/recurse.html</link>
+        <pubDate>Thu, 28 Dec 2023 00:00:00 GMT</pubDate>
+        <guid>https://kevingal.com/blog/recurse.html</guid>
+    </item>
     <item>
         <title>Reflections on a PhD</title>
         <description>&lt;h3 id=&#34;introduction&#34;&gt;Introduction&lt;/h3&gt;
@@ -567,52 +708,6 @@ x^{(k)} = P x^{(k-1)} = \left[ {\begin{array}{c}
         <link>https://kevingal.com/blog/aoc2021.html</link>
         <pubDate>Sat, 18 Jun 2022 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/aoc2021.html</guid>
-    </item>
-    <item>
-        <title>Making a calculator</title>
-        <description>&lt;p&gt;I&#39;ve released a &lt;a href=&#34;https://github.com/Kevinpgalligan/ka&#34;&gt;calculator language&lt;/a&gt;, codenamed &lt;em&gt;ka&lt;/em&gt;! It can do quick one-off calculations from the command line (such as &lt;code&gt;ka &#39;9*9&#39;&lt;/code&gt;), or it can be run as a command line interpreter:&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ ka
-ka version 1.0
-&amp;gt;&amp;gt;&amp;gt; 2 * (1/2)
-1
-&amp;gt;&amp;gt;&amp;gt; 1 metre + 1 foot &amp;gt; feet
-4.2808398950131235
-&amp;gt;&amp;gt;&amp;gt; p = 0.7; C(10,3) * p^3 * (1-p)^7
-0.009001692000000007
-&amp;gt;&amp;gt;&amp;gt; sin(90 deg)
-1 
-&amp;gt;&amp;gt;&amp;gt; e^pi
-23.140692632779263
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;It also has a crappy work-in-progress graphical interface, which can be summoned by running &lt;code&gt;ka --gui&lt;/code&gt;. &lt;/p&gt;
-&lt;figure&gt;
-
-&lt;img src=&#34;/static/img/ka/gui.png&#34;
-     alt=&#34;ka GUI, which basically consists of a single line to enter expressions and a white text area where the results are printed.&#34;
-     class=&#34;centered&#34;&gt;
-
-&lt;figcaption&gt;In which Kevin learns the frustrations of GUI programming.&lt;/figcaption&gt;
-&lt;/figure&gt;
-
-&lt;p&gt;I decided to make a calculator because I found myself sometimes using Python as a calculator (for scipy&#39;s math functions), sometimes using the desktop calculator that comes with Linux Mint (for convenience), sometimes using the Common Lisp REPL (for its first-class support of fractions), sometimes using web calculators. I wanted all the functionality that I commonly use to be available in one, convenient package.&lt;/p&gt;
-&lt;p&gt;One thing that needs work, if I want anyone besides myself to actually be able to use ka, is the packaging. I haven&#39;t tested how easy it is to install from scratch, but a Linux user would need to (1) install the Qt 5 GUI framework using their package manager of choice, (2) use pip to install the ka-cli package from the Python Package Index, and (3) add an entry to their desktop configuration so that they can run ka as a standalone application rather than having to start up a terminal every time. Ideally, this would all be done by an installer, but I haven&#39;t packaged an application for Linux before and I&#39;m too lazy to learn how. And let&#39;s not talk about Windows.&lt;/p&gt;
-&lt;p&gt;The most interesting things about ka on the language level are its&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Turing-incompleteness (no loops or conditionals), which is fine for a calculator language.&lt;/li&gt;
-&lt;li&gt;Support for units.&lt;/li&gt;
-&lt;li&gt;Type system.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;I will briefly discuss each of these points!&lt;/p&gt;
-&lt;p&gt;I&#39;ve decided not to add loops or if statements or many features of Real Programming Languages because it seems like unnecessary bloat for a calculator. I did want to include support for variables, however, because otherwise certain common calculations would be a pain in the neck and I&#39;d have to go crawling back to Python all the time. If a calculation truly requires loops or conditionals, well then maybe it should be done using a Real Programming Language after all.&lt;/p&gt;
-&lt;p&gt;It&#39;s kinda interesting how the unit system works. The language has a Quantity type, which consists of (1) a magnitude and (2) a unit. &#34;5 metres&#34; is a quantity whose magnitude is 5 and whose unit is, well, the metre. Quantities that measure the same physical characteristic (such as &#39;length&#39;) can be added and subtracted. It doesn&#39;t make sense to add quantities that measure different things, like &#39;area&#39; and &#39;velocity&#39;. Any quantities can be multipled or divided together, however. For example: if you know that a bath&#39;s volume is &lt;code&gt;V=3 metres^3&lt;/code&gt;, and it&#39;s filling up at rate &lt;code&gt;r=0.01 metre^3 | second&lt;/code&gt;, then &lt;code&gt;V/r&lt;/code&gt; gives the time in seconds until the bath fills up.&lt;/p&gt;
-&lt;p&gt;Internally, all the units are derived from the 7 &lt;a href=&#34;https://en.wikipedia.org/wiki/SI_base_unit&#34;&gt;SI base units&lt;/a&gt;. The newton, the unit of force, is written in terms of base units as &lt;code&gt;kilogram ⋅ metre ⋅ second^-2&lt;/code&gt;. I&#39;m not sure where I got the idea (probably while skimming the Wikipedia page on &lt;a href=&#34;https://en.wikipedia.org/wiki/Dimensional_analysis&#34;&gt;dimensional analysis&lt;/a&gt;), but I coded this up by storing the integer exponent of each base unit in a 7-dimensional vector. If the 1st dimension is devoted to kilograms, and the 2nd dimension to metres, and the 4th dimension to seconds, then the newton&#39;s vector representation would be &lt;code&gt;&amp;lt;1, 1, 0, -2, 0, 0, 0&amp;gt;&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;When you multiply two quantities, their vectors are added together to make a new quantity. When you divide them, the second one is subtracted from the first. So, returning to the bathtub example, the volume would have a vector representation of &lt;code&gt;&amp;lt;0, 3, 0, 0, 0, 0, 0&amp;gt;&lt;/code&gt;, the rate would be &lt;code&gt;&amp;lt;0, 3, 0, -1, 0, 0, 0&amp;gt;&lt;/code&gt;, and &lt;code&gt;V/r&lt;/code&gt; would be &lt;code&gt;&amp;lt;0, 3-3, 0, 0-(-1), 0, 0, 0&amp;gt;&lt;/code&gt;, or just &lt;code&gt;&amp;lt;0, 0, 0, 1, 0, 0, 0&amp;gt;&lt;/code&gt; (seconds). Units can also come with a multiplier (the foot is a multiple of the metre) or an offset (the degree Celcius is offset from the kelvin). And they can have prefixes that apply a multiple: kilo multiplies by 10&lt;sup&gt;3&lt;/sup&gt;, centi multiplies by 10&lt;sup&gt;-2&lt;/sup&gt;. That&#39;s about it for units! Though of course, there are some edge cases, such as the kilogram being the only base unit with a prefix.&lt;/p&gt;
-&lt;p&gt;The type system is strongly typed, which means it complains when you pass a Fraction to a function that expects an Integer. There are basically two types of types: numeric types, which are arranged in the hierarchy Real &amp;lt; Fraction &amp;lt; Integer, and a Quantity type all on its own. An Integer can pass as a Real, because it&#39;s further down the hierarchy, but not vice versa. I got the type hierarchy idea from Structure and Interpretation of Computer Programs (SICP). Another trick I stole from SICP: if a Fraction can be simplified to an Integer, then this is done automatically, so that &lt;code&gt;6/2&lt;/code&gt; is always simplified to &lt;code&gt;3&lt;/code&gt;. The implementation language of ka is Python, and the fact that Python has a module for &lt;a href=&#34;https://docs.python.org/3/library/fractions.html&#34;&gt;fractions&lt;/a&gt; and a module for &lt;a href=&#34;https://docs.python.org/3/library/numbers.html&#34;&gt;numeric types&lt;/a&gt; made my work on the type system a lot easier.&lt;/p&gt;
-&lt;p&gt;And there you have it. A calculator language in about 1400 lines of Python code. If anyone happens to read this and happens to try out ka, I&#39;d be curious to hear how you get on with it!&lt;/p&gt;</description>
-        <link>https://kevingal.com/blog/ka.html</link>
-        <pubDate>Wed, 30 Mar 2022 00:00:00 GMT</pubDate>
-        <guid>https://kevingal.com/blog/ka.html</guid>
     </item>
 </channel>
 </rss> 
