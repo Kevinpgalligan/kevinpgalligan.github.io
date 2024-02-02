@@ -37,6 +37,10 @@
 <tr><td><a href="/apps/collision.html">Collision Calculator</a></td><td>web</td><td>Calculate hash collision probabilities.</td><td><a href="#collision-calculator">goto</a></td>
 <tr><td><a href="https://github.com/Kevinpgalligan/ka">ka</a></td><td>desktop</td><td>A calculator tool with a CLI and GUI.</td><td><a href="#ka">goto</a></td>
 <tr><td><a href="/apps/slingshotchess.html">Slingshot Chess</a></td><td>web</td><td>Chess game where you fire your pieces at the enemy.</td><td><a href="#slingshot-chess">goto</a></td>
+<tr><td><a href="https://github.com/Kevinpgalligan/sketches">sketches</a></td><td>desktop</td><td>Generative art in Common Lisp.</td><td><a href="#sketches">goto</a></td>
+<tr><td><a href="https://github.com/Kevinpgalligan/noisy">noisy</a></td><td>desktop</td><td>A Perlin noise library for Common Lisp.</td><td><a href="#noisy">goto</a></td>
+<tr><td><a href="https://github.com/Kevinpgalligan/cl-bittorrent">cl-bittorrent</a></td><td>desktop</td><td>A (WIP) BitTorrent client in Common Lisp.</td><td><a href="#cl-bittorrent">goto</a></td>
+<tr><td><a href="https://github.com/Kevinpgalligan/cloroforth">cloroforth</a></td><td>desktop</td><td>A (WIP) Forth interpreter in Common Lisp.</td><td><a href="#cloroforth">goto</a></td>
 
 </table>
 
@@ -134,6 +138,33 @@ e ni li tawa.  </p>
 <h3>Slingshot Chess<span class="project-link">(link: <a id="slingshot-chess" href="/apps/slingshotchess.html">kevingal.com</a>)</span></h3>
 <p>A version of chess where you fire your pieces at the enemy and try to knock their king off the edge of the board.</p>
 <p><img alt="Picture of two kings and some pawns crowded together in the center of a chess board." src="/static/img/slingshotchess/slingshot.png" /></p>
+<hr>
+<h3>sketches<span class="project-link">(link: <a id="sketches" href="https://github.com/Kevinpgalligan/sketches">github.com</a>)</span></h3>
+<p>Experiments in generative art using Common Lisp and the <a href="https://github.com/vydd/sketch">sketch</a> graphics playground. I'm also involved in the development of sketch itself.</p>
+<p><img alt="A randomly generated tree." src="/static/img/recurse/leaves-again.png" /></p>
+<hr>
+<h3>noisy<span class="project-link">(link: <a id="noisy" href="https://github.com/Kevinpgalligan/noisy">github.com</a>)</span></h3>
+<p>A Perlin noise library for Common Lisp. Supports an arbitrary number of dimensions.</p>
+<p>Here it is in 2 dimensions:</p>
+<p><img alt="A comparison of low-resolution (smoother) noise and higher-resolution (more detailed / chaotic) noise" src="/static/img/noisy/2d-noise.png" /></p>
+<p>Usage:</p>
+<div class="codehilite"><pre><span></span><code>CL-USER&gt; (ql:quickload &#39;noisy)
+CL-USER&gt; (use-package &#39;noisy)
+CL-USER&gt; (noise-seed 7)
+CL-USER&gt; (noise-detail :lod 2 :falloff 0.4)
+CL-USER&gt; (noise 0.02 0.3)
+0.39439920179571514d0
+CL-USER&gt; (defparameter *N* (make-noise 2 :seed 7 :lod 1 :falloff 1.0))
+CL-USER&gt; (set-noise-detail *N* :lod 2 :falloff 0.3)
+CL-USER&gt; (noise-gen *N* 0.04 0.09)
+0.17510623096285327d0
+</code></pre></div>
+<hr>
+<h3>cl-bittorrent<span class="project-link">(link: <a id="cl-bittorrent" href="https://github.com/Kevinpgalligan/cl-bittorrent">github.com</a>)</span></h3>
+<p>🚧 🚧 🚧</p>
+<hr>
+<h3>cloroforth<span class="project-link">(link: <a id="cloroforth" href="https://github.com/Kevinpgalligan/cloroforth">github.com</a>)</span></h3>
+<p>🚧 🚧 🚧</p>
 
 
 </body>
