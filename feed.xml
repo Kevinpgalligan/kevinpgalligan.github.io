@@ -4,10 +4,48 @@
     <title>Kevin's Blog</title>
     <link>https://kevingal.com</link>
     <description>Maths, computers and stuff.</description>
-    <pubDate>Fri, 02 Feb 2024 00:00:00 GMT</pubDate>
-    <lastBuildDate>Fri, 02 Feb 2024 00:00:00 GMT</lastBuildDate>
+    <pubDate>Fri, 09 Feb 2024 00:00:00 GMT</pubDate>
+    <lastBuildDate>Fri, 09 Feb 2024 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://kevingal.com/feed.xml" rel="self" type="application/rss+xml" />
     
+    <item>
+        <title>Recurse Center, week 6</title>
+        <description>&lt;h3 id=&#34;monday-february-5th&#34;&gt;Monday, February 5th&lt;/h3&gt;
+&lt;p&gt;On the BitTorrent front, worker threads can now handshake and send each other messages over network sockets. Yippee!&lt;/p&gt;
+&lt;p&gt;To get to that point, I had to refactor my code to work with streams instead of arrays, since that&#39;s the interface offered by the usocket library. This involved a frustrating amount of debugging -- I expected that calling &lt;code&gt;(read-sequence buffer stream)&lt;/code&gt; would read as many bytes as possible into &lt;code&gt;buffer&lt;/code&gt; until &lt;code&gt;stream&lt;/code&gt; is exhausted, but instead it quietly hangs if there&#39;s not enough data to fill up &lt;code&gt;buffer&lt;/code&gt;. The solution was to read byte-by-byte, checking &lt;code&gt;(listen stream)&lt;/code&gt; each time to see if there are any more bytes to read. Even this has a gotcha: if the peer closes the connection after sending some bytes, &lt;code&gt;(listen stream)&lt;/code&gt; will return &lt;code&gt;nil&lt;/code&gt; (false), even if there are still unprocessed bytes! I&#39;m willing to accept this wart in my code, however. Credit to gilberth in #lisp for helping me with that.&lt;/p&gt;
+&lt;p&gt;The next step is to implement the Brain of the client. This will contain all the actual logic for talking to peers, since the worker threads only read and write messages from/to the network.&lt;/p&gt;
+&lt;p&gt;Other than that, I added a couple of new primitive words to my Forth interpreter, and read through JonesForth trying to figure out what primitives I would need in order to write the interpreter loop in Forth itself. Whoever said that writing a Forth is easy left out &#34;...when you know how to do it&#34;.&lt;/p&gt;
+&lt;h3 id=&#34;tuesday-february-6th&#34;&gt;Tuesday, February 6th&lt;/h3&gt;
+&lt;p&gt;There are no more tricky design questions to solve on the BitTorrent front, and I just have to write a lot of Boring Code. I think I&#39;m 100-200 lines of  code from a finished client, and then I&#39;m sure there will be 1 million bugs to fix.&lt;/p&gt;
+&lt;p&gt;I suggested a Forth discussion, and Reed ended up organising (most of) it. Surprisingly, 3 other people turned up, leading to a fun session. We programmed the factorial function in gForth, as a group. Here&#39;s my recollection of what we ended up with:&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;kn&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;nc&#34;&gt;fac&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;( n -- n! )&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;   &lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;swap&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;1+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;do&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;I&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;loop&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And then we had a general chat about Forth stuff. Elias made a perceptive comment about the similarity of Forth and Lisp -- the syntax of both languages maps fairly closely to their representation in memory. Forth is laid out linearly, Lisp is a tree. I wonder if any other languages have this property!&lt;/p&gt;
+&lt;p&gt;In the evening I had a generative art idea that I couldn&#39;t resist implementing: particles that spiral towards the center of the image, leaving a trail of colour. There are a lot of parameters to tweak (how much force is applied to the particles, their max speed, the number of particles and what colour each of them leaves behind, etc), but I&#39;m done playing with it for now.&lt;/p&gt;
+&lt;figure&gt;
+&lt;img src=&#34;/static/img/recurse/swirl.png&#34;
+     alt=&#34;A swirl/spiral generative art pattern, many lines (green, gold, pinkish) spiral towards the center. Green background.&#34;
+     class=&#34;centered&#34;&gt;
+&lt;figcaption&gt;A swirl!&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;wednesday-february-7th&#34;&gt;Wednesday, February 7th&lt;/h3&gt;
+&lt;p&gt;After a coding marathon, the BitTorrent client is now Code Complete™. And the code compiles! I guess I suck at estimating tasks, because it was way more than 100-200 lines of code. My brain is mush and I don&#39;t have the heart to run it and see all the runtime errors &amp;amp; protocol bugs, though, so I&#39;ll wait until tomorrow before testing it out. I&#39;ve also been daydreaming about the blog post &amp;amp; presentation I&#39;ll probably do to wrap up this project.&lt;/p&gt;
+&lt;h3 id=&#34;thursday-february-8th&#34;&gt;Thursday, February 8th&lt;/h3&gt;
+&lt;p&gt;Read a bit about the &lt;a href=&#34;https://gigamonkeys.com/book/beyond-exception-handling-conditions-and-restarts.html&#34;&gt;Common Lisp condition system&lt;/a&gt;. It&#39;s more flexible than try/catch and exceptions because you can control the error behaviour of low-level code from high-level code (e.g. &lt;code&gt;analyze-log-files&lt;/code&gt; can tell &lt;code&gt;parse-log-file&lt;/code&gt; to skip malformed entries in the log, or it can tell &lt;code&gt;parse-log-entry&lt;/code&gt; to return a default value for malformed entries, or it can just not bother to handle the error in the first place).&lt;/p&gt;
+&lt;p&gt;To test the BitTorrent client, I set up a dummy HTTP server to act as the tracker (which lets you know the IP addresses of everyone who has the file(s) you want to download) and ran the client. This uncovered lots of easy-to-fix bugs. Also added logging so I can understand what the client is doing. For my next and (hopefully) final test,  I&#39;ll run 2 instances of the client and try to download a file from myself!&lt;/p&gt;
+&lt;p&gt;I spent ages trying to debug why my hand-edited .torrent file wasn&#39;t loading properly. I correctly suspected that the character encoding might be to blame, i.e. vim messing things up by trying to interpret the file as UTF-8. The solution was to use &lt;code&gt;vim -b&lt;/code&gt; so that the .torrent file would be treated as a binary file.&lt;/p&gt;
+&lt;p&gt;Paired with Jake to implement anti-aliasing in his ray tracer. Takeaways: pairing is fun, C is fun, vim can basically be made into an IDE, and .ppm is a cool image format.&lt;/p&gt;
+&lt;p&gt;Attended the presentations. They were super interesting, as always. I liked how Dan applied CS theory to the mundane problem of hiking route planning: first, it was framed as the traveling salesman problem, and then as a subset cover problem. The ROM hacking presentation was also very fun, and Raunak&#39;s WASM interpreter was impressive. I need to start taking notes -- too much cool stuff to remember! After that was the graduation ceremony. Seven-ish days ago, we were asked to write nice things about graduating Recursers. These nice things were now read out, 1 per person. So sweet! I realised that I hadn&#39;t put enough thought into what I wrote about other people. I&#39;ll try harder next time!&lt;/p&gt;
+&lt;h3 id=&#34;friday-february-9th&#34;&gt;Friday, February 9th&lt;/h3&gt;
+&lt;p&gt;Worked on testing the BitTorrent client. The idea is to run 2 instances of the client, one with a copy of the data and one without, and download a file from myself. This test is mostly ready, but I&#39;ve run into a bug where my dummy tracker server is sometimes rejecting my HTTP requests depending on the random 20-byte ID I use. Probably related to character encoding, as usual.&lt;/p&gt;
+&lt;h3 id=&#34;general-note&#34;&gt;General note&lt;/h3&gt;
+&lt;p&gt;Further RC updates will not be included in my RSS feed, and will not be included in the tag count, because I don&#39;t want people to be spammed by what is essentially my diary. I&#39;ll still post the updates every week, however.&lt;/p&gt;</description>
+        <link>https://kevingal.com/blog/rc6.html</link>
+        <pubDate>Fri, 09 Feb 2024 00:00:00 GMT</pubDate>
+        <guid>https://kevingal.com/blog/rc6.html</guid>
+    </item>
     <item>
         <title>Recurse Center, week 5</title>
         <description>&lt;h3 id=&#34;monday-january-29th&#34;&gt;Monday, January 29th&lt;/h3&gt;
@@ -828,96 +866,6 @@ Business and Finance: I can provide information on topics such as economics, bus
         <link>https://kevingal.com/blog/triangulation.html</link>
         <pubDate>Tue, 26 Sep 2023 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/triangulation.html</guid>
-    </item>
-    <item>
-        <title>George Carlin&#39;s Things You Never See, AI edition</title>
-        <description>&lt;p&gt;The comedian George Carlin had a bit known as &lt;a href=&#34;https://www.youtube.com/watch?v=9X0F1Qjn0Ac&#34;&gt;Things You Never See&lt;/a&gt;, where he listed off a series of things you never see or hear (or want to hear) in day-to-day life. Things like a wheelchair with a roll cage, or someone telling their dad that he should drink more. It occurred to me that these would serve as amusing prompts for AI image generation, while giving me an opportunity to play around with the latest trendy AI tools. Continue reading to see the results!&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;WARNING:&lt;/strong&gt; The prompts and resulting images are NOT SUITABLE FOR WORK. After all, George Carlin&#39;s comedy was so controversial that it sparked a court case about the US government&#39;s right to censorship.&lt;/p&gt;
-&lt;h3 id=&#34;the-setup&#34;&gt;The setup&lt;/h3&gt;
-&lt;p&gt;I first looked into DALL-E and Bing Image Creator, both of which offer web interfaces for inputting prompts and getting back AI-generated images. DALL-E turned out to be paywalled, however, while Bing Image Creator censors any &#34;indecent material&#34; in the prompts. So, defeated by The Man, I turned to Stable Diffusion (SD), an open source image-generating AI that can be run by anyone with a GPU and patience.&lt;/p&gt;
-&lt;p&gt;I had to jump between various guides to get SD to work. I&#39;m not going to link a particular guide, because none of them contained all the information I needed. The steps can be summarised as follows:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Download the weights/parameters for the SD neural network. The weights file for the latest version (1.4) is about 4GB in size.&lt;/li&gt;
-&lt;li&gt;Download the &lt;a href=&#34;https://github.com/CompVis/stable-diffusion&#34;&gt;SD repository&lt;/a&gt; from GitHub.&lt;/li&gt;
-&lt;li&gt;Download Anaconda, which is used to build an environment in which you can run SD.&lt;/li&gt;
-&lt;li&gt;Set up the environment using Anaconda. Normally, this is a 1-line command, but I had to figure out how to save the dependencies to a different hard drive because my main one didn&#39;t have enough free space.&lt;/li&gt;
-&lt;li&gt;Run SD using the script &lt;code&gt;scripts/txt2img.py&lt;/code&gt; from the repository.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Another roadblock I hit was that my GPU (GeForce GTX 1050 Ti) has only 4GB of memory, while 6GB is normally required to run SD. Thankfully, a &lt;a href=&#34;https://github.com/basujindal/stable-diffusion/tree/main&#34;&gt;fork exists&lt;/a&gt; to run SD with lower memory requirements. It provides a version of &lt;code&gt;txt2img.py&lt;/code&gt; that breaks the GPU computations into multiple stages, allowing you to get away with around 2.5GB of GPU memory. In exchange, you have to wait longer for results, and it took my computer over 1 minute to generate each image.&lt;/p&gt;
-&lt;h3 id=&#34;the-results&#34;&gt;The results&lt;/h3&gt;
-&lt;p&gt;Carlin&#39;s jokes and the corresponding images are shown below. The jokes are in italics, while my comments are not. I edited the text of each joke to make it more prompt-like before passing it to SD. For &#34;things you never hear&#34;, I generally passed the dialogue by itself, quote marks included. All the images were originally generated at a resolution of 512x512, since the output was terrible when I tried 256x256. Finally, a suggestion: the images may look better if you squint.&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;You never see a Rolls-Royce with a bumper sticker that says &#34;shit happens&#34;.&lt;/em&gt; It looks like a fancy car, but no bumper sticker.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/never-see/sd/rolls-royce.jpg&#34;
-     alt=&#34;What might be a cyan-coloured Rolls-Royce, but no bumper sticker.&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;You never see a really big tall fat Chinese guy with red hair.&lt;/em&gt; Those symbols resemble Chinese characters, right? But he doesn&#39;t have red hair.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/never-see/sd/chinese-guy.jpg&#34;
-     alt=&#34;A large nipple-less man who looks vaguely Chinese, beside what might pass as Chinese characters. He doesn&#39;t have red hair, though.&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;You never see a wheelchair with a roll bar.&lt;/em&gt; No roll bar!&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/never-see/sd/wheelchair.jpg&#34;
-     alt=&#34;A woman in a normal wheelchair.&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;You never see someone taking a shit while running at full speed.&lt;/em&gt; I used a more explicit prompt to generate the second image, since I thought the first one didn&#39;t live up to its full comedic potential. Note how the floor got turned into poop. I kindly censored the naked runner&#39;s weird smooth crotch.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/never-see/sd/shit-while-running.jpg&#34;
-     alt=&#34;A runner on tarmac, who doesn&#39;t appear to be defecating.&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/never-see/sd/shit-while-running-2.jpg&#34;
-     alt=&#34;A naked runner, whose head is out of frame, running on a floor of poop.&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;You never see a picture of Margaret Thatcher strapping on a dildo.&lt;/em&gt; I generated a second one because I thought it was funny. Hopefully it&#39;s okay to do this, given that she&#39;s dead? He told the joke while she was alive, so...&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/never-see/sd/thatcher-1.jpg&#34;
-     alt=&#34;Margaret Thatcher holding what appears to be a cross between a dildo and a microphone.&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/never-see/sd/thatcher-2.jpg&#34;
-     alt=&#34;Margaret Thatcher holding a vaguely penis-like object.&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;You never hear someone say &#34;Dad, you really ought to drink more&#34;.&lt;/em&gt; The first of the lame &#34;you never hear...&#34; prompts, although it&#39;s funny to imagine the baby whispering that.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/never-see/sd/dad.jpg&#34;
-     alt=&#34;A man holding his baby. A yelloe-coloured caption contains nonsense letters that vaguely resemble the prompt.&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;You never hear someone say &#34;Do what you want to the girl, but leave me alone&#34;.&lt;/em&gt; It seems that SD didn&#39;t understand the context of this prompt.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/never-see/sd/do-what-you-want.jpg&#34;
-     alt=&#34;Nonsense text in Impact font, vaguely resembling the prompt. And the back of someone&#39;s head.&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;You never hear someone say &#34;As soon as I put this hot poker in my ass I&#39;m going to chop my dick off&#34;.&lt;/em&gt; The guy looks appropriately serious.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/never-see/sd/hot-poker.jpg&#34;
-     alt=&#34;A man wearing a green bandana, a shirt, and a gold bracelet that looks obviously Photoshopped. He has stubble, his face is a bit flushed, and he has an intense expression on his face. He&#39;s holding long object that might be a poker, it weirdly disappears into his right nostril. He might also be holding a knife in the same hand.&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;You never hear someone say &#34;Honey, let&#39;s sell the children, move to Zanzibar, and begin taking opium rectally&#34;.&lt;/em&gt; Yet more demon faces.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/never-see/sd/honey-lets-sell.jpg&#34;
-     alt=&#34;A Black family sitting on a beach under some palm trees, their faces are quite messed up and their bodies are disconnected / intersecting with the trees.&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;You never hear someone say &#34;Mom, I&#39;ve got a big date tonight, can I borrow a French tickler from you?&#34;.&lt;/em&gt; The disembodied hand is quite funny.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/never-see/sd/french-tickler.jpg&#34;
-     alt=&#34;A woman in a skimpy pink dress sitting on a bed, she&#39;s holding a disembodied hand and kissing the thumb, also holding a knife-like object and a metal rod.&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;You don&#39;t want to come home and hear &#34;Honey, remember how we told the children never to play on the railroad tracks?&#34;.&lt;/em&gt; AI-generated children are creepy, apparently.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/never-see/sd/railroad-tracks.jpg&#34;
-     alt=&#34;Demon children looking happy and sitting on railroad tracks.&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;You don&#39;t want to be sitting in your doctor&#39;s office and hear &#34;Well Jim, there&#39;s no reason why you shouldn&#39;t live another 20 to 30 years. However, you will be bleeding constantly from both eyes&#34;.&lt;/em&gt; I could probably pick a better prompt to show someone bleeding from their eyes, but I don&#39;t particularly feel like doing that.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/never-see/sd/eyebleed.jpg&#34;
-     alt=&#34;A serious-looking balding man, lots of nonsensical meme letters.&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;You don&#39;t want to hear &#34;I&#39;M PREGNANT, YOU&#39;RE THE FATHER, AND I&#39;M GOING TO KILL ALL 3 OF US!&#34;&lt;/em&gt; Liking the intensity of this one.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/never-see/sd/pregnant.jpg&#34;
-     alt=&#34;An intense, angry-looking woman whose mouth is wide open. There are weird black holes in her eyes, nostrils and mouth. Also, once again, there&#39;s nonsensical meme text.&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;You don&#39;t want to hear &#34;Honey, it&#39;s the police. They have a search warrant and the 300 kilos of cocaine are still sitting out in the living room.&#34;&lt;/em&gt; This is quite good, actually.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/never-see/sd/honey-police.jpg&#34;
-     alt=&#34;Police officers kneeling down and inspecting a bunch of bags of white powder, scattered across a wooden floor. A TV with a cracked screen is in the background. The officers are missing their eyes and their faces are all blurred / contorted.&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;You don&#39;t want to hear your fiancé say &#34;I&#39;ll be right back, I&#39;ve gotta take a dump&#34; while the two of you are having dinner together with your parents for the first time.&lt;/em&gt; And I&#39;m not sure why a Willy Wonka meme is supposed to be relevant to this one.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/static/img/never-see/sd/dump.jpg&#34;
-     alt=&#34;That Willy Wonka meme where he&#39;s leaning on his elbow, except someone else is badly superimposed over him. Again, there&#39;s meme text.&#34;
-     class=&#34;centered&#34;&gt;&lt;/p&gt;
-&lt;h3 id=&#34;conclusions&#34;&gt;Conclusions&lt;/h3&gt;
-&lt;p&gt;Playing around with SD has made me appreciate the abilities and limitations of current image AIs. As far as I can tell, it takes a lot of thought and a lot of hardware power to get satisfactory results. Regarding the George Carlin prompts, I don&#39;t think they were explicit enough to generate the images I was hoping for, particularly the ones in the &#34;things you don&#39;t hear&#34; category. SD doesn&#39;t seem to be smart enough to pick up on the context of dialogue, and requires a direct description. Also, for some reason, putting the prompt in quotes tends to result in the addition of meme text.&lt;/p&gt;
-&lt;p&gt;That&#39;s all for now! If I were to continue experimenting with SD, then I would try out the many tools and interfaces that people have built around it to help generate better images. There&#39;s also the option to base the output on a source image.&lt;/p&gt;</description>
-        <link>https://kevingal.com/blog/never-see.html</link>
-        <pubDate>Tue, 19 Sep 2023 00:00:00 GMT</pubDate>
-        <guid>https://kevingal.com/blog/never-see.html</guid>
     </item>
 </channel>
 </rss> 
