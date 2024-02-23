@@ -36,6 +36,7 @@
 <h3 class="post-date">2024-02-22</h3>
 <h3 class="post-date">It&#39;s a 903-byte guitar tuner.</h3>
 <p>Tags: <a href="/blog/tag/web.html">web</a> </p>
+<a href="/blog/rc7.html">&lt;&lt; previous</a><a style="float: right;" href="/blog/rc8.html">next &gt;&gt;</a>
 <hr>
 <p>With the help of Charlie from RC, I managed to make a <a href="/apps/tuner.html">tiny guitar tuner</a> in 903 bytes. It uses the same code-golfing tricks as the <a href="/blog/metronome.html">tiny metronome</a>: <code>!1</code> is <code>false</code>, HTML attribute values don't need to be surrounded by quotes, ternary conditionals can be shorter than if-else statements (<code>p?(s1,s2):(s3,s4)</code> saves 8 bytes over <code>if(p){s1;s2;}else{s3;s4;}</code>), buttons are created dynamically with JavaScript, etc.</p>
 <p>It uses the WebAudio API to make sound. The most annoying part was making sure there were no pops or crackles in the audio output, especially when it was started and stopped abruptly. This was possible to resolve by ramping the gain (kinda like the volume) up and down, and by tweaking its max value.</p>
@@ -56,7 +57,7 @@
 <span class="o">:</span><span class="p">(</span><span class="nx">p</span><span class="o">=!</span><span class="mf">0</span><span class="p">,</span><span class="nx">n</span><span class="o">=</span><span class="nx">x</span><span class="p">.</span><span class="nx">currentTime</span><span class="p">,</span><span class="nx">F</span><span class="o">=</span><span class="nx">f</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span><span class="nx">r</span><span class="p">()))),</span><span class="nx">D</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">e</span><span class="p">))));&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 </code></pre></div>
 <hr>
-
+<a href="/blog/rc7.html">&lt;&lt; previous</a><a style="float: right;" href="/blog/rc8.html">next &gt;&gt;</a>
 <ul>
 <li><a href="/blog.html">Back to blog</a></li>
 <li><a href="/feed.xml">RSS feed</a></li>

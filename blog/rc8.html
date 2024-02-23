@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Recurse Center, week 8</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+
+<meta property="og:description" content="A weekly log of my activity at the Recurse Center, a 12-week programming retreat." /> 
+<meta property="og:image" content="https://kevingal.com/static/img/thumbnail.jpg" />
+<meta name="thumbnail" content="/static/img/thumbnail.jpg" />
+
+<link rel="stylesheet" href="/static/css/pygments.css">
+
+<meta property="description" content="A weekly log of my activity at the Recurse Center, a 12-week programming retreat.">
+
+<link rel="stylesheet" href="/static/css/blog.css">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon.ico">
+</head>
+<body>
+    <header>
+        <div data-nosnippet class="navbar">
+        <nav>
+        <a href="/index.html" class="navlink">about</a>
+        • <a href="/blog.html" class="navlink">blog</a>
+        • <a href="/software.html" class="navlink">software</a>
+        • <a href="/feed.xml" class="navlink">rss</a>
+        </nav>
+        </div>
+    </header>
+
+<h2 class="post-title">Recurse Center, week 8</h2>
+<h3 class="post-date">2024-02-23</h3>
+<h3 class="post-date">A weekly log of my activity at the Recurse Center, a 12-week programming retreat.</h3>
+<p>Tags: <a href="/blog/tag/rc.html">rc</a> </p>
+<a href="/blog/tuner.html">&lt;&lt; previous</a>
+<hr>
+<h3 id="monday-february-19th">Monday, February 19th</h3>
+<p>I didn't have access to my laptop charger, so I had to switch to my desktop for the day. This was an excuse to try out entirely new things.</p>
+<p>Had a nice chat with Thomas about Patrick Kavanagh, Barcelona, real life, <em>Code: The Hidden Language</em>, comparative literature vs tech, RC vs academia, etc.</p>
+<p>Started <em>The Book of Shaders</em>! Battled to understand how the author uses <code>smoothstep</code> to plot functions and why plotting <code>exp</code> was making the whole screen white. Turned out that the values were too large and the curve was basically "off the screen", so I had to scale it down. It really helps me to have a pencil &amp; paper in front of me to figure these things out. Moved on to the colour chapter and made a rainbow.</p>
+<figure>
+<img src="/static/img/recurse/rainbow.png"
+     alt="A simple rainbow with a blue background."
+     class="centered">
+<figcaption>It's a rainbow!</figcaption>
+</figure>
+
+<p>Here's the code:</p>
+<div class="codehilite"><pre><span></span><code><span class="cp">#ifdef GL_ES</span>
+<span class="k">precision</span> <span class="k">mediump</span> <span class="kt">float</span><span class="p">;</span>
+<span class="cp">#endif</span>
+<span class="kt">vec3</span> <span class="n">bg</span> <span class="o">=</span> <span class="kt">vec3</span><span class="p">(</span><span class="mf">0.000</span><span class="p">,</span><span class="mf">0.840</span><span class="p">,</span><span class="mf">0.900</span><span class="p">);</span>
+<span class="kt">void</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">vec2</span> <span class="n">st</span> <span class="o">=</span> <span class="nb">gl_FragCoord</span><span class="p">.</span><span class="n">xy</span><span class="o">/</span><span class="n">u_resolution</span><span class="p">.</span><span class="n">xy</span><span class="p">;</span>
+    <span class="kt">vec2</span> <span class="n">center</span> <span class="o">=</span> <span class="kt">vec2</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.0</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">dist</span> <span class="o">=</span> <span class="n">pow</span><span class="p">(</span><span class="n">st</span><span class="p">.</span><span class="n">x</span><span class="o">-</span><span class="n">center</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
+        <span class="o">+</span> <span class="n">pow</span><span class="p">(</span><span class="n">st</span><span class="p">.</span><span class="n">y</span><span class="o">-</span><span class="n">center</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="mf">2.0</span><span class="p">);</span>
+    <span class="kt">vec3</span> <span class="n">col</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">dist</span> <span class="o">&gt;</span> <span class="mf">0.075</span> <span class="o">&amp;&amp;</span> <span class="n">dist</span> <span class="o">&lt;</span> <span class="mf">0.1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="kt">vec3</span><span class="p">(</span><span class="mf">1.000</span><span class="p">,</span><span class="mf">0.072</span><span class="p">,</span><span class="mf">0.993</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">dist</span> <span class="o">&gt;</span> <span class="mf">0.1</span> <span class="o">&amp;&amp;</span> <span class="n">dist</span> <span class="o">&lt;</span> <span class="mf">0.125</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="kt">vec3</span><span class="p">(</span><span class="mf">1.000</span><span class="p">,</span><span class="mf">0.102</span><span class="p">,</span><span class="mf">0.384</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">dist</span> <span class="o">&gt;</span> <span class="mf">0.125</span> <span class="o">&amp;&amp;</span> <span class="n">dist</span> <span class="o">&lt;</span> <span class="mf">0.15</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="kt">vec3</span><span class="p">(</span><span class="mf">0.026</span><span class="p">,</span><span class="mf">0.051</span><span class="p">,</span><span class="mf">1.000</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">dist</span> <span class="o">&gt;</span> <span class="mf">0.15</span> <span class="o">&amp;&amp;</span> <span class="n">dist</span> <span class="o">&lt;</span> <span class="mf">0.175</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="kt">vec3</span><span class="p">(</span><span class="mf">0.044</span><span class="p">,</span><span class="mf">1.000</span><span class="p">,</span><span class="mf">0.161</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">dist</span> <span class="o">&gt;</span> <span class="mf">0.175</span> <span class="o">&amp;&amp;</span> <span class="n">dist</span> <span class="o">&lt;</span> <span class="mf">0.2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="kt">vec3</span><span class="p">(</span><span class="mf">1.000</span><span class="p">,</span><span class="mf">0.975</span><span class="p">,</span><span class="mf">0.026</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">dist</span> <span class="o">&gt;</span> <span class="mf">0.2</span> <span class="o">&amp;&amp;</span> <span class="n">dist</span> <span class="o">&lt;</span> <span class="mf">0.225</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="kt">vec3</span><span class="p">(</span><span class="mf">1.000</span><span class="p">,</span><span class="mf">0.635</span><span class="p">,</span><span class="mf">0.000</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">dist</span> <span class="o">&gt;</span> <span class="mf">0.225</span> <span class="o">&amp;&amp;</span> <span class="n">dist</span> <span class="o">&lt;</span> <span class="mf">0.25</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="kt">vec3</span><span class="p">(</span><span class="mf">1.000</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.000</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="n">bg</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nb">gl_FragColor</span> <span class="o">=</span> <span class="kt">vec4</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Tried out the <a href="https://ctf.hacker101.com/">Hacker101 CTF</a>, it's hard! Also, it seems to freeze my browser a lot? Nice to dip my toe in, anyway. The Easy challenges seem to involve inspecting the source code of the page; scanning the site for hidden pages; tweaking POST requests to gain access to resources you're not supposed to; automated guessing of usernames/passwords; and injecting SQL into forms. I'll tag along to the CTF group and see if I can absorb any wisdom.</p>
+<h3 id="tuesday-february-20th">Tuesday, February 20th</h3>
+<p>Read a bunch of <a href="https://jvns.ca/">Julia Evans articles</a> about TCP/IP, highly recommended! Also found this really helpful <a href="https://www.youtube.com/watch?v=xdQ9sgpkrX8">Wireshark tutorial</a>.</p>
+<p>Joined the CTF group, wasn't paying full attention because I was trying to set up a J environment in the background, but I learned about some new tools -- hydra for password guessing, and SecLists for lists of usernames/passwords. Will definitely try more CTF challenges!</p>
+<p>Paired with Elias on coding up the <a href="https://en.wikipedia.org/wiki/Luhn_algorithm">Luhn algorithm</a> in J! The Luhn algorithm is used to check for errors when you enter your bank card number. </p>
+<p>Here's the code! We were trying to make it as "tacit" as possible, which means composing functions and then applying them all at once to the input, and avoiding references to the input itself. The first line of <code>luhn</code> is pretty ugly, wondering if there's a better way to do it. Also, surprised by how much J knowledge I've retained.</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">digitsum</span> <span class="o">=.</span> <span class="mi">10</span><span class="o">&amp;|</span> <span class="o">+</span> <span class="p">(</span><span class="o">&lt;.@%</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">10</span>
+<span class="nv">luhn</span> <span class="o">=:</span> <span class="nf">monad define</span>
+  <span class="nv">multiplied</span> <span class="o">=.</span> <span class="p">(((</span><span class="mi">1</span><span class="o">&amp;+</span><span class="p">)</span> <span class="o">@</span> <span class="p">(</span><span class="mi">2</span><span class="o">&amp;|</span><span class="p">)</span> <span class="o">@</span> <span class="p">(</span><span class="mi">1</span><span class="o">&amp;+</span><span class="p">)</span> <span class="o">@</span> <span class="nv">i</span><span class="o">.</span> <span class="o">@</span> <span class="o">$</span><span class="p">)</span> <span class="o">*</span> <span class="o">|.</span><span class="p">)</span> <span class="nd">y</span>
+  <span class="nv">s</span> <span class="o">=.</span> <span class="o">+/</span> <span class="nv">digitsum</span> <span class="nv">multiplied</span>
+  <span class="mi">10</span> <span class="p">(</span><span class="o">[</span> <span class="o">-</span> <span class="o">|</span><span class="p">)</span> <span class="nv">s</span>
+<span class="nl">)</span>
+</code></pre></div>
+
+<p>Had a marathon coffee chat with Will. Creative programming vs pragmatic programming, music programming, RC, psychedelics, language learning, etc.</p>
+<h3 id="wednesday-february-21st">Wednesday, February 21st</h3>
+<p>Handed in the printed copies of my thesis! Happy to be done with it, finally. Felt emotional walking around the university grounds, spent 8 years of my life there! Wrote this from an empty lecture hall. My fellow RCers were enthusiastic in their congratulations, which was sweet of them!</p>
+<p>Managed to get a BitTorrent client unit test passing, woohoo! This was my Small Goal for the day. Lots more to test, though.</p>
+<p>Worked on Chapter 6 (Shapes) of the Book of Shaders. Recreated a Piet Mondrian painting!</p>
+<figure>
+<img src="/static/img/recurse/piet.png"
+     alt="My recreation of a Piet Mondrian painting. It's abstract. 3 rectangles: green, red, blue. A cream-ish background. And it's all overlaid by thick criss-crossing black lines."
+     class="centered">
+<figcaption>Piet Mondrian, eat your heart out.</figcaption>
+</figure>
+
+<p>The code:</p>
+<div class="codehilite"><pre><span></span><code><span class="cp">#ifdef GL_ES</span>
+<span class="k">precision</span> <span class="k">mediump</span> <span class="kt">float</span><span class="p">;</span>
+<span class="cp">#endif</span>
+
+<span class="kt">bool</span> <span class="n">isInRect</span><span class="p">(</span><span class="kt">vec2</span> <span class="n">st</span><span class="p">,</span> <span class="kt">float</span> <span class="n">x</span><span class="p">,</span> <span class="kt">float</span> <span class="n">y</span><span class="p">,</span> <span class="kt">float</span> <span class="n">width</span><span class="p">,</span> <span class="kt">float</span> <span class="n">height</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">float</span> <span class="n">pct</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+    <span class="n">pct</span> <span class="o">*=</span> <span class="n">step</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">st</span><span class="p">.</span><span class="n">x</span><span class="p">);</span>
+    <span class="n">pct</span> <span class="o">*=</span> <span class="n">step</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">st</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+    <span class="n">pct</span> <span class="o">*=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">step</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">width</span><span class="p">,</span> <span class="n">st</span><span class="p">.</span><span class="n">x</span><span class="p">);</span> 
+    <span class="n">pct</span> <span class="o">*=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">step</span><span class="p">(</span><span class="n">y</span><span class="o">+</span><span class="n">height</span><span class="p">,</span> <span class="n">st</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">pct</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">main</span><span class="p">(){</span>
+    <span class="kt">vec2</span> <span class="n">st</span> <span class="o">=</span> <span class="nb">gl_FragCoord</span><span class="p">.</span><span class="n">xy</span><span class="o">/</span><span class="n">u_resolution</span><span class="p">.</span><span class="n">xy</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">isInRect</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="mf">0.18</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+          <span class="o">||</span> <span class="n">isInRect</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)</span>
+          <span class="o">||</span> <span class="n">isInRect</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+          <span class="o">||</span> <span class="n">isInRect</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+          <span class="o">||</span> <span class="n">isInRect</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+          <span class="o">||</span> <span class="n">isInRect</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+          <span class="o">||</span> <span class="n">isInRect</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="mf">0.18</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">))</span> <span class="p">{</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">isInRect</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nb">gl_FragColor</span> <span class="o">=</span> <span class="kt">vec4</span><span class="p">(</span><span class="kt">vec3</span><span class="p">(</span><span class="mf">0.720</span><span class="p">,</span><span class="mf">0.045</span><span class="p">,</span><span class="mf">0.128</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">isInRect</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">))</span> <span class="p">{</span>
+       <span class="nb">gl_FragColor</span> <span class="o">=</span> <span class="kt">vec4</span><span class="p">(</span><span class="kt">vec3</span><span class="p">(</span><span class="mf">0.920</span><span class="p">,</span><span class="mf">0.758</span><span class="p">,</span><span class="mf">0.000</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">isInRect</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">))</span> <span class="p">{</span>
+       <span class="nb">gl_FragColor</span> <span class="o">=</span> <span class="kt">vec4</span><span class="p">(</span><span class="kt">vec3</span><span class="p">(</span><span class="mf">0.063</span><span class="p">,</span><span class="mf">0.438</span><span class="p">,</span><span class="mf">0.765</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nb">gl_FragColor</span> <span class="o">=</span> <span class="kt">vec4</span><span class="p">(</span>
+            <span class="kt">vec3</span><span class="p">(</span><span class="mf">0.900</span><span class="p">,</span><span class="mf">0.887</span><span class="p">,</span><span class="mf">0.653</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="thursday-february-22nd">Thursday, February 22nd</h3>
+<p>Paired with Raghav on reverse engineering the Lichess network protocol. This was an Impossible Project for me, something I've always wanted to do but that seemed mysterious and difficult. It turned out to be not so bad, though!</p>
+<p>The network tab of the browser dev tools allowed us to see what messages were being sent over websockets. The messages were simple JSON strings like <code>{"t":"move","d":{"u":"g8f6","b":1,"a":1}}</code> -- not the inscrutable binary blobs I'd been expecting. So we could grab the <code>WebSocket</code> object in question using <code>queryObjects(WebSocket)</code> in the Chrome JS console, and then run <code>socket.send("JSON_HERE")</code> to send a message to Lichess! Not sure how to do an equivalent thing to <code>queryObjects</code> in Firefox.</p>
+<p>We experimented with being able to input our moves through the chatbox. Step 1: Add a <code>MutationObserver</code> to check for new chat messages being inserted into the DOM, Step 2: Extract move from message using regex, Step 3: Send move to Lichess. As soon as this was ready, I sent a message that caused Raghav's queen to move into my bishop's line of fire, muahaha.</p>
+<p>Paired with Charlie on finishing the 903-byte guitar tuner <a href="/apps/tuner.html">web app</a>. It uses the WebAudio API to make sounds, and various code-golfing tricks to get the file size down. I also wrote a short blog post about it, which led down the rabbithole of working on my website. Added "previous" and "next" links to blog posts, and now I'm trying to improve the static website generation so that it doesn't regenerate files that haven't changed, because it was starting to take annoyingly long. Not exactly what I was planning to work on this week, but it needs to be done.</p>
+<h3 id="friday-february-23rd">Friday, February 23rd</h3>
+<p>Paired with Thomas on reviving my <a href="https://github.com/Kevinpgalligan/hidden-language">computer emulator</a> project (based on the architecture in <em>Code: The Hidden Language of Computer Hardware and Software</em>). We heavily refactored the implementation of logic gates and wrote unit tests for them. It still can't emulate anything, though. Thomas also showed me his very aesthetic Emacs setup, which I can only aspire to!</p>
+<p>Spent ages working on my website code so that it doesn't regenerate blog posts if it doesn't need to. Finally done. No more mild annoyance as I wait 5 seconds for the site to compile.</p>
+<p>I did a lot of pairing this week. It does take time away from my Big Projects (BitTorrent client &amp; Forth interpreter), but it's more fun than working alone and also more productive (I think). Plus, there's not that much time left to interact with all the cool people at RC (~4.5 weeks), and the community element is something I won't have access to afterwards.</p>
+<p>It's now time to polish my CV and start the job hunt. Next week, I'll try to make progress on the BitTorrent client while plugging away at the Book of Shaders. It's funny how I spent hours trying to get a single unit test working when I was working on the client last week. This week, it took me ~10 minutes to get it done. I wasn't stressed or tired this time, and during my time away I'd figured out a better way to write the test. This reinforces the idea that I shouldn't force myself to keep working on something if it's a struggle. Better to take a joyful break and come back refreshed.</p>
+<p>I'm happy with the diversity of things I worked on this week, and all the people I got to talk to / pair with. It feels like I'm almost at the point where I've done a little bit of everything from my massive <a href="/blog/recurse.html#project-ideas">list of project ideas</a>. Networking, graphics, programming languages, workflow. Not to mention the many projects that I've experienced vicariously through other people.  My main objectives for the remaining time are to (1) finish my Big Projects, and (2) dig into systems programming and music programming. On the systems side, I want to understand how ELF files work and, more generally, how programs call each other. On the music side, the SuperCollider workshops have been excellent and inspiring, but I haven't actually made any music yet, besides tinkering with the guitar tuner.</p>
+<p>The main gap in my plan is that I haven't done any machine learning or data science stuff. Math -- yes, I've gotten my hands dirty with some applied math via computer graphics. But considering that I'm contemplating a career switch to machine learning and data science, this may have been an oversight on my part. Let's see if I can worm my way into a job with what I already know of these subjects.</p>
+<hr>
+<a href="/blog/tuner.html">&lt;&lt; previous</a>
+<ul>
+<li><a href="/blog.html">Back to blog</a></li>
+<li><a href="/feed.xml">RSS feed</a></li>
+</ul>
+<p>I'd be happy to hear from you at <i>galligankevinp@gmail.com</i>.</p>
+
+</body>
+</html>
