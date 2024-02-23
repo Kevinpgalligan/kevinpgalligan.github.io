@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title> Not Growing a Language </title>
+    <title>Not Growing a Language</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/static/css/style.css">
@@ -32,7 +32,7 @@
         </div>
     </header>
 
-<h2 class="post-title">Not Growing a Language </h2>
+<h2 class="post-title">Not Growing a Language</h2>
 <h3 class="post-date">2021-04-03</h3>
 <h3 class="post-date">20 years without operator overloading in Java.</h3>
 <p>Tags: <a href="/blog/tag/programming.html">programming</a> </p>
@@ -49,15 +49,15 @@
 <p>A <em>complex number</em>, by the way, is a number with a real and a non-real part.</p>
 <p>Guy Steele thought it would be neat if Java had operator overloading. In his talk he tried to show why it would be neat. At the time, he was part of the team that makes Java. As of now, he still seems to be part of that team. And yet, a score of years have passed, and here we are with no operator overloading. If Guy had a grave, he would turn in it, though to be sure of that we might have to ask him.</p>
 <p>Let's look at <em>BigInteger</em>, a type in Java that can store a number of any size. If you do math with a lot of BigIntegers, it's a mess. Take a look and see. What do you think this BigInteger math does?</p>
-<div class="codehilite"><pre><span></span><code><span class="n">BigInteger</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">BigInteger</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="na">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="na">multiply</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="na">plus</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="na">multiply</span><span class="p">(</span><span class="mi">3</span><span class="p">)).</span><span class="na">minus</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="n">BigInteger</span> <span class="nf">f</span><span class="p">(</span><span class="n">BigInteger</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">x</span><span class="p">.</span><span class="na">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="na">multiply</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="na">plus</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="na">multiply</span><span class="p">(</span><span class="mi">3</span><span class="p">)).</span><span class="na">minus</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>Here is the same code but with operator overloading.</p>
-<div class="codehilite"><pre><span></span><code><span class="n">BigInteger</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">BigInteger</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="o">*</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="n">BigInteger</span> <span class="nf">f</span><span class="p">(</span><span class="n">BigInteger</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">x</span> <span class="o">-</span> <span class="mi">5</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>It's the quadratic equation 2x<sup>2</sup>+3x-5. A <em>quadratic equation</em> is... well, let's leave that for the next day. With no operator overloading, the code is hard to read and bugs can slip in. It gets worse as you use more and more BigIntegers.</p>
@@ -65,6 +65,7 @@
 <p>There are signs that <a href="https://blogs.oracle.com/javamagazine/is-it-time-for-overloading-in-java">the folks who own Java</a> see the need for operator overloading. I sure hope that they, and the rest of the Java team, add it to Java some day, though I haven't used Java in 2 years.</p>
 <p><em>Discussed on <a href="https://news.ycombinator.com/item?id=26682582">Hacker News</a>.</em></p>
 <hr>
+<a href="/blog/daylight.html">&lt;&lt; previous</a><a style="float: right;" href="/blog/easy.html">next &gt;&gt;</a>
 <ul>
 <li><a href="/blog.html">Back to blog</a></li>
 <li><a href="/feed.xml">RSS feed</a></li>

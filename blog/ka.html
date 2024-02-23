@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title> Making a calculator </title>
+    <title>Making a calculator</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/static/css/style.css">
@@ -32,7 +32,7 @@
         </div>
     </header>
 
-<h2 class="post-title">Making a calculator </h2>
+<h2 class="post-title">Making a calculator</h2>
 <h3 class="post-date">2022-03-30</h3>
 <h3 class="post-date">A short description of a calculator I&#39;ve been working on.</h3>
 <p>Tags: <a href="/blog/tag/programming.html">programming</a> </p>
@@ -78,6 +78,7 @@ ka version 1.0
 <p>The type system is strongly typed, which means it complains when you pass a Fraction to a function that expects an Integer. There are basically two types of types: numeric types, which are arranged in the hierarchy Real &lt; Fraction &lt; Integer, and a Quantity type all on its own. An Integer can pass as a Real, because it's further down the hierarchy, but not vice versa. I got the type hierarchy idea from Structure and Interpretation of Computer Programs (SICP). Another trick I stole from SICP: if a Fraction can be simplified to an Integer, then this is done automatically, so that <code>6/2</code> is always simplified to <code>3</code>. The implementation language of ka is Python, and the fact that Python has a module for <a href="https://docs.python.org/3/library/fractions.html">fractions</a> and a module for <a href="https://docs.python.org/3/library/numbers.html">numeric types</a> made my work on the type system a lot easier.</p>
 <p>And there you have it. A calculator language in about 1400 lines of Python code. If anyone happens to read this and happens to try out ka, I'd be curious to hear how you get on with it!</p>
 <hr>
+<a href="/blog/wordle.html">&lt;&lt; previous</a><a style="float: right;" href="/blog/aoc2021.html">next &gt;&gt;</a>
 <ul>
 <li><a href="/blog.html">Back to blog</a></li>
 <li><a href="/feed.xml">RSS feed</a></li>

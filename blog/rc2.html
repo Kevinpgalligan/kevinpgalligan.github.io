@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title> Recurse Center, week 2 </title>
+    <title>Recurse Center, week 2</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/static/css/style.css">
@@ -32,7 +32,7 @@
         </div>
     </header>
 
-<h2 class="post-title">Recurse Center, week 2 </h2>
+<h2 class="post-title">Recurse Center, week 2</h2>
 <h3 class="post-date">2024-01-12</h3>
 <h3 class="post-date">A weekly log of my activity at the Recurse Center, a 12-week programming retreat.</h3>
 <p>Tags: <a href="/blog/tag/rc.html">rc</a> </p>
@@ -52,10 +52,10 @@
 <p>I'd already implemented bdecoding (string -&gt; data), but when it came to actual bencoding (data -&gt; string) I ran into a tricky implementation detail. I needed to decide how to represent the dict data structure (which, when encoded, look like "d4:blah4:spame"). First I was going to use regular lists to represent bencoding lists, and "alists" (Lispspeak for lists of pairs) to represent dicts, but it would be difficult to distinguish between them, since they're both lists. I then considered Common Lisp's <code>hash-table</code> type, but it doesn't maintain keys in insertion order, and the alphabetical order of bencoded dicts must be maintained. Finally, I settled on using binary search trees from the <a href="https://github.com/froydnj/trees">trees</a> package.</p>
 <p>Next, with a complete bencoding/bdecoding implementation in hand, it was time to write unit tests, because I was in no way confident that my implementation was correct. It was fairly straightforward to set up the <a href="https://lispcookbook.github.io/cl-cookbook/testing.html">fiveam</a> test framework. The tests consist of either decoding a bencoded string and making sure the original string is recovered when it's bencoded again, or passing invalid data and making sure it errors out.</p>
 <p>Here's what fiveam unit tests look like!</p>
-<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nv">test</span><span class="w"> </span><span class="nv">single-digit-benteger</span><span class="w"> </span><span class="p">(</span><span class="nv">is-reencodable</span><span class="w"> </span><span class="s">&quot;i1e&quot;</span><span class="p">))</span><span class="w"></span>
-<span class="p">(</span><span class="nv">test</span><span class="w"> </span><span class="nv">multi-digit-benteger</span><span class="w"> </span><span class="p">(</span><span class="nv">is-reencodable</span><span class="w"> </span><span class="s">&quot;i12e&quot;</span><span class="p">))</span><span class="w"></span>
-<span class="p">(</span><span class="nv">test</span><span class="w"> </span><span class="nv">zero-benteger</span><span class="w"> </span><span class="p">(</span><span class="nv">is-reencodable</span><span class="w"> </span><span class="s">&quot;i0e&quot;</span><span class="p">))</span><span class="w"></span>
-<span class="p">(</span><span class="nv">test</span><span class="w"> </span><span class="nv">minus-zero</span><span class="w"> </span><span class="p">(</span><span class="nv">signals</span><span class="w"> </span><span class="nb">error</span><span class="w"> </span><span class="p">(</span><span class="nv">bencode:bdecode</span><span class="w"> </span><span class="s">&quot;i-0e&quot;</span><span class="p">)))</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nv">test</span> <span class="nv">single-digit-benteger</span> <span class="p">(</span><span class="nv">is-reencodable</span> <span class="s">&quot;i1e&quot;</span><span class="p">))</span>
+<span class="p">(</span><span class="nv">test</span> <span class="nv">multi-digit-benteger</span> <span class="p">(</span><span class="nv">is-reencodable</span> <span class="s">&quot;i12e&quot;</span><span class="p">))</span>
+<span class="p">(</span><span class="nv">test</span> <span class="nv">zero-benteger</span> <span class="p">(</span><span class="nv">is-reencodable</span> <span class="s">&quot;i0e&quot;</span><span class="p">))</span>
+<span class="p">(</span><span class="nv">test</span> <span class="nv">minus-zero</span> <span class="p">(</span><span class="nv">signals</span> <span class="nb">error</span> <span class="p">(</span><span class="nv">bencode:bdecode</span> <span class="s">&quot;i-0e&quot;</span><span class="p">)))</span>
 </code></pre></div>
 
 <p>Another tricky implementation detail. When I tried to parse an actual .torrent file, I ran into trouble with character encodings. I couldn't even read the .torrent file as a string, because my Common Lisp implementation, by default, tries to interpret the file as UTF-8, when in fact a bencoded file consists mostly of ASCII but also sequences of raw bytes (such as raw SHA1 hashes). Basically, there were sequences of bytes that didn't correspond to any Unicode codepoint as represented by UTF-8. I couldn't load the file as ASCII, either, because it contains bytes outside the ASCII range (0-127). Spent a while spinning my wheels on this, eventually turned to the wonderful folks at the #lisp IRC, who suggested to decode using the ISO-8859-1 character encoding, which assigns a character to each of the 256 possible values of a byte. And it's compatible with ASCII. This suggestion worked, and I was finally able to parse the file. Thanks #lisp!</p>
@@ -134,6 +134,7 @@ Backtrace:
 <p>Later, I had a 2-/3-hour pairing session with Tristan, courtesy of the pairing bot. We worked on an animation of the <a href="https://thecodingtrain.com/challenges/13-reaction-diffusion">reaction diffusion</a> model. We managed to finish it, but the animation is currently a bit slow, so I'm going to optimise the program before sharing a video. Tristan and I talked about Common Lisp, the multi-threading design of my BitTorrent client, and his Rust compression algorithm project. I really enjoyed the experience! I think pairing with someone else really helps me to stay focused, as it forces me to not get distracted by doing dopamine-rich activities like playing chess.</p>
 <p>Next week, my goals are: (1) pair on more things, (2) get peer-to-peer communication working, and (3) finish fixing that bug in sketch. I think I want to pivot to another topic after the BitTorrent project is finished, like computer graphics or programming languages, which have more people working on them. It would be nice to try learning as part of a group.</p>
 <hr>
+<a href="/blog/rc1.html">&lt;&lt; previous</a><a style="float: right;" href="/blog/rc3.html">next &gt;&gt;</a>
 <ul>
 <li><a href="/blog.html">Back to blog</a></li>
 <li><a href="/feed.xml">RSS feed</a></li>

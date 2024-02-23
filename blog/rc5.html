@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title> Recurse Center, week 5 </title>
+    <title>Recurse Center, week 5</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/static/css/style.css">
@@ -32,7 +32,7 @@
         </div>
     </header>
 
-<h2 class="post-title">Recurse Center, week 5 </h2>
+<h2 class="post-title">Recurse Center, week 5</h2>
 <h3 class="post-date">2024-02-02</h3>
 <h3 class="post-date">A weekly log of my activity at the Recurse Center, a 12-week programming retreat.</h3>
 <p>Tags: <a href="/blog/tag/rc.html">rc</a> </p>
@@ -59,30 +59,31 @@
 <p>Started the day by working on Sketch's <a href="https://github.com/vydd/sketch/pull/158">documentation</a>, because who doesn't love writing docs.</p>
 <p>Fixed a bug in how .torrent files are loaded in the BitTorrent client. My goal is to have it downloading files by the halfway point of the batch, which I think would be about the middle of Week 7. Hopefully that's not too ambitious!</p>
 <p>Finally got started on writing the Forth interpreter. Right now it's a glorified stack calculator and there's no way of defining/executing new "words", which are basically the Forth equivalent of functions.</p>
-<div class="codehilite"><pre><span></span><code><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nv">interpret</span><span class="p">)</span><span class="w"></span>
-<span class="mi">1</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="nb">+</span><span class="w"></span>
-<span class="o">.</span><span class="w"></span>
-<span class="mi">2</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="nb">&gt;</span> <span class="p">(</span><span class="nv">interpret</span><span class="p">)</span>
+<span class="mi">1</span> <span class="mi">1</span> <span class="nb">+</span>
+<span class="o">.</span>
+<span class="mi">2</span>
 </code></pre></div>
 
 <p>I want to implement the interpreter <em>in Forth</em> as much as possible, and it'll take some more reading and thinking to understand the minimal set of primitives I'll need.</p>
 <p>Here are some definitions of classic Forth words I've implemented so far, nothing too crazy:</p>
-<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nv">defcode</span><span class="w"> </span><span class="s">&quot;dup&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="p">(</span><span class="nv">fpush</span><span class="w"> </span><span class="p">(</span><span class="nv">fmemget</span><span class="w"> </span><span class="p">(</span><span class="nb">1+</span><span class="w"> </span><span class="vg">*sp*</span><span class="p">))))</span><span class="w"></span>
-<span class="p">(</span><span class="nv">defcode</span><span class="w"> </span><span class="s">&quot;drop&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="p">(</span><span class="nv">fpop</span><span class="p">))</span><span class="w"></span>
-<span class="p">(</span><span class="nv">defcode</span><span class="w"> </span><span class="s">&quot;swap&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">((</span><span class="nv">a</span><span class="w"> </span><span class="p">(</span><span class="nv">fpop</span><span class="p">))</span><span class="w"></span>
-<span class="w">        </span><span class="p">(</span><span class="nv">b</span><span class="w"> </span><span class="p">(</span><span class="nv">fpop</span><span class="p">)))</span><span class="w"></span>
-<span class="w">    </span><span class="p">(</span><span class="nv">fpush</span><span class="w"> </span><span class="nv">a</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="p">(</span><span class="nv">fpush</span><span class="w"> </span><span class="nv">b</span><span class="p">)))</span><span class="w"></span>
-<span class="p">(</span><span class="nv">defcode</span><span class="w"> </span><span class="s">&quot;.&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="p">(</span><span class="nb">format</span><span class="w"> </span><span class="no">t</span><span class="w"> </span><span class="s">&quot;~a~%&quot;</span><span class="w"> </span><span class="p">(</span><span class="nv">fpop</span><span class="p">)))</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nv">defcode</span> <span class="s">&quot;dup&quot;</span>
+  <span class="p">(</span><span class="nv">fpush</span> <span class="p">(</span><span class="nv">fmemget</span> <span class="p">(</span><span class="nb">1+</span> <span class="vg">*sp*</span><span class="p">))))</span>
+<span class="p">(</span><span class="nv">defcode</span> <span class="s">&quot;drop&quot;</span>
+  <span class="p">(</span><span class="nv">fpop</span><span class="p">))</span>
+<span class="p">(</span><span class="nv">defcode</span> <span class="s">&quot;swap&quot;</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">a</span> <span class="p">(</span><span class="nv">fpop</span><span class="p">))</span>
+        <span class="p">(</span><span class="nv">b</span> <span class="p">(</span><span class="nv">fpop</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nv">fpush</span> <span class="nv">a</span><span class="p">)</span>
+    <span class="p">(</span><span class="nv">fpush</span> <span class="nv">b</span><span class="p">)))</span>
+<span class="p">(</span><span class="nv">defcode</span> <span class="s">&quot;.&quot;</span>
+  <span class="p">(</span><span class="nb">format</span> <span class="no">t</span> <span class="s">&quot;~a~%&quot;</span> <span class="p">(</span><span class="nv">fpop</span><span class="p">)))</span>
 </code></pre></div>
 
 <h3 id="friday-february-2nd">Friday, February 2nd</h3>
 <p>Mostly worked on the BitTorrent client today, now at the point where I have "worker threads" that run in a loop accepting commands from the "brain thread" and reading messages from the network. Once I get that debugged, all I have left is to implement the "brain thread".</p>
 <hr>
+<a href="/blog/rc4.html">&lt;&lt; previous</a><a style="float: right;" href="/blog/rc6.html">next &gt;&gt;</a>
 <ul>
 <li><a href="/blog.html">Back to blog</a></li>
 <li><a href="/feed.xml">RSS feed</a></li>

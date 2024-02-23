@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title> Recurse Center, week 1 </title>
+    <title>Recurse Center, week 1</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/static/css/style.css">
@@ -32,7 +32,7 @@
         </div>
     </header>
 
-<h2 class="post-title">Recurse Center, week 1 </h2>
+<h2 class="post-title">Recurse Center, week 1</h2>
 <h3 class="post-date">2024-01-05</h3>
 <h3 class="post-date">A weekly log of my activity at the Recurse Center, a 12-week programming retreat.</h3>
 <p>Tags: <a href="/blog/tag/rc.html">rc</a> </p>
@@ -68,45 +68,45 @@
 <p>After skimming the <a href="http://www.bittorrent.org/beps/bep_0003.html">specification</a>, I jumped into writing a parser for the bencoding text format. It has integers like "i123e" and strings like "4:spam", as well as lists and dictionaries. I've been meaning to try out <a href="https://github.com/scymtym/esrap">esrap</a> for parsing in Common Lisp, and this seemed like the perfect opportunity! It uses the idea of parser generators, which I think are like composable building blocks for parsing.</p>
 <p>I ran into some early trouble with esrap due to an annoying technical issue. Basically, I was trying to use the '?' symbol from the esrap package without having access to it. This was frustrating because it felt like I was squandering my day on a trivial issue.</p>
 <p>There are edge cases in even the simplest of tasks, like parsing bencoded integers: "i0e" is valid, "i01e" is invalid, and "i-0e" is invalid. On that note, esrap has nice error messages!</p>
-<div class="codehilite"><pre><span></span><code><span class="nv">BENCODE&gt;</span><span class="w"> </span><span class="p">(</span><span class="nv">parse</span><span class="w"> </span><span class="ss">&#39;benteger</span><span class="w"> </span><span class="s">&quot;i01e&quot;</span><span class="p">)</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="nv">BENCODE&gt;</span> <span class="p">(</span><span class="nv">parse</span> <span class="ss">&#39;benteger</span> <span class="s">&quot;i01e&quot;</span><span class="p">)</span>
 
-<span class="nv">[...]</span><span class="w"></span>
+<span class="nv">[...]</span>
 
-<span class="nv">At</span><span class="w"></span>
+<span class="nv">At</span>
 
-<span class="w">  </span><span class="nv">i01e</span><span class="w"></span>
-<span class="w">    </span><span class="nv">^</span><span class="w"> </span><span class="p">(</span><span class="nv">Line</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="nv">Column</span><span class="w"> </span><span class="mi">2</span><span class="o">,</span><span class="w"> </span><span class="nv">Position</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+  <span class="nv">i01e</span>
+    <span class="nv">^</span> <span class="p">(</span><span class="nv">Line</span> <span class="mi">1</span><span class="o">,</span> <span class="nv">Column</span> <span class="mi">2</span><span class="o">,</span> <span class="nv">Position</span> <span class="mi">2</span><span class="p">)</span>
 
-<span class="nv">In</span><span class="w"> </span><span class="nv">context</span><span class="w"> </span><span class="nv">INTEGER:</span><span class="w"></span>
+<span class="nv">In</span> <span class="nv">context</span> <span class="nv">INTEGER:</span>
 
-<span class="nv">While</span><span class="w"> </span><span class="nv">parsing</span><span class="w"> </span><span class="nv">INTEGER.</span><span class="w"> </span><span class="nv">Expected:</span><span class="w"></span>
+<span class="nv">While</span> <span class="nv">parsing</span> <span class="nv">INTEGER.</span> <span class="nv">Expected:</span>
 
-<span class="w">     </span><span class="k">the</span><span class="w"> </span><span class="nb">character</span><span class="w"> </span><span class="nv">e</span><span class="w"> </span><span class="p">(</span><span class="nv">LATIN_SMALL_LETTER_E</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="nv">[Condition</span><span class="w"> </span><span class="nv">of</span><span class="w"> </span><span class="k">type</span><span class="w"> </span><span class="nv">ESRAP-PARSE-ERROR]</span><span class="w"></span>
+     <span class="k">the</span> <span class="nb">character</span> <span class="nv">e</span> <span class="p">(</span><span class="nv">LATIN_SMALL_LETTER_E</span><span class="p">)</span>
+   <span class="nv">[Condition</span> <span class="nv">of</span> <span class="k">type</span> <span class="nv">ESRAP-PARSE-ERROR]</span>
 </code></pre></div>
 
 <p>Here's a taste of what the DSL looks like for defining grammar rules! Courtesy of macros. Maybe I should give a presentation on macros, even though I'm still learning about them.</p>
-<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nv">defrule</span><span class="w"> </span><span class="nv">benteger</span><span class="w"></span>
-<span class="w">    </span><span class="p">(</span><span class="nb">and</span><span class="w"> </span><span class="sc">#\i</span><span class="w"></span>
-<span class="w">         </span><span class="p">(</span><span class="nb">or</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
-<span class="w">             </span><span class="p">(</span><span class="nb">and</span><span class="w"> </span><span class="p">(</span><span class="nv">?</span><span class="w"> </span><span class="sc">#\-</span><span class="p">)</span><span class="w"></span>
-<span class="w">                  </span><span class="nv">nonzero</span><span class="w"></span>
-<span class="w">                  </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="nv">digit</span><span class="p">)))</span><span class="w"></span>
-<span class="w">         </span><span class="sc">#\e</span><span class="p">))</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nv">defrule</span> <span class="nv">benteger</span>
+    <span class="p">(</span><span class="nb">and</span> <span class="sc">#\i</span>
+         <span class="p">(</span><span class="nb">or</span> <span class="s">&quot;0&quot;</span>
+             <span class="p">(</span><span class="nb">and</span> <span class="p">(</span><span class="nv">?</span> <span class="sc">#\-</span><span class="p">)</span>
+                  <span class="nv">nonzero</span>
+                  <span class="p">(</span><span class="nb">*</span> <span class="nv">digit</span><span class="p">)))</span>
+         <span class="sc">#\e</span><span class="p">))</span>
 </code></pre></div>
 
 <p>Parsing bencoded strings is a little tricky, because the length of the string is determined by the integer prefix. I had to go outside the constraints of the <code>defrule</code> syntax and write a custom <code>parse-bencoded-string</code> function, which, thankfully, integrates well with esrap parsing. I was then able to define the rest of the parser in 4 lines of code:</p>
-<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nv">defrule</span><span class="w"> </span><span class="nv">str</span><span class="w"> </span><span class="p">(</span><span class="k">function</span><span class="w"> </span><span class="nv">parse-bencoded-string</span><span class="p">))</span><span class="w"></span>
-<span class="p">(</span><span class="nv">defrule</span><span class="w"> </span><span class="nv">ben</span><span class="w"> </span><span class="p">(</span><span class="nb">or</span><span class="w"> </span><span class="nv">str</span><span class="w"> </span><span class="nv">benteger</span><span class="w"> </span><span class="nb">list</span><span class="w"> </span><span class="nv">dict</span><span class="p">))</span><span class="w"></span>
-<span class="p">(</span><span class="nv">defrule</span><span class="w"> </span><span class="nb">list</span><span class="w"> </span><span class="p">(</span><span class="nb">and</span><span class="w"> </span><span class="s">&quot;l&quot;</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="nv">ben</span><span class="p">)</span><span class="w"> </span><span class="s">&quot;e&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="ss">:function</span><span class="w"> </span><span class="nb">second</span><span class="p">))</span><span class="w"></span>
-<span class="p">(</span><span class="nv">defrule</span><span class="w"> </span><span class="nv">dict</span><span class="w"> </span><span class="p">(</span><span class="nb">and</span><span class="w"> </span><span class="s">&quot;d&quot;</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="nb">and</span><span class="w"> </span><span class="nv">str</span><span class="w"> </span><span class="nv">ben</span><span class="p">))</span><span class="w"> </span><span class="s">&quot;e&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="ss">:function</span><span class="w"> </span><span class="nb">second</span><span class="p">))</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nv">defrule</span> <span class="nv">str</span> <span class="p">(</span><span class="k">function</span> <span class="nv">parse-bencoded-string</span><span class="p">))</span>
+<span class="p">(</span><span class="nv">defrule</span> <span class="nv">ben</span> <span class="p">(</span><span class="nb">or</span> <span class="nv">str</span> <span class="nv">benteger</span> <span class="nb">list</span> <span class="nv">dict</span><span class="p">))</span>
+<span class="p">(</span><span class="nv">defrule</span> <span class="nb">list</span> <span class="p">(</span><span class="nb">and</span> <span class="s">&quot;l&quot;</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">ben</span><span class="p">)</span> <span class="s">&quot;e&quot;</span><span class="p">)</span> <span class="p">(</span><span class="ss">:function</span> <span class="nb">second</span><span class="p">))</span>
+<span class="p">(</span><span class="nv">defrule</span> <span class="nv">dict</span> <span class="p">(</span><span class="nb">and</span> <span class="s">&quot;d&quot;</span> <span class="p">(</span><span class="nb">*</span> <span class="p">(</span><span class="nb">and</span> <span class="nv">str</span> <span class="nv">ben</span><span class="p">))</span> <span class="s">&quot;e&quot;</span><span class="p">)</span> <span class="p">(</span><span class="ss">:function</span> <span class="nb">second</span><span class="p">))</span>
 </code></pre></div>
 
 <p>Testing:</p>
-<div class="codehilite"><pre><span></span><code><span class="nv">BENCODE&gt;</span><span class="w"> </span><span class="p">(</span><span class="nv">parse</span><span class="w"> </span><span class="ss">&#39;list</span><span class="w"> </span><span class="s">&quot;l4:spam4:eggse&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="p">(</span><span class="s">&quot;spam&quot;</span><span class="w"> </span><span class="s">&quot;eggs&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="nv">BENCODE&gt;</span><span class="w"> </span><span class="p">(</span><span class="nv">parse</span><span class="w"> </span><span class="ss">&#39;dict</span><span class="w"> </span><span class="s">&quot;d3:cow3:moo4:spam4:eggse&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="p">((</span><span class="s">&quot;cow&quot;</span><span class="w"> </span><span class="s">&quot;moo&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;spam&quot;</span><span class="w"> </span><span class="s">&quot;eggs&quot;</span><span class="p">))</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="nv">BENCODE&gt;</span> <span class="p">(</span><span class="nv">parse</span> <span class="ss">&#39;list</span> <span class="s">&quot;l4:spam4:eggse&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&quot;spam&quot;</span> <span class="s">&quot;eggs&quot;</span><span class="p">)</span>
+<span class="nv">BENCODE&gt;</span> <span class="p">(</span><span class="nv">parse</span> <span class="ss">&#39;dict</span> <span class="s">&quot;d3:cow3:moo4:spam4:eggse&quot;</span><span class="p">)</span>
+<span class="p">((</span><span class="s">&quot;cow&quot;</span> <span class="s">&quot;moo&quot;</span><span class="p">)</span> <span class="p">(</span><span class="s">&quot;spam&quot;</span> <span class="s">&quot;eggs&quot;</span><span class="p">))</span>
 </code></pre></div>
 
 <p>Pretty neat! <a href="https://github.com/Kevinpgalligan/cl-torrent">Here's the code so far</a>. Next week I'll come back to this and write unit tests to make sure I've covered all the edge cases. I haven't done unit testing in Common Lisp before, so it'll require some effort to set up. Seems like a good candidate for pair programming!</p>
@@ -114,6 +114,7 @@
 <p>To finish the week, I made a 2-line <a href="https://github.com/vydd/sketch/pull/133">pull request</a> to <a href="https://github.com/vydd/sketch">sketch</a> (don't draw a border around images by default!) and described my proposal to the other developers about how to fix a tricky bug where the first render call gets lost due to the window getting resized.</p>
 <p>Posting this now because I want my weeks to start on a Monday and end on a Friday. Hopefully I'm not being too verbose!</p>
 <hr>
+<a href="/blog/recurse.html">&lt;&lt; previous</a><a style="float: right;" href="/blog/rc2.html">next &gt;&gt;</a>
 <ul>
 <li><a href="/blog.html">Back to blog</a></li>
 <li><a href="/feed.xml">RSS feed</a></li>

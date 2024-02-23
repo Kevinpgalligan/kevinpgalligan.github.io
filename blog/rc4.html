@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title> Recurse Center, week 4 </title>
+    <title>Recurse Center, week 4</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/static/css/style.css">
@@ -32,7 +32,7 @@
         </div>
     </header>
 
-<h2 class="post-title">Recurse Center, week 4 </h2>
+<h2 class="post-title">Recurse Center, week 4</h2>
 <h3 class="post-date">2024-01-26</h3>
 <h3 class="post-date">A weekly log of my activity at the Recurse Center, a 12-week programming retreat.</h3>
 <p>Tags: <a href="/blog/tag/rc.html">rc</a> </p>
@@ -41,27 +41,27 @@
 <p>Did more work on my pull request for ~sketch~, feels like a disproportionate amount of effort to fix this bug.</p>
 <p>Read some <a href="https://github.com/nornagon/jonesforth/blob/master/jonesforth.S">jonesforth</a> and <a href="https://www.forth.com/starting-forth/11-forth-compiler-defining-words/">Starting Forth</a>, trying to understand Forth execution.</p>
 <p>My original plan was to write most of my Forth code in a Lisp DSL, like this. </p>
-<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nv">defword</span><span class="w"> </span><span class="nv">2dup</span><span class="w"> </span><span class="p">(</span><span class="nv">dup</span><span class="w"> </span><span class="nv">dup</span><span class="p">))</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nv">defword</span> <span class="nv">2dup</span> <span class="p">(</span><span class="nv">dup</span> <span class="nv">dup</span><span class="p">))</span>
 </code></pre></div>
 
 <p>Forth code is then just a list of Lisp symbols!</p>
 <p>However, this has various hairy edge cases. Consider the Forth words <code>(</code> or <code>:</code>, neither of which are valid names for Lisp symbols. A possible solution is to expand these into Latin characters with some type of escape character in front of them: <code>^lparen</code> and <code>^colon</code>, for example. The escape character itself would have to be escaped, too, in case the user ever tries to define a word called <code>^lparen</code> -- with escaping, this would become the Lisp symbol <code>^^lparen</code>. And the Forth word <code>^(</code> would become the symbol <code>^^^lparen</code>.</p>
 <p>Another edge case to avoid: imagine I gave the symbol <code>|</code> the expanded name <code>^lpar</code>. Then the Forth word <code>|en</code> would expand to <code>^lparen</code>, clashing with the Lisp symbol for <code>(</code>. So the expansions of banned symbols cannot be prefixes of each other. This probably comes up a lot when designing programming languages (string escaping!), so that could be interesting to look into.</p>
 <p>I think that solves the problem of weird Forth characters. However, there's also the problem that Forth words are able to hook into the parsing of the program they're part of. Famously, comments in Forth are implemented as the words <code>(</code> and <code>)</code>. Here's how they're used:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">:</span><span class="w"> </span><span class="nc">someword</span><span class="w"> </span><span class="c1">( this is a Forth comment )</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">+</span><span class="w"> </span><span class="k">;</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="kn">:</span> <span class="nc">someword</span> <span class="c1">( this is a Forth comment )</span> <span class="mi">1</span> <span class="mi">1</span> <span class="k">+</span> <span class="k">;</span>
 </code></pre></div>
 
 <p>The definition of <code>(</code> is basically: skip text until the next right parenthesis shows up. That wouldn't work with my "list of symbols" DSL because the symbols will be parsed by the Lisp reader and there will be no input stream of text to speak of.</p>
 <p>Another Problem Word is <code>".</code>, which prints a string to the screen...</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">:</span><span class="w"> </span><span class="nc">firstprogram</span><span class="w"> </span><span class="nf">&quot;.</span><span class="w"> </span><span class="nf">Hello</span><span class="w"> </span><span class="nf">World</span><span class="w"> </span><span class="nf">&quot;</span><span class="w"> </span><span class="k">;</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="kn">:</span> <span class="nc">firstprogram</span> <span class="nf">&quot;.</span> <span class="nf">Hello</span> <span class="nf">World</span> <span class="nf">&quot;</span> <span class="k">;</span>
 </code></pre></div>
 
 <p>...which might be defined in the DSL (with escaping for the <code>"</code> special character) as follows...</p>
-<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nv">defword</span><span class="w"> </span><span class="nv">firstprogram</span><span class="w"> </span><span class="p">(</span><span class="nv">^quote.</span><span class="w"> </span><span class="nv">Hello</span><span class="w"> </span><span class="nv">World</span><span class="w"> </span><span class="nv">^quote</span><span class="p">))</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nv">defword</span> <span class="nv">firstprogram</span> <span class="p">(</span><span class="nv">^quote.</span> <span class="nv">Hello</span> <span class="nv">World</span> <span class="nv">^quote</span><span class="p">))</span>
 </code></pre></div>
 
 <p>But, again, <code>".</code> needs access to the input stream of text. So, I think the DSL should allow Forth words to be defined as strings...</p>
-<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nv">defword</span><span class="w"> </span><span class="nv">firstprogram</span><span class="w"> </span><span class="s">&quot;\&quot;. Hello World \&quot;&quot;</span><span class="p">)</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nv">defword</span> <span class="nv">firstprogram</span> <span class="s">&quot;\&quot;. Hello World \&quot;&quot;</span><span class="p">)</span>
 </code></pre></div>
 
 <p>Anyway, this is all a distraction from the task of actually implementing a Forth. What's confusing me more is how to map the Forth <a href="https://www.forth.com/starting-forth/9-forth-execution/#Forth_Geography">memory model</a> onto a running Lisp process. Forth seems to assume that it's operating on a giant contiguous block of memory, and it compiles itself by writing stuff into that memory. That's fine for assembly language, but I really don't get how to deal with that in Common Lisp or JavaScript or whatever. The Forth word <code>HERE</code>, for example, points to the address space where the next dictionary entry should be written. What does that mean when the dictionary is a list data structure in JavaScript or Common Lisp or whatever? I think it would be straightforward in C: the dictionary is a big <code>malloc</code>'d block of memory, and we can push onto the stack the actual memory address where the next DictionaryEntry struct should be written.</p>
@@ -96,9 +96,9 @@
 
 <p>The code is <a href="https://github.com/Kevinpgalligan/sketches/blob/master/src/thesketches/trees.lisp">here</a>. There's a memory fault after more than 6 iterations of the L-system, with no backtrace. I think it allocates too much memory because the strings grow surprisingly quickly -- if my napkin calculations are correct, ~1GB after 7 iterations. The solution may be to do depth-first expansion of the rules, rather than breadth-first, so that no string allocation is necessary. (Although, it sounds like it would take forever to iterate through 1 billion symbols, so it may be impractical to go beyond a depth of 6 for this L-system, anyway).</p>
 <p>When I get that working, I may as well test out all the L-systems on the <a href="https://en.wikipedia.org/wiki/L-system">Wiki page</a>, since the rules can be copy/pasted once you have an L-system implementation.</p>
-<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nv">def-lsystem</span><span class="w"> </span><span class="nv">tree</span><span class="w"></span>
-<span class="w">    </span><span class="p">((</span><span class="sc">#\F</span><span class="w"> </span><span class="s">&quot;FF+[+F-F-F]-[-F+F+F]&quot;</span><span class="p">)))</span><span class="w"></span>
-<span class="p">(</span><span class="nv">evaluate-lsystem</span><span class="w"> </span><span class="ss">&#39;tree</span><span class="w"> </span><span class="ss">:axiom</span><span class="w"> </span><span class="s">&quot;F&quot;</span><span class="p">)</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nv">def-lsystem</span> <span class="nv">tree</span>
+    <span class="p">((</span><span class="sc">#\F</span> <span class="s">&quot;FF+[+F-F-F]-[-F+F+F]&quot;</span><span class="p">)))</span>
+<span class="p">(</span><span class="nv">evaluate-lsystem</span> <span class="ss">&#39;tree</span> <span class="ss">:axiom</span> <span class="s">&quot;F&quot;</span><span class="p">)</span>
 </code></pre></div>
 
 <h3 id="thursday-january-25th">Thursday, January 25th</h3>
@@ -117,9 +117,9 @@
 <h3 id="friday-january-26th">Friday, January 26th</h3>
 <p>Inspired by Isaac, I went for a walk before doing any programming today. Also kicked off MemTest86 tests on my desktop, since it has suffered from intermittent freezes ever since I built it. If that doesn't turn up anything, I guess I'll open it up and make sure all the components are properly secured. Couldn't hurt to update Linux Mint, either.</p>
 <p>I finished my goal of implementing a message buffer interface for the BitTorrent client! It accumulates bytes from network packets, parses any peer-to-peer messages in that stream of bytes, and spits those messages back out! Also wrote a bunch of unit tests, which reminded me of my old job -- we had to write a lot of unit tests! In the process, I discovered that Common Lisp has built-in support for bitmasks, so I won't need to implement them myself.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">;; A bit vector of 7 bits!</span><span class="w"></span>
-<span class="p">(</span><span class="nb">defparameter</span><span class="w"> </span><span class="vg">*bs*</span><span class="w"> </span><span class="p">(</span><span class="nb">make-array</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="ss">:element-type</span><span class="w"> </span><span class="ss">&#39;bit</span><span class="p">))</span><span class="w"></span>
-<span class="p">(</span><span class="nb">bit-and</span><span class="w"> </span><span class="vg">*bs*</span><span class="w"> </span><span class="l l-Other">#*1111000</span><span class="w"> </span><span class="no">t</span><span class="p">)</span><span class="w"> </span><span class="c1">; make the last 3 bits 0!</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="c1">;; A bit vector of 7 bits!</span>
+<span class="p">(</span><span class="nb">defparameter</span> <span class="vg">*bs*</span> <span class="p">(</span><span class="nb">make-array</span> <span class="mi">7</span> <span class="ss">:element-type</span> <span class="ss">&#39;bit</span><span class="p">))</span>
+<span class="p">(</span><span class="nb">bit-and</span> <span class="vg">*bs*</span> <span class="l l-Other">#*1111000</span> <span class="no">t</span><span class="p">)</span> <span class="c1">; make the last 3 bits 0!</span>
 </code></pre></div>
 
 <p>I did remember another task I'll have to take on: serialising peer-to-peer messages for network transmission. I'm sure there's a library I could've used for defining the serialisation format rather than manually writing code to do the serialising AND deserialising. Oh well, it was nice to make some progress today.</p>
@@ -131,6 +131,7 @@
 <li>Some generative art / ~sketch~ stuff.</li>
 </ul>
 <hr>
+<a href="/blog/rc3.html">&lt;&lt; previous</a><a style="float: right;" href="/blog/rc5.html">next &gt;&gt;</a>
 <ul>
 <li><a href="/blog.html">Back to blog</a></li>
 <li><a href="/feed.xml">RSS feed</a></li>

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Tiny Metronome now has a 903-byte sibling</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+
+<meta property="og:description" content="It&#39;s a 903-byte guitar tuner." /> 
+<meta property="og:image" content="https://kevingal.com/static/img/thumbnail.jpg" />
+<meta name="thumbnail" content="/static/img/thumbnail.jpg" />
+
+<link rel="stylesheet" href="/static/css/pygments.css">
+
+<meta property="description" content="It&#39;s a 903-byte guitar tuner.">
+
+<link rel="stylesheet" href="/static/css/blog.css">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon.ico">
+</head>
+<body>
+    <header>
+        <div data-nosnippet class="navbar">
+        <nav>
+        <a href="/index.html" class="navlink">about</a>
+        • <a href="/blog.html" class="navlink">blog</a>
+        • <a href="/software.html" class="navlink">software</a>
+        • <a href="/feed.xml" class="navlink">rss</a>
+        </nav>
+        </div>
+    </header>
+
+<h2 class="post-title">Tiny Metronome now has a 903-byte sibling</h2>
+<h3 class="post-date">2024-02-22</h3>
+<h3 class="post-date">It&#39;s a 903-byte guitar tuner.</h3>
+<p>Tags: <a href="/blog/tag/web.html">web</a> </p>
+<hr>
+<p>With the help of Charlie from RC, I managed to make a <a href="/apps/tuner.html">tiny guitar tuner</a> in 903 bytes. It uses the same code-golfing tricks as the <a href="/blog/metronome.html">tiny metronome</a>: <code>!1</code> is <code>false</code>, HTML attribute values don't need to be surrounded by quotes, ternary conditionals can be shorter than if-else statements (<code>p?(s1,s2):(s3,s4)</code> saves 8 bytes over <code>if(p){s1;s2;}else{s3;s4;}</code>), buttons are created dynamically with JavaScript, etc.</p>
+<p>It uses the WebAudio API to make sound. The most annoying part was making sure there were no pops or crackles in the audio output, especially when it was started and stopped abruptly. This was possible to resolve by ramping the gain (kinda like the volume) up and down, and by tweaking its max value.</p>
+<p>Here's the code, with newlines added so that it doesn't spill out of the page. Cower before its obscurity!</p>
+<div class="codehilite"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span><span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Tuner<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">viewport</span> <span class="na">content</span><span class="o">=</span><span class="s">width=</span>
+<span class="na">device-width</span><span class="p">&gt;&lt;</span><span class="nt">style</span><span class="p">&gt;</span><span class="nt">body</span><span class="p">{</span><span class="k">display</span><span class="p">:</span><span class="k">grid</span><span class="p">;</span><span class="k">grid-template-columns</span><span class="p">:</span><span class="mi">50</span><span class="kt">%</span><span class="mi">50</span><span class="kt">%</span><span class="p">;</span>
+<span class="k">max-width</span><span class="p">:</span><span class="mi">150</span><span class="kt">px</span><span class="p">}#</span><span class="nn">b</span><span class="o">,</span><span class="nt">button</span><span class="p">{</span><span class="k">text-align</span><span class="p">:</span><span class="kc">center</span><span class="p">;</span><span class="k">line-height</span><span class="p">:</span><span class="mi">50</span><span class="kt">px</span><span class="p">}&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span><span class="nx">f</span><span class="o">=</span><span class="p">[</span><span class="mf">82</span><span class="p">,</span><span class="mf">110</span><span class="p">,</span><span class="mf">147</span><span class="p">,</span><span class="mf">196</span><span class="p">,</span><span class="mf">247</span><span class="p">,</span><span class="mf">330</span><span class="p">];</span><span class="nx">N</span><span class="o">=</span><span class="s2">&quot;E,A,D,G,B,E&quot;</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">);</span>
+<span class="nx">p</span><span class="o">=</span><span class="nx">F</span><span class="o">=</span><span class="nx">x</span><span class="o">=!</span><span class="mf">1</span><span class="p">;</span><span class="nx">I</span><span class="o">=</span><span class="mf">.025</span><span class="p">;</span><span class="nx">l</span><span class="o">=</span><span class="mf">.1</span><span class="p">;</span><span class="nx">n</span><span class="o">=</span><span class="mf">0</span><span class="p">;</span><span class="nx">L</span><span class="o">=</span><span class="p">(</span><span class="nx">G</span><span class="p">,</span><span class="nx">v</span><span class="p">,</span><span class="nx">t</span><span class="p">)=&gt;</span><span class="nx">G</span><span class="p">.</span><span class="nx">linearRampToValueAtTime</span><span class="p">(</span><span class="nx">v</span><span class="p">,</span><span class="nx">t</span><span class="p">);</span>
+<span class="nx">D</span><span class="o">=</span><span class="nb">document</span><span class="p">;</span><span class="nx">x</span><span class="o">=</span><span class="k">new</span> <span class="nx">AudioContext</span><span class="p">;</span><span class="nx">s</span><span class="o">=</span><span class="p">(()=&gt;{</span><span class="k">if</span><span class="p">(</span><span class="nx">n</span><span class="o">&lt;=</span><span class="nx">x</span><span class="p">.</span><span class="nx">currentTime</span><span class="o">+</span><span class="nx">l</span><span class="p">)</span>
+<span class="p">{</span><span class="kd">var</span> <span class="nx">o</span><span class="o">=</span><span class="nx">x</span><span class="p">.</span><span class="nx">createOscillator</span><span class="p">();</span><span class="kd">var</span> <span class="nx">v</span><span class="o">=</span><span class="nx">x</span><span class="p">.</span><span class="nx">createGain</span><span class="p">();</span><span class="nx">o</span><span class="p">.</span><span class="nx">connect</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+<span class="nx">v</span><span class="p">.</span><span class="nx">connect</span><span class="p">(</span><span class="nx">x</span><span class="p">.</span><span class="nx">destination</span><span class="p">);</span><span class="nx">o</span><span class="p">.</span><span class="nx">frequency</span><span class="p">.</span><span class="nx">value</span><span class="o">=</span><span class="nx">F</span><span class="p">;</span><span class="nx">G</span><span class="o">=</span><span class="nx">v</span><span class="p">.</span><span class="nx">gain</span><span class="p">;</span>
+<span class="nx">G</span><span class="p">.</span><span class="nx">setValueAtTime</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span><span class="nx">n</span><span class="p">);</span><span class="nx">L</span><span class="p">(</span><span class="nx">G</span><span class="p">,(</span><span class="mf">1</span><span class="o">*</span><span class="p">(</span><span class="nx">F</span><span class="o">&lt;</span><span class="mf">111</span><span class="o">?</span><span class="mf">1.3</span><span class="o">:</span><span class="mf">1</span><span class="p">))</span><span class="o">/</span><span class="mf">15</span><span class="p">,</span><span class="nx">n</span><span class="o">+</span><span class="mf">.01</span><span class="p">);</span>
+<span class="nx">L</span><span class="p">(</span><span class="nx">G</span><span class="p">,</span><span class="mf">0</span><span class="p">,</span><span class="nx">n</span><span class="o">+</span><span class="mf">1.9</span><span class="p">);</span><span class="nx">o</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="nx">n</span><span class="p">);</span><span class="nx">n</span><span class="o">+=</span><span class="mf">2</span><span class="p">;</span><span class="nx">setTimeout</span><span class="p">(()=&gt;(</span><span class="nx">v</span><span class="p">.</span><span class="nx">disconnect</span><span class="p">(),</span>
+<span class="nx">o</span><span class="p">.</span><span class="nx">disconnect</span><span class="p">()),</span><span class="mf">5000</span><span class="p">);}});</span><span class="nx">r</span><span class="o">=</span><span class="p">(()=&gt;</span><span class="nx">p</span><span class="o">&amp;&amp;</span><span class="p">(</span><span class="nx">s</span><span class="p">(),</span><span class="nx">setTimeout</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span><span class="nx">I</span><span class="p">)));</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">onload</span><span class="o">=</span><span class="p">(()=&gt;[...</span><span class="nb">Array</span><span class="p">(</span><span class="mf">6</span><span class="p">)].</span><span class="nx">map</span><span class="p">((</span><span class="nx">_</span><span class="p">,</span><span class="nx">i</span><span class="p">)=&gt;(</span><span class="nx">e</span><span class="o">=</span><span class="nx">D</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">&quot;button&quot;</span><span class="p">),</span>
+<span class="nx">e</span><span class="p">.</span><span class="nx">innerHTML</span><span class="o">=</span><span class="nx">N</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span><span class="nx">e</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&quot;click&quot;</span><span class="p">,()=&gt;(</span><span class="nx">p</span><span class="o">&amp;&amp;</span><span class="p">(</span><span class="nx">F</span><span class="o">==</span><span class="nx">f</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span><span class="o">?</span><span class="p">(</span><span class="nx">p</span><span class="o">=!</span><span class="mf">1</span><span class="p">,</span><span class="nx">F</span><span class="o">=</span><span class="mf">0</span><span class="p">)</span>
+<span class="o">:</span><span class="p">(</span><span class="nx">p</span><span class="o">=!</span><span class="mf">0</span><span class="p">,</span><span class="nx">n</span><span class="o">=</span><span class="nx">x</span><span class="p">.</span><span class="nx">currentTime</span><span class="p">,</span><span class="nx">F</span><span class="o">=</span><span class="nx">f</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span><span class="nx">r</span><span class="p">()))),</span><span class="nx">D</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">e</span><span class="p">))));&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+<hr>
+
+<ul>
+<li><a href="/blog.html">Back to blog</a></li>
+<li><a href="/feed.xml">RSS feed</a></li>
+</ul>
+<p>I'd be happy to hear from you at <i>galligankevinp@gmail.com</i>.</p>
+
+</body>
+</html>

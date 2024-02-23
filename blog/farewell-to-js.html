@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title> A Farewell to JavaScript </title>
+    <title>A Farewell to JavaScript</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/static/css/style.css">
@@ -32,7 +32,7 @@
         </div>
     </header>
 
-<h2 class="post-title">A Farewell to JavaScript </h2>
+<h2 class="post-title">A Farewell to JavaScript</h2>
 <h3 class="post-date">2021-02-06</h3>
 <h3 class="post-date">I purged JavaScript from my site.</h3>
 <p>Tags: <a href="/blog/tag/web.html">web</a> <a href="/blog/tag/meta.html">meta</a> <a href="/blog/tag/vim.html">vim</a> </p>
@@ -50,9 +50,9 @@
 </ol>
 <p>Oh, I also needed to start serving the KaTeX CSS files and fonts, which was just a copy-and-paste job. The whole thing seems baroque when I write it out fully, but I'm happy that JavaScript is no longer required to read the blog.</p>
 <p>Now for some vim trivia. I had to go back and change the LaTeX delimiters in all the blog posts. MathJax uses $ as a delimiter for inline math mode, and $$ for display math mode. markdown-katex uses $` and `$ for inline math mode, and...</p>
-<div class="codehilite"><pre><span></span><code><p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>i</mi><mi>n</mi><mi>s</mi><mi>e</mi><mi>r</mi><mi>t</mi><mi>m</mi><mi>a</mi><mi>t</mi><mi>h</mi><mi>s</mi><mi>h</mi><mi>e</mi><mi>r</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">
+<div class="codehilite"><pre><span></span><code>```math
 {insert maths here}
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord"><span class="mord mathnormal">in</span><span class="mord mathnormal" style="margin-right:0.02778em;">ser</span><span class="mord mathnormal">t</span><span class="mord mathnormal">ma</span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mord mathnormal">s</span><span class="mord mathnormal">h</span><span class="mord mathnormal">ere</span></span></span></span></span></span></p>
+```
 </code></pre></div>
 
 <p>...for display math mode. I used a vim macro to replace the inline delimiters, with the following key presses: <code>qa/\$RETa`ESCni`ESCwq</code>. It finds the next pair of LaTeX delimiters (e.g. <code>$x^2+1$</code>) and converts them to the new format (<code>$`x^2+1`$</code>).</p>
@@ -68,6 +68,7 @@
 </ul>
 <p>I could type <code>@a</code> to run the macro once, then <code>.</code> to repeat it after that. It's much faster and less error-prone than fixing such things manually, obviously, but I also feel that vim is more suited to this task than, say, a Python script. It's so easy to record a macro, and you can catch errors as they happen. I would go with Python if I had to change more than a handful of files, though.</p>
 <hr>
+<a href="/blog/darts.html">&lt;&lt; previous</a><a style="float: right;" href="/blog/toki-poetry.html">next &gt;&gt;</a>
 <ul>
 <li><a href="/blog.html">Back to blog</a></li>
 <li><a href="/feed.xml">RSS feed</a></li>
