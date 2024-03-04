@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Recurse Center, week 9</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+
+<meta property="og:description" content="A weekly log of my activity at the Recurse Center, a 12-week programming retreat." /> 
+<meta property="og:image" content="https://kevingal.com/static/img/thumbnail.jpg" />
+<meta name="thumbnail" content="/static/img/thumbnail.jpg" />
+
+<link rel="stylesheet" href="/static/css/pygments.css">
+
+<meta property="description" content="A weekly log of my activity at the Recurse Center, a 12-week programming retreat.">
+
+<link rel="stylesheet" href="/static/css/blog.css">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon.ico">
+</head>
+<body>
+    <header>
+        <div data-nosnippet class="navbar">
+        <nav>
+        <a href="/index.html" class="navlink">about</a>
+        • <a href="/blog.html" class="navlink">blog</a>
+        • <a href="/software.html" class="navlink">software</a>
+        • <a href="/feed.xml" class="navlink">rss</a>
+        </nav>
+        </div>
+    </header>
+
+<h2 class="post-title">Recurse Center, week 9</h2>
+<h3 class="post-date">2024-02-29</h3>
+<h3 class="post-date">A weekly log of my activity at the Recurse Center, a 12-week programming retreat.</h3>
+<p>Tags: <a href="/blog/tag/rc.html">rc</a> </p>
+<a href="/blog/rc8.html">&lt;&lt; previous</a>
+<hr>
+<h3 id="monday-february-26th">Monday, February 26th</h3>
+<p>Had a jobs chat with Rachel from the RC careers team. She gave me feedback on my CV and had some helpful suggestions on how to brainstorm what sorta jobs I'm looking for.</p>
+<p>Wrote a bunch of unit tests for the BitTorrent client, it'll probably take me the rest of the week to test it adequately and iron out all the simple bugs. Hopefully I'm near the finish line?? (Spoiler alert from the future: he was not near the finish line).</p>
+<p>Made this animation of a <a href="https://en.wikipedia.org/wiki/Reuleaux_triangle">Reuleaux triangle</a>. It's a type of shape that is the same width in every direction, like a circle, which is why you can rotate it snugly inside a square! I learned about it from a Martin Gardner article. Spent AGES writing trigonometry code to draw the arcs.</p>
+<figure>
+<video width="300" height="300" class="centered" controls title="A red reuleaux triangle (like a triangle but rounder) rotating inside a square, snugly touching the sides at all times).">
+    <source src="/static/video/recurse/reuleaux.mp4" type="video/mp4">
+</video>
+</figure>
+
+<p>My approach was to take the vector from the center of the arc to the edge and convert it to polar coordinates: <code>(x,y) -&gt; (r,theta)</code>. The arc then comes from adding offsets to <code>theta</code>. However, I had to battle with Common Lisp's <code>atan</code> function to get <code>theta</code> from <code>x</code> and <code>y</code> -- I wanted the angle, in radians, to always be positive, and for it to represent the counterclockwise angle from the positve x-axis, which is not what CL's <code>atan</code> gives you. In the end, this turned out to be annoyingly tricky to get right, so I just gave up and accepted whatever it was returning. Anyway, <a href="https://github.com/Kevinpgalligan/sketches/blob/master/src/thesketches/reuleaux.lisp">here</a> is the code for the drawing.</p>
+<h3 id="tuesday-february-27th">Tuesday, February 27th</h3>
+<p>Wrote more boring unit tests for the BitTorrent client! Considering the complexity of the client logic, it has been surprisingly pleasant to write these unit tests, but it's still time-consuming. <a href="https://github.com/Kevinpgalligan/cl-bittorrent/blob/master/t/client.lisp">Here's</a> where the tests live.</p>
+<p>Had a fun pairing session with Ivy on the Book of Shaders, Chapter 6 (Shapes). Slowly building an intuition for distance fields and how they are used to draw shapes.</p>
+<p>Inspired by all the cool Emacs setups I've seen at RC, I devoted some time to messing with my .emacs config. Now using <code>ivy</code> / <code>counsel</code> for search completion, though I'm not sure that I've configured it properly. Also want to try out fuzzy search, projectile, file trees, etc.</p>
+<h3 id="wednesday-february-28th">Wednesday, February 28th</h3>
+<p>More time on BitTorrent unit tests. Yawn.</p>
+<p>Paired with Vedashree on making a programming language mascot for Creative Coding, resulting in this magnificent creation.</p>
+<figure>
+<video class="centered" controls>
+    <source src="/static/video/recurse/giraffe.mp4" type="video/mp4">
+</video>
+<figcaption>A giraffe acting as the evaluator for a stack-based language. The input, "1 2 +", gets evaluated to "3".</figcaption>
+</figure>
+
+<h3 id="thursday-february-29th">Thursday, February 29th</h3>
+<p>Today was Impossible Stuff Day, where you're supposed to pick something that seems impossible and do it. I decided that I was going to figure out how assembly language programs call C programs, and vice versa. More generally, I'm interested in how programs actually get executed and how they invoke each other. How does the Python interpreter make calls into C code? How is Lua embedded in other programs? Aaaand so on.</p>
+<p>But first, I couldn't resist the urge to finish some unit tests in the afternoon, woops. I also joined the Book of Shaders group for an hour. Now battling with the chapter on transformation matrices.</p>
+<p>Don't understand why this cross is wobbly, it's just supposed to be rotating while moving along a curve! It would make more sense to me to apply the transformation to the coordinates of the cross itself, rather than moving the whole space around, but then I'm not sure how rotations would work.</p>
+<figure>
+<video class="centered" controls title="A cross that's moving along an upside-down quadratic curve while rotating and (for some reason) wobbling.">
+    <source src="/static/video/recurse/wobbly-cross.mp4" type="video/mp4">
+</video>
+<figcaption>A cookie for whoever can tell me why the cross is wobbling.</figcaption>
+</figure>
+
+<p>The code:</p>
+<div class="codehilite"><pre><span></span><code><span class="cp">#ifdef GL_ES</span>
+<span class="k">precision</span> <span class="k">mediump</span> <span class="kt">float</span><span class="p">;</span>
+<span class="cp">#endif</span>
+
+<span class="cp">#define PI 3.14159265359</span>
+
+<span class="k">uniform</span> <span class="kt">vec2</span> <span class="n">u_resolution</span><span class="p">;</span>
+<span class="k">uniform</span> <span class="kt">float</span> <span class="n">u_time</span><span class="p">;</span>
+
+<span class="kt">mat3</span> <span class="n">rotate2d</span><span class="p">(</span><span class="kt">float</span> <span class="n">_angle</span><span class="p">){</span>
+    <span class="k">return</span> <span class="kt">mat3</span><span class="p">(</span><span class="n">cos</span><span class="p">(</span><span class="n">_angle</span><span class="p">),</span><span class="o">-</span><span class="n">sin</span><span class="p">(</span><span class="n">_angle</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="n">sin</span><span class="p">(</span><span class="n">_angle</span><span class="p">),</span><span class="n">cos</span><span class="p">(</span><span class="n">_angle</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">mat3</span> <span class="n">translate2d</span><span class="p">(</span><span class="kt">float</span> <span class="n">dx</span><span class="p">,</span> <span class="kt">float</span> <span class="n">dy</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kt">mat3</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">float</span> <span class="n">box</span><span class="p">(</span><span class="k">in</span> <span class="kt">vec2</span> <span class="n">_st</span><span class="p">,</span> <span class="k">in</span> <span class="kt">vec2</span> <span class="n">_size</span><span class="p">){</span>
+    <span class="n">_size</span> <span class="o">=</span> <span class="kt">vec2</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">-</span> <span class="n">_size</span><span class="o">*</span><span class="mf">0.5</span><span class="p">;</span>
+    <span class="kt">vec2</span> <span class="n">uv</span> <span class="o">=</span> <span class="n">smoothstep</span><span class="p">(</span><span class="n">_size</span><span class="p">,</span>
+                        <span class="n">_size</span><span class="o">+</span><span class="kt">vec2</span><span class="p">(</span><span class="mf">0.001</span><span class="p">),</span>
+                        <span class="n">_st</span><span class="p">);</span>
+    <span class="n">uv</span> <span class="o">*=</span> <span class="n">smoothstep</span><span class="p">(</span><span class="n">_size</span><span class="p">,</span>
+                    <span class="n">_size</span><span class="o">+</span><span class="kt">vec2</span><span class="p">(</span><span class="mf">0.001</span><span class="p">),</span>
+                    <span class="kt">vec2</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span><span class="o">-</span><span class="n">_st</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">uv</span><span class="p">.</span><span class="n">x</span><span class="o">*</span><span class="n">uv</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">float</span> <span class="n">cross</span><span class="p">(</span><span class="k">in</span> <span class="kt">vec2</span> <span class="n">_st</span><span class="p">,</span> <span class="kt">float</span> <span class="n">_size</span><span class="p">){</span>
+    <span class="k">return</span>  <span class="n">box</span><span class="p">(</span><span class="n">_st</span><span class="p">,</span> <span class="kt">vec2</span><span class="p">(</span><span class="n">_size</span><span class="p">,</span><span class="n">_size</span><span class="o">/</span><span class="mf">4.</span><span class="p">))</span> <span class="o">+</span>
+            <span class="n">box</span><span class="p">(</span><span class="n">_st</span><span class="p">,</span> <span class="kt">vec2</span><span class="p">(</span><span class="n">_size</span><span class="o">/</span><span class="mf">4.</span><span class="p">,</span><span class="n">_size</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">main</span><span class="p">(){</span>
+    <span class="kt">vec2</span> <span class="n">st</span> <span class="o">=</span> <span class="nb">gl_FragCoord</span><span class="p">.</span><span class="n">xy</span><span class="o">/</span><span class="n">u_resolution</span><span class="p">.</span><span class="n">xy</span><span class="p">;</span>
+    <span class="kt">vec3</span> <span class="n">color</span> <span class="o">=</span> <span class="kt">vec3</span><span class="p">(</span><span class="mf">0.0</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">x_offset</span> <span class="o">=</span> <span class="n">mod</span><span class="p">(</span><span class="n">u_time</span><span class="p">,</span><span class="mf">2.0</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">x_offset</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">x_offset</span> <span class="o">=</span> <span class="mf">2.</span><span class="o">-</span><span class="n">x_offset</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">x_offset</span> <span class="o">-=</span> <span class="mf">.5</span><span class="p">;</span>
+    <span class="n">x_offset</span> <span class="o">=</span> <span class="n">smoothstep</span><span class="p">(</span><span class="o">-</span><span class="mf">.5</span><span class="p">,</span><span class="mf">.5</span><span class="p">,</span><span class="n">x_offset</span><span class="p">)</span><span class="o">-</span><span class="mf">.5</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">y_offset</span> <span class="o">=</span> <span class="n">pow</span><span class="p">(</span><span class="n">st</span><span class="p">.</span><span class="n">x</span><span class="o">-</span><span class="mf">.5</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">);</span>
+    <span class="kt">mat3</span> <span class="n">transf</span> <span class="o">=</span> <span class="n">translate2d</span><span class="p">(</span><span class="mf">.5</span><span class="p">,</span> <span class="mf">.5</span><span class="p">)</span>
+        <span class="o">*</span> <span class="n">rotate2d</span><span class="p">(</span><span class="n">sin</span><span class="p">(</span><span class="n">u_time</span><span class="p">)</span><span class="o">*</span><span class="n">PI</span><span class="p">)</span>
+        <span class="o">*</span> <span class="n">translate2d</span><span class="p">(</span><span class="o">-</span><span class="mf">.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">.5</span><span class="p">)</span>
+        <span class="o">*</span> <span class="n">translate2d</span><span class="p">(</span><span class="n">x_offset</span><span class="p">,</span> <span class="n">y_offset</span><span class="p">);</span>
+
+    <span class="kt">vec3</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">transf</span> <span class="o">*</span> <span class="kt">vec3</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+    <span class="n">st</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">pos</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+    <span class="n">st</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">pos</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+
+    <span class="n">color</span> <span class="o">+=</span> <span class="kt">vec3</span><span class="p">(</span><span class="n">cross</span><span class="p">(</span><span class="n">st</span><span class="p">,</span><span class="mf">0.4</span><span class="p">));</span>
+
+    <span class="nb">gl_FragColor</span> <span class="o">=</span> <span class="kt">vec4</span><span class="p">(</span><span class="n">color</span><span class="p">,</span><span class="mf">1.0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>What I actually did for Impossible Stuff Day:</p>
+<ol>
+<li>Found <a href="https://www.devdungeon.com/content/how-mix-c-and-assembly">an article</a> that shows concise examples of calling C from assembly, and vice versa. To understand this on a deeper level I'll have to learn about: various assembly language things (including how the <code>call</code> instruction works), syscalls, executable file formats, linking.</li>
+<li>Read <a href="https://jvns.ca/blog/2023/08/03/behind--hello-world/">this Julia Evans article</a> that breaks down roughly what happens when a program is called from the command line. This was a nice way of exploring my unknown unknowns, and showcased some neat tools I hadn't used before like <code>pstree</code> (displays a tree of all the processes running on your system), <code>dd</code> (copies bytes from disks/filesystems), and <code>debugfs</code> (filesystem debugger).</li>
+<li>Explored a couple of other articles. I think my next step is to work through this <a href="https://asmtutor.com/#lesson1">assembly language tutorial</a> and then try to write the "hello world" assembly/C polyglot program from scratch!</li>
+</ol>
+<h3 id="friday-march-1st">Friday, March 1st</h3>
+<p>Impossible Stuff Day, Part 2: I've gotten as far as I want to in the tutorial on x86-32 assembly. I can make system calls and write FizzBuzz, so now I'm ready to call my assembly program from C!</p>
+<ul>
+<li>This was my first time doing manual syscalls, very cool to talk directly to the OS.</li>
+<li>It was PAINSTAKING to debug, even with GDB. When the program crashes, all you can do is scour your code for mistakes or step through the execution instruction-by-instruction, checking your assumptions at each point. E.g. I was stuck for ages because the <code>idiv</code> instruction uses the concatenation of the <code>edx</code> register and the <code>eax</code> register as the dividend, when I thought it was only using <code>eax</code>.</li>
+</ul>
+<p>Spent an hour playing around with XMonad, a minimalist window manager. As I said to Reed, this was my first "how do I exit vim" moment in a while! I didn't configure it enough or get comfortable enough to be productive, so for now I'm back to the safety of Cinnamon.</p>
+<p>Paired with Sareena on her WebRTC implementation. It was cool to see TypeScript for the first time and to learn a bit about another network protocol. Interesting parallels with BitTorrent. The central server in WebRTC seems to play a bigger role.</p>
+<hr>
+<a href="/blog/rc8.html">&lt;&lt; previous</a>
+<ul>
+<li><a href="/blog.html">Back to blog</a></li>
+<li><a href="/feed.xml">RSS feed</a></li>
+</ul>
+<p>I'd be happy to hear from you at <i>galligankevinp@gmail.com</i>.</p>
+
+</body>
+</html>

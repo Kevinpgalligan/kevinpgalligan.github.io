@@ -36,7 +36,7 @@
 <h3 class="post-date">2024-02-23</h3>
 <h3 class="post-date">A weekly log of my activity at the Recurse Center, a 12-week programming retreat.</h3>
 <p>Tags: <a href="/blog/tag/rc.html">rc</a> </p>
-<a href="/blog/tuner.html">&lt;&lt; previous</a>
+<a href="/blog/tuner.html">&lt;&lt; previous</a><a style="float: right;" href="/blog/rc9.html">next &gt;&gt;</a>
 <hr>
 <h3 id="monday-february-19th">Monday, February 19th</h3>
 <p>I didn't have access to my laptop charger, so I had to switch to my desktop for the day. This was an excuse to try out entirely new things.</p>
@@ -145,7 +145,7 @@
 
 <h3 id="thursday-february-22nd">Thursday, February 22nd</h3>
 <p>Paired with Raghav on reverse engineering the Lichess network protocol. This was an Impossible Project for me, something I've always wanted to do but that seemed mysterious and difficult. It turned out to be not so bad, though!</p>
-<p>The network tab of the browser dev tools allowed us to see what messages were being sent over websockets. The messages were simple JSON strings like <code>{"t":"move","d":{"u":"g8f6","b":1,"a":1}}</code> -- not the inscrutable binary blobs I'd been expecting. So we could grab the <code>WebSocket</code> object in question using <code>queryObjects(WebSocket)</code> in the Chrome JS console, and then run <code>socket.send("JSON_HERE")</code> to send a message to Lichess! Not sure how to do an equivalent thing to <code>queryObjects</code> in Firefox.</p>
+<p>The network tab of the browser dev tools allowed us to see what messages were being sent over websockets. The messages were simple JSON strings like <code>{"t":"move","d":{"u":"g8f6","b":1,"a":1}}</code> -- not the inscrutable binary blobs I'd been expecting. So we could grab the <code>WebSocket</code> object in question using <code>queryObjects(WebSocket)</code> in the Chrome JS console, and then run <code>socket.send("JSON_HERE")</code> to send a message to Lichess! Not sure how to replicate the effect of <code>queryObjects</code> in Firefox.</p>
 <p>We experimented with being able to input our moves through the chatbox. Step 1: Add a <code>MutationObserver</code> to check for new chat messages being inserted into the DOM, Step 2: Extract move from message using regex, Step 3: Send move to Lichess. As soon as this was ready, I sent a message that caused Raghav's queen to move into my bishop's line of fire, muahaha.</p>
 <p>Paired with Charlie on finishing the 903-byte guitar tuner <a href="/apps/tuner.html">web app</a>. It uses the WebAudio API to make sounds, and various code-golfing tricks to get the file size down. I also wrote a short blog post about it, which led down the rabbithole of working on my website. Added "previous" and "next" links to blog posts, and now I'm trying to improve the static website generation so that it doesn't regenerate files that haven't changed, because it was starting to take annoyingly long. Not exactly what I was planning to work on this week, but it needs to be done.</p>
 <h3 id="friday-february-23rd">Friday, February 23rd</h3>
@@ -156,7 +156,7 @@
 <p>I'm happy with the diversity of things I worked on this week, and all the people I got to talk to / pair with. It feels like I'm almost at the point where I've done a little bit of everything from my massive <a href="/blog/recurse.html#project-ideas">list of project ideas</a>. Networking, graphics, programming languages, workflow. Not to mention the many projects that I've experienced vicariously through other people.  My main objectives for the remaining time are to (1) finish my Big Projects, and (2) dig into systems programming and music programming. On the systems side, I want to understand how ELF files work and, more generally, how programs call each other. On the music side, the SuperCollider workshops have been excellent and inspiring, but I haven't actually made any music yet, besides tinkering with the guitar tuner.</p>
 <p>The main gap in my plan is that I haven't done any machine learning or data science stuff. Math -- yes, I've gotten my hands dirty with some applied math via computer graphics. But considering that I'm contemplating a career switch to machine learning and data science, this may have been an oversight on my part. Let's see if I can worm my way into a job with what I already know of these subjects.</p>
 <hr>
-<a href="/blog/tuner.html">&lt;&lt; previous</a>
+<a href="/blog/tuner.html">&lt;&lt; previous</a><a style="float: right;" href="/blog/rc9.html">next &gt;&gt;</a>
 <ul>
 <li><a href="/blog.html">Back to blog</a></li>
 <li><a href="/feed.xml">RSS feed</a></li>
