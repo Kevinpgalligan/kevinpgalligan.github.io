@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Recurse Center, week 10</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+
+<meta property="og:description" content="A weekly log of my activity at the Recurse Center, a 12-week programming retreat." /> 
+<meta property="og:image" content="https://kevingal.com/static/img/thumbnail.jpg" />
+<meta name="thumbnail" content="/static/img/thumbnail.jpg" />
+
+<link rel="stylesheet" href="/static/css/pygments.css">
+
+<meta property="description" content="A weekly log of my activity at the Recurse Center, a 12-week programming retreat.">
+
+<link rel="stylesheet" href="/static/css/blog.css">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon.ico">
+</head>
+<body>
+    <header>
+        <div data-nosnippet class="navbar">
+        <nav>
+        <a href="/index.html" class="navlink">about</a>
+        • <a href="/blog.html" class="navlink">blog</a>
+        • <a href="/software.html" class="navlink">software</a>
+        • <a href="/feed.xml" class="navlink">rss</a>
+        </nav>
+        </div>
+    </header>
+
+<h2 class="post-title">Recurse Center, week 10</h2>
+<h3 class="post-date">2024-03-08</h3>
+<h3 class="post-date">A weekly log of my activity at the Recurse Center, a 12-week programming retreat.</h3>
+<p>Tags: <a href="/blog/tag/rc.html">rc</a> </p>
+<a href="/blog/rc9.html">&lt;&lt; previous</a>
+<hr>
+<h3 id="monday-march-4th">Monday, March 4th</h3>
+<p>Following up on Impossible Stuff Day, I managed to call C from assembly, and vice versa! Enjoyed <a href="https://scratchpad.avikdas.com/elf-explanation/elf-explanation.html">this visualisation</a> of how ELF files are laid out. Leaving it there for now and returning to my other projects.</p>
+<p>Chatted and paired with Amy, we used my L-system implementation to draw Sierspinski triangles and Koch curves. For the most part, it was as simple as copying the rules from <a href="https://en.wikipedia.org/wiki/L-system">Wikipedia</a>, which is nice! I haven't tried coming up with my own L-systems yet.</p>
+<figure>
+<img src="/static/img/recurse/sierspinski.png"
+     alt="A black sierspinski triangle (contains other triangles recursively nested inside it)."
+     class="centered">
+<figcaption>Sierspinski triangle!</figcaption>
+</figure>
+
+<figure>
+<img src="/static/img/recurse/koch.png"
+     alt="A red koch curve on a white background. Basically a loopy piece of spaghetti that's vertically symmetric."
+     class="centered">
+<figcaption>Koch curve!</figcaption>
+</figure>
+
+<p>Wrote a bunch more unit tests for the BitTorrent client. I've ALMOST finished writing unit tests, might actually finish this cursed project before the end of batch!</p>
+<p>Enjoyed <a href="https://thefloatingcontinent.com/blog/death-of-the-social-network/">this article</a> about the degeneration of social networks.</p>
+<h3 id="tuesday-march-5th">Tuesday, March 5th</h3>
+<p>Fun chat and pairing session with Hannah! We looked at the Book of Shaders, Chapter 9 (Patterns), which is about how to repeat patterns in a grid. This might be the final chapter I do while at RC, because I want to make time for music programming and other things. Anyway, here's our tic-tac-toe.</p>
+<figure>
+<img src="/static/img/recurse/tictac.png"
+     alt="Tic-tac-toe grid. The background of each tile is a gradient from green to red. The tiles in the left column are white x's, the tiles in the other columns are white o's."
+     class="centered">
+<figcaption>Tic-tac-toe!</figcaption>
+</figure>
+
+<p>And the code:</p>
+<div class="codehilite"><pre><span></span><code><span class="cp">#ifdef GL_ES</span>
+<span class="k">precision</span> <span class="k">mediump</span> <span class="kt">float</span><span class="p">;</span>
+<span class="cp">#endif</span>
+
+<span class="cp">#define PI 3.14159265359</span>
+<span class="k">uniform</span> <span class="kt">vec2</span> <span class="n">u_resolution</span><span class="p">;</span>
+
+<span class="kt">float</span> <span class="n">circle</span><span class="p">(</span><span class="k">in</span> <span class="kt">vec2</span> <span class="n">_st</span><span class="p">,</span> <span class="k">in</span> <span class="kt">float</span> <span class="n">_radius</span><span class="p">){</span>
+    <span class="kt">vec2</span> <span class="n">l</span> <span class="o">=</span> <span class="n">_st</span><span class="o">-</span><span class="kt">vec2</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mf">1.</span><span class="o">-</span><span class="n">smoothstep</span><span class="p">(</span><span class="n">_radius</span><span class="o">-</span><span class="p">(</span><span class="n">_radius</span><span class="o">*</span><span class="mf">0.01</span><span class="p">),</span>
+                         <span class="n">_radius</span><span class="o">+</span><span class="p">(</span><span class="n">_radius</span><span class="o">*</span><span class="mf">0.01</span><span class="p">),</span>
+                         <span class="n">dot</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">l</span><span class="p">)</span><span class="o">*</span><span class="mf">4.0</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">float</span> <span class="n">doughnut</span><span class="p">(</span><span class="kt">vec2</span> <span class="n">st</span><span class="p">,</span> <span class="kt">float</span> <span class="n">radius</span><span class="p">,</span> <span class="kt">float</span> <span class="n">w</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">float</span> <span class="n">c1</span> <span class="o">=</span> <span class="n">circle</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">radius</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">c1</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span><span class="o">-</span><span class="n">circle</span><span class="p">(</span><span class="n">st</span><span class="p">,</span><span class="n">radius</span><span class="o">-</span><span class="n">w</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="kt">vec2</span> <span class="n">tile</span><span class="p">(</span><span class="kt">vec2</span> <span class="n">st</span><span class="p">,</span> <span class="kt">float</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">fract</span><span class="p">(</span><span class="n">st</span><span class="o">*</span><span class="n">n</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">float</span> <span class="n">rect</span><span class="p">(</span><span class="kt">vec2</span> <span class="n">st</span><span class="p">,</span> <span class="kt">vec2</span> <span class="n">pos</span><span class="p">,</span> <span class="kt">vec2</span> <span class="n">dims</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">vec2</span> <span class="n">result</span> <span class="o">=</span> <span class="n">step</span><span class="p">(</span><span class="kt">vec2</span><span class="p">(</span><span class="mf">0.</span><span class="p">),</span> <span class="n">st</span><span class="o">-</span><span class="n">pos</span><span class="p">)</span> <span class="o">*</span> <span class="n">step</span><span class="p">(</span><span class="kt">vec2</span><span class="p">(</span><span class="mf">0.</span><span class="p">),</span> <span class="n">pos</span><span class="o">+</span><span class="n">dims</span><span class="o">-</span><span class="n">st</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">.</span><span class="n">x</span><span class="o">*</span><span class="n">result</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">mat2</span> <span class="n">rotate2d</span><span class="p">(</span><span class="kt">float</span> <span class="n">_angle</span><span class="p">){</span>
+    <span class="k">return</span> <span class="kt">mat2</span><span class="p">(</span><span class="n">cos</span><span class="p">(</span><span class="n">_angle</span><span class="p">),</span><span class="o">-</span><span class="n">sin</span><span class="p">(</span><span class="n">_angle</span><span class="p">),</span>
+                <span class="n">sin</span><span class="p">(</span><span class="n">_angle</span><span class="p">),</span><span class="n">cos</span><span class="p">(</span><span class="n">_angle</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="kt">float</span> <span class="n">cross</span><span class="p">(</span><span class="kt">vec2</span> <span class="n">st</span><span class="p">,</span> <span class="kt">float</span> <span class="n">w</span><span class="p">,</span> <span class="kt">float</span> <span class="n">l</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">st</span> <span class="o">-=</span> <span class="kt">vec2</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    <span class="n">st</span> <span class="o">=</span> <span class="n">rotate2d</span><span class="p">(</span> <span class="n">PI</span><span class="o">/</span><span class="mf">4.</span> <span class="p">)</span> <span class="o">*</span> <span class="n">st</span><span class="p">;</span>
+    <span class="n">st</span> <span class="o">+=</span> <span class="kt">vec2</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mf">1.</span><span class="o">-</span>
+        <span class="p">(</span><span class="mf">1.</span><span class="o">-</span><span class="n">rect</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="kt">vec2</span><span class="p">(</span><span class="mf">.5</span><span class="o">-</span><span class="n">l</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span><span class="mf">.5</span><span class="o">-</span><span class="n">w</span><span class="o">/</span><span class="mf">2.</span><span class="p">),</span> <span class="kt">vec2</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">w</span><span class="p">)))</span>
+        <span class="o">*</span> <span class="p">(</span><span class="mf">1.</span><span class="o">-</span><span class="n">rect</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="kt">vec2</span><span class="p">(</span><span class="mf">.5</span><span class="o">-</span><span class="n">w</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span><span class="mf">.5</span><span class="o">-</span><span class="n">l</span><span class="o">/</span><span class="mf">2.</span><span class="p">),</span> <span class="kt">vec2</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">l</span><span class="p">)));</span>
+
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">vec2</span> <span class="n">st</span> <span class="o">=</span> <span class="nb">gl_FragCoord</span><span class="p">.</span><span class="n">xy</span><span class="o">/</span><span class="n">u_resolution</span><span class="p">;</span>
+    <span class="kt">vec3</span> <span class="n">color</span><span class="p">;</span>
+
+    <span class="kt">vec2</span> <span class="n">coords</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="mf">3.</span><span class="o">*</span><span class="n">st</span><span class="p">);</span>
+    <span class="n">st</span> <span class="o">=</span> <span class="n">tile</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="mf">3.</span><span class="p">);</span>
+
+    <span class="kt">float</span> <span class="n">pct</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">coords</span><span class="p">.</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mf">0.01</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">pct</span> <span class="o">=</span> <span class="n">doughnut</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="mf">.3</span><span class="p">,</span> <span class="mf">.1</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">pct</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">st</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">.5</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.</span><span class="o">-</span><span class="n">pct</span><span class="p">)</span><span class="o">*</span><span class="kt">vec3</span><span class="p">(</span><span class="n">st</span><span class="p">,</span><span class="mf">0.0</span><span class="p">)</span> <span class="o">+</span> <span class="n">pct</span><span class="o">*</span><span class="kt">vec3</span><span class="p">(</span><span class="n">circle</span><span class="p">(</span><span class="n">st</span><span class="p">,</span><span class="mf">0.5</span><span class="p">));</span>
+    <span class="nb">gl_FragColor</span> <span class="o">=</span> <span class="kt">vec4</span><span class="p">(</span><span class="n">color</span><span class="p">,</span><span class="mf">1.0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>FINISHED writing unit tests for the BitTorrent client! After I fix the 2 bugs I'm aware of, I'm hoping that everything will Just Work.</p>
+<p>Enjoyed <a href="https://www.hillelwayne.com/post/graph-types/">this blog post</a> by Hillel Wayne about why most languages don't have first-class support for graphs, and <a href="https://corecursive.com/065-competitive-coding-with-conor-hoekstra/">this interview</a> from the Corecursive podcast with an array programming enthusiast.</p>
+<h3 id="wednesday-march-6th">Wednesday, March 6th</h3>
+<p>Spent most of the day testing the BitTorrent client and squashing bugs. Now running 2 copies of the client, they're sending chunks of data to each other, but the chunks seem to be getting silently dropped somewhere. Need to figure out why!</p>
+<p>Paired with Jake on more assembly-C stuff. We managed to pass an argument from C to my assembly implementation of FizzBuzz! An unexpected benefit of doing all this is that C compiler output seems less mysterious now.</p>
+<h3 id="thursday-march-7th">Thursday, March 7th</h3>
+<p>Took it easy today and spent a few hours messing with my Emacs configuration. A summary of changes:</p>
+<ol>
+<li>Start in fullscreen mode with vertically split windows.</li>
+<li>Follow symbolic links by default.</li>
+<li>Fuzzy completion when typing Emacs commands, this is AMAZING.</li>
+<li><code>transpose-frame</code> package for changing window layout</li>
+<li>That pairs well with the built-in command, <code>window-swap-states</code>, for swapping buffers between windows.</li>
+<li>Fixed syntax highlighting in my Lisp REPL.</li>
+<li>Played around with <code>company</code> code completion config.</li>
+<li>Explored <code>dired</code> and other packages for viewing/manipulating the file system.</li>
+</ol>
+<p>Some day I'll get around to sharing my config file.</p>
+<h3 id="friday-march-8th">Friday, March 8th</h3>
+<p>A day off.</p>
+<hr>
+<a href="/blog/rc9.html">&lt;&lt; previous</a>
+<ul>
+<li><a href="/blog.html">Back to blog</a></li>
+<li><a href="/feed.xml">RSS feed</a></li>
+</ul>
+<p>I'd be happy to hear from you at <i>galligankevinp@gmail.com</i>.</p>
+
+</body>
+</html>
