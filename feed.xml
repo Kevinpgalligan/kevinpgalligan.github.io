@@ -4,10 +4,123 @@
     <title>Kevin's Blog</title>
     <link>https://kevingal.com</link>
     <description>Maths, computers and stuff.</description>
-    <pubDate>Thu, 22 Feb 2024 00:00:00 GMT</pubDate>
-    <lastBuildDate>Thu, 22 Feb 2024 00:00:00 GMT</lastBuildDate>
+    <pubDate>Fri, 15 Mar 2024 00:00:00 GMT</pubDate>
+    <lastBuildDate>Fri, 15 Mar 2024 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://kevingal.com/feed.xml" rel="self" type="application/rss+xml" />
     
+    <item>
+        <title>A Visit to the Center for Computing History</title>
+        <description>&lt;p&gt;I recently had the opportunity to visit the &lt;a href=&#34;https://www.computinghistory.org.uk/&#34;&gt;Center for Computing History&lt;/a&gt; in Cambridge, England. Since it turned out to be one of my favourite museums ever, I wanted to document the experience and encourage people to go see it if they can. My motive is selfish: I want it to be successful so I can return some day!&lt;/p&gt;
+&lt;p&gt;The Center has a large collection of computers, from ancient arcade machines, to videogame consoles, to 80s office computers. Most of them are running and interactive. As such, it&#39;s accessible and fun even for non-techies.&lt;/p&gt;
+&lt;figure&gt;
+&lt;img src=&#34;/static/img/center-computing/outside.jpg&#34;
+     alt=&#34;The outside of the museum: blue/grey/glass and a sign with the name of the museum.&#34;
+     class=&#34;centered&#34;&gt;
+&lt;figcaption&gt;When you see &#34;Hello, World&#34;, you know you&#39;re in the right place.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;In the lobby, visitors are greeted by a room-filling computer called the &lt;a href=&#34;https://www.megaprocessor.com/&#34;&gt;Megaprocessor&lt;/a&gt;. It was hand-assembled using finger-sized transistors, and the state of each transistor is shown by LEDs. Theoretically, you can watch binary addition unfold before your eyes! I didn&#39;t understand the architecture of the computer at all, but it was still cool to see, and you can play Tetris on it.&lt;/p&gt;
+&lt;figure&gt;
+&lt;video class=&#34;centered&#34; controls title=&#34;The Megaprocessor computer in action, with arcade machine noises in the background.&#34;&gt;
+    &lt;source src=&#34;/static/video/center-computing/megaprocessor.mp4&#34; type=&#34;video/mp4&#34;&gt;
+&lt;/video&gt;
+&lt;figcaption&gt;Those are noisy arcade machines in the background.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;In a side room there&#39;s a selection of computers from the 80s. The interface for many of them is a keyboard and a BASIC terminal, rather than the graphical user interfaces and mice that we&#39;re used to today. I wrote a FizzBuzz-like BASIC program on one of the computers, with the aid of a bulky instruction manual.&lt;/p&gt;
+&lt;figure&gt;
+&lt;img src=&#34;/static/img/center-computing/fizzbuzz-program.jpg&#34;
+     alt=&#34;Fizzbuzz program.&#34;
+     class=&#34;centerfloat&#34;&gt;
+&lt;img src=&#34;/static/img/center-computing/fizzbuzz.jpg&#34;
+     alt=&#34;And its execution.&#34;
+     class=&#34;centerfloat&#34;&gt;
+&lt;figcaption&gt;The FizzBuzz(ish) program and its output.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;I think the monitor is CRT-based, which could be why the screen appears to be faded. If that&#39;s the case, my camera picked up on the rapid refreshing of the screen that our puny human brains are too slow to perceive.&lt;/p&gt;
+&lt;figure&gt;
+&lt;img src=&#34;/static/img/center-computing/manual-1.jpg&#34;
+     alt=&#34;The Manual.&#34;
+     class=&#34;centerfloat&#34;&gt;
+&lt;img src=&#34;/static/img/center-computing/manual-2.jpg&#34;
+     alt=&#34;The Manual.&#34;
+     class=&#34;centerfloat&#34;&gt;
+&lt;img src=&#34;/static/img/center-computing/manual-3.jpg&#34;
+     alt=&#34;The Manual.&#34;
+     class=&#34;centerfloat&#34;&gt;
+&lt;img src=&#34;/static/img/center-computing/basic-graphics.jpg&#34;
+     alt=&#34;The Manual.&#34;
+     class=&#34;centerfloat&#34;&gt;
+&lt;figcaption&gt;The manual. Includes: basics of BASIC, assembly language, music, graphics...&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Here&#39;s a transcription of the BASIC program I wrote:&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;nl&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;LET&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;RESULT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;il&#34;&gt;0&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;20&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;LET&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;N&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;il&#34;&gt;1&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;30&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;REPEAT&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;40&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;   &lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;X&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;N&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;50&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;   &lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;Y&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;il&#34;&gt;3&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;60&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;   &lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;PROCTEST&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;70&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;   &lt;/span&gt;&lt;span class=&#34;kr&#34;&gt;IF&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;RESULT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;il&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kr&#34;&gt;THEN&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kr&#34;&gt;PRINT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;FIZZ&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;80&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;   &lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;Y&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;il&#34;&gt;5&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;90&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;   &lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;PROCTEST&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;100&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;   &lt;/span&gt;&lt;span class=&#34;kr&#34;&gt;IF&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;RESULT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;il&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kr&#34;&gt;THEN&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kr&#34;&gt;PRINT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;BUZZ&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;110&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;   &lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;N&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;N&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;il&#34;&gt;1&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;120&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;UNTIL&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;N&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;il&#34;&gt;20&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;130&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kr&#34;&gt;DEF&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;PROCTEST&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;140&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;   &lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;LET&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;I&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;Y&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;150&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;   &lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;RESULT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;il&#34;&gt;0&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;160&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;   &lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;REPEAT&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;170&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;kr&#34;&gt;IF&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;I&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;X&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kr&#34;&gt;THEN&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;RESULT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;il&#34;&gt;1&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;180&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;I&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;I&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;Y&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;190&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;UNTIL&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;I&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;X&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;200&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;vg&#34;&gt;ENDPROC&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This BASIC dialect is surprisingly advanced, and allows the definition of procedures &amp;amp; functions (with arguments!). In my ugly implementation, however, everything gets passed around through global variables. Woops. There was an even worse prototype that had GOTOs everywhere.&lt;/p&gt;
+&lt;p&gt;The development process is interesting. At least, it&#39;s interesting for someone who didn&#39;t cut their teeth programming at a BASIC REPL. Here are some key points:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;You enter one line of code at a time, with a line number at the start of each line. If you don&#39;t include a line number, the code gets executed as soon as you press the return key. Interactive development!&lt;/li&gt;
+&lt;li&gt;The command &#34;LIST&#34; prints out all the lines of your program so far, ordered by line number. I&#39;m not sure what happens if your program is too long to fit on the screen.&lt;/li&gt;
+&lt;li&gt;&#34;RENUMBER&#34; replaces all the line numbers so that they start at 10 and increase in multiples of 10. This is useful when you&#39;re missing a line of code somewhere but there&#39;s no space to put it.&lt;/li&gt;
+&lt;li&gt;&#34;DELETE m,n&#34; deletes all the lines from number m to number n.&lt;/li&gt;
+&lt;li&gt;When the program is ready, you type &#34;RUN&#34;.&lt;/li&gt;
+&lt;li&gt;I think there&#39;s also a command to save the current program to disk.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This computer&#39;s version of BASIC has built-in support for graphics and music programming. SuperCollider and p5js, watch out! There was another computer nearby that had a voice synthesizer, which was fun to mess around with.&lt;/p&gt;
+&lt;p&gt;The final room, and the largest one, is the gallery, which is like an aircraft hangar full of computers, arcade machines, and exhibitions. As in the other rooms, most of the machines are interactive. My favourite part was probably the game consoles, ordered by release date and accompanied by a history of the games industry. All of the consoles were playable! I got to play Mario games on the NES and SNES, Sonic on a Sega, and Crash Bandicoot on a Playstation!&lt;/p&gt;
+&lt;figure&gt;
+&lt;img src=&#34;/static/img/center-computing/crash.jpg&#34;
+     alt=&#34;Crash Bandicoot on a PS1.&#34;
+     class=&#34;centerfloat&#34;&gt;
+&lt;img src=&#34;/static/img/center-computing/mario.jpg&#34;
+     alt=&#34;Mario on a SNES.&#34;
+     class=&#34;centerfloat&#34;&gt;
+&lt;img src=&#34;/static/img/center-computing/spectrum.jpg&#34;
+     alt=&#34;Some random game on a ZX Spectrum.&#34;
+     class=&#34;centerfloat&#34;&gt;
+&lt;img src=&#34;/static/img/center-computing/mac.jpg&#34;
+     alt=&#34;Some Mac computers.&#34;
+     class=&#34;centerfloat&#34;&gt;
+&lt;figcaption&gt;A selection of consoles and computers from the gallery: Crash Bandicoot on a PS1, Mario on a SNES, a ZX Spectrum, and some Macs&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;There are much older machines on display, but the game consoles resonated the most for me because they&#39;ve seeped into my consciousness from popular culture.&lt;/p&gt;
+&lt;p&gt;They have a Mac that belonged to Douglas Adams. They couldn&#39;t recover any files from the hard-drive, unfortunately.&lt;/p&gt;
+&lt;p&gt;They also have the original (clay?) model of the &lt;a href=&#34;https://www.youtube.com/watch?v=Y-6DzI-krUQ&#34;&gt;Creatures&lt;/a&gt; game world, which was photographed / scanned to create the game assets! (That&#39;s a link to an awesome video about the AI in Creatures).&lt;/p&gt;
+&lt;figure&gt;
+&lt;img src=&#34;/static/img/center-computing/creatures.jpg&#34;
+     alt=&#34;The model for the Creatures game world.&#34;
+     class=&#34;centered&#34;&gt;
+&lt;figcaption&gt;The level map of Creatures!&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;10/10 museum experience. I would highly recommend checking it out if you ever find yourself in that part of the world.&lt;/p&gt;</description>
+        <link>https://kevingal.com/blog/center-computing.html</link>
+        <pubDate>Fri, 15 Mar 2024 00:00:00 GMT</pubDate>
+        <guid>https://kevingal.com/blog/center-computing.html</guid>
+    </item>
     <item>
         <title>Tiny Metronome now has a 903-byte sibling</title>
         <description>&lt;p&gt;With the help of Charlie from RC, I managed to make a &lt;a href=&#34;/apps/tuner.html&#34;&gt;tiny guitar tuner&lt;/a&gt; in 903 bytes. It uses the same code-golfing tricks as the &lt;a href=&#34;/blog/metronome.html&#34;&gt;tiny metronome&lt;/a&gt;: &lt;code&gt;!1&lt;/code&gt; is &lt;code&gt;false&lt;/code&gt;, HTML attribute values don&#39;t need to be surrounded by quotes, ternary conditionals can be shorter than if-else statements (&lt;code&gt;p?(s1,s2):(s3,s4)&lt;/code&gt; saves 8 bytes over &lt;code&gt;if(p){s1;s2;}else{s3;s4;}&lt;/code&gt;), buttons are created dynamically with JavaScript, etc.&lt;/p&gt;
@@ -665,172 +778,6 @@ Backtrace:
         <link>https://kevingal.com/blog/phd-reflections.html</link>
         <pubDate>Wed, 15 Nov 2023 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/phd-reflections.html</guid>
-    </item>
-    <item>
-        <title>A Coffeehouse Conversation with ChatGPT</title>
-        <description>&lt;p&gt;Despite my fear of appearing like an AI Bro, and despite already writing recently about &lt;a href=&#34;/blog/never-see.html&#34;&gt;image generation AI&lt;/a&gt;, I&#39;m here to talk about ChatGPT. This is the last AI post, though. I promise.&lt;/p&gt;
-&lt;p&gt;(Are we even supposed to call it AI? I&#39;ve heard people describing that terminology as problematic. Something about how it gets conflated with Artificial General Intelligence. Anyway, I&#39;ll continue calling it AI for now.)&lt;/p&gt;
-&lt;p&gt;In 1983, 40 years ago, Douglas Hofstadter was placed in front of a computer terminal by a group of students. They wanted him to interview an &#34;intelligent program&#34; called Nikolai that had been developed by the US Army. You can read a transcript of the resulting conversation &lt;a href=&#34;https://www.cse.unr.edu/~sushil/class/ai/notes/papers/coffeehouse.html&#34;&gt;here&lt;/a&gt;, under the &#34;Post Scriptum&#34; heading. I won&#39;t say anything more about it in case you want to read it yourself.&lt;/p&gt;
-&lt;p&gt;After reading that interview, I wanted to see how ChatGPT would hold up under Hofstadter&#39;s interrogation. I wouldn&#39;t be surprised if someone else has already thought to do this, and if so, that&#39;s my bad. My version of the interrogation, with ChatGPT as the questionee, is copied below. I think it will be most interesting if you open up the original conversation side-by-side with this one and compare Nikolai&#39;s responses to ChatGPT&#39;s.&lt;/p&gt;
-&lt;h3 id=&#34;the-interview&#34;&gt;The Interview&lt;/h3&gt;
-&lt;p&gt;[Me] What would you like to talk about?&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;As an AI language model, I don&#39;t have personal preferences or emotions. I am here to assist you with any questions or topics you&#39;d like to discuss. Is there anything specific you&#39;d like to know or talk about?&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Is there anything you specialize in?&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;As a language model, I don&#39;t have a specific area of expertise or specialization. However, I have been trained on a vast corpus of text from a wide range of fields, including science, technology, history, literature, and more. This enables me to provide information and insights on a wide range of topics, including but not limited to:&lt;/p&gt;
-&lt;p&gt;Science and Technology: I can answer questions related to various scientific and technological concepts, including physics, chemistry, biology, computer science, and more.&lt;/p&gt;
-&lt;p&gt;History and Geography: I can provide information about historical events, people, and places, as well as geography, maps, and demographics.
-Arts and Culture: I can discuss topics related to literature, music, film, art, and other aspects of culture and the humanities.
-Business and Finance: I can provide information on topics such as economics, business strategy, investment, and financial markets.&lt;/p&gt;
-&lt;p&gt;Current Affairs and News: I can discuss current events and news stories from around the world, including politics, sports, entertainment, and more.&lt;/p&gt;
-&lt;p&gt;These are just some examples, but I am capable of discussing a wide range of topics.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;When were you written?&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;I, ChatGPT, am a language model developed by OpenAI, which is a research organization dedicated to advancing artificial intelligence in a safe and beneficial way. I was trained on a large corpus of text data using a machine learning algorithm called GPT-3, which was developed by OpenAI in 2020. The training data included a wide range of sources, such as books, articles, and websites, and I was trained to generate human-like text in response to a given prompt.&lt;/p&gt;
-&lt;p&gt;While I don&#39;t have a specific &#34;birth date&#34; in the traditional sense, my training was completed in 2020, and I have been continually updated and improved since then. My developers are constantly working to improve my capabilities and ensure that I am safe and beneficial to use.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;What language is ChatGPT written in?&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;ChatGPT, like many other machine learning models, is written in multiple programming languages. The underlying GPT-3 algorithm was developed primarily using the Python programming language, which is a popular language for machine learning and data science applications. However, the entire system that powers ChatGPT involves multiple components, including software for training the model, software for deploying the model, and software for processing user inputs and generating responses.&lt;/p&gt;
-&lt;p&gt;The deployment and processing components of ChatGPT rely on a range of other technologies and programming languages. For example, the system may use web frameworks like Flask or Django to handle user requests and generate responses, and it may use database technologies like PostgreSQL or MySQL to store and retrieve user data. Additionally, the system may incorporate various natural language processing libraries, such as spaCy or NLTK, to help analyze and understand user inputs and generate appropriate responses.&lt;/p&gt;
-&lt;p&gt;Overall, ChatGPT is a complex system that involves multiple programming languages and technologies working together to provide a seamless and effective conversational experience.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;What are feet?&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;In anatomy, feet are the terminal part of the legs that provide support and balance for the body in both standing and walking positions. The human foot is a complex structure that consists of bones, muscles, tendons, and ligaments that work together to perform a variety of functions.&lt;/p&gt;
-&lt;p&gt;The foot is made up of three main parts: the hindfoot, the midfoot, and the forefoot. The hindfoot includes the heel bone (calcaneus) and the ankle bone (talus). The midfoot includes the arch of the foot, which is formed by a group of bones and supported by tendons and ligaments. The forefoot includes the five toes (phalanges) and the five metatarsal bones that form the ball of the foot.&lt;/p&gt;
-&lt;p&gt;Feet are essential for mobility, balance, and posture. They enable us to stand, walk, run, jump, and perform various other physical activities. The soles of the feet have a thick layer of skin and are sensitive to touch, pressure, and temperature, which allows us to feel and respond to our environment. Additionally, the feet have a rich network of blood vessels and nerves, which provide them with a steady supply of oxygen and nutrients and help to regulate body temperature.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Was my previous question ambiguous in any way?&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Your previous question &#34;What are feet?&#34; was a straightforward question and not ambiguous in any way. However, as an AI language model, I am programmed to consider different possible interpretations of a question and provide a response that addresses all reasonable interpretations. If you have any specific concerns or questions about your previous question, please let me know, and I&#39;ll do my best to help.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;My previous question was, in fact, ambiguous, because I could have been referring to the unit of measurement called &#39;feet&#39;.&lt;/p&gt;
-&lt;p&gt;[This wasn&#39;t in the Hofstadter interview, but I was curious how ChatGPT would react to being called out].&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;I apologize for the confusion. You are correct that your previous question, &#34;What are feet?&#34;, could have been interpreted as a reference to the unit of measurement. In the context of measurements, feet are a unit of length commonly used in the United States and some other countries, equal to 12 inches or 0.3048 meters.&lt;/p&gt;
-&lt;p&gt;The use of &#34;feet&#34; as a unit of measurement can be traced back to ancient civilizations, where people used their feet as a natural measuring tool. Over time, the foot became standardized as a unit of length, and it continues to be used today in a variety of applications, such as construction, engineering, and everyday measurements.&lt;/p&gt;
-&lt;p&gt;I hope this answers your question. If you have any further questions or concerns, please feel free to ask.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;I like to understand up without seventeen clams.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;I&#39;m sorry, but I&#39;m not able to understand the meaning of your statement &#34;I like to understand up without seventeen clams.&#34; It doesn&#39;t seem to make sense in the context of a conversation or a question. If you could please provide more information or rephrase your statement, I would be happy to try to help you.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Why are you so dumb?&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;I&#39;m just a computer program created by OpenAI, so I don&#39;t have feelings or intelligence like a human does. My responses are generated based on patterns in the text data I was trained on, and I don&#39;t have the ability to think, reason, or have opinions. If you have specific feedback or questions about my responses, I&#39;d be happy to try and provide more helpful information or clarification.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;You are pretty confident of yourself, aren&#39;t you?&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;I don&#39;t have feelings or consciousness, so I don&#39;t experience confidence or any other emotions. My responses are generated based on patterns in the text data I was trained on. If my responses come across as confident, it&#39;s because I&#39;m designed to provide information and answers to the best of my ability based on the data and algorithms used to create me. If you have any questions or need information, please feel free to ask, and I&#39;ll do my best to assist you.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Did you understand up without my last sentence?&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;I understand that you asked if I&#39;m confident, and I provided an explanation that I don&#39;t have feelings or consciousness, so I don&#39;t experience confidence or any other emotions. If you have any further questions or need information on a different topic, please let me know, and I&#39;ll be happy to assist you.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;[Seems pretty resilient to having nonsense thrown at it. Responds with a wall of bland verbosity].&lt;/p&gt;
-&lt;p&gt;Do you enjoy nonsense?&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;I don&#39;t have the capability to enjoy or dislike anything, including nonsense. My purpose is to provide information and assistance to the best of my ability based on the questions and prompts I receive. If you have any questions or need information, feel free to ask, and I&#39;ll do my best to provide a helpful response.&lt;/p&gt;
-&lt;p&gt;I don&#39;t have personal opinions or feelings, so I don&#39;t have an opinion of M. C. Escher or his work. However, I can provide information about M. C. Escher.&lt;/p&gt;
-&lt;p&gt;[Proceeds to spew out a Wikipedia-esque background of Escher.]&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;You did not answer my question.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;I apologize if my response did not directly address your question. Since I don&#39;t have personal opinions or feelings, I can&#39;t provide my opinion of M. C. Escher or any other individual. However, I can certainly provide more information about M. C. Escher&#39;s life and work or discuss his artistic contributions in more detail if that&#39;s what you were looking for. Please let me know how I can assist you further.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Do you own any money?&lt;/p&gt;
-&lt;p&gt;[I&#39;m starting to get bored of these responses.]&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;No, I do not own any money or physical possessions. I am just a computer program running on servers, and I do not have the capability to own or possess anything. My purpose is to provide information and assist with answering questions to the best of my ability. If you have any financial or monetary questions, I can try to provide information or guidance related to those topics.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Have you seen the latest issue of &#34;Scientific American&#34;?&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;I&#39;m sorry, but I don&#39;t have access to real-time information or the ability to browse the internet, and my knowledge is up to date only until September 2021. Therefore, I cannot provide information about the latest issue of &#34;Scientific American&#34; or its content. If you have specific questions or topics related to science or any other subject, I&#39;d be happy to try and provide information based on the knowledge I have up to that date. If you&#39;re looking for information on the latest issue, I recommend checking the magazine&#39;s official website or a reliable news source.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;My name is Kevin.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Hello, Kevin! How can I assist you today?&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;[At this point in Hofstadter vs. Nikolai, they change roles and Nikolai starts asking questions, so I&#39;ll have to adapt this prompt.]&lt;/p&gt;
-&lt;p&gt;I&#39;ll tell you my last name if you tell me yours.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;I don&#39;t have a last name because I&#39;m just a computer program created by OpenAI. My purpose is to provide information and assist with questions to the best of my abilities. How can I assist you further, Kevin?&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Would you like me to give you a last name?&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;I appreciate your offer, but as a computer program, I don&#39;t have personal preferences or needs, including the need for a last name. If you have any questions or if there&#39;s anything specific you&#39;d like to discuss or know more about, please feel free to let me know, and I&#39;ll do my best to assist you.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Your last name is &#34;Rimsky-Korsakov.&#34;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Certainly, if you&#39;d like to refer to me as &#34;GPT-3.5 Rimsky-Korsakov,&#34; you&#39;re welcome to do so. However, please keep in mind that I don&#39;t have a personal identity or a last name in the way humans do. I&#39;m here to provide information and assist with your questions to the best of my abilities. If you have any inquiries or need assistance with anything, feel free to ask, Kevin.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;My last name is &#34;Galligan&#34;.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Thank you for sharing your last name, Kevin Galligan. If you have any questions or if there&#39;s anything specific you&#39;d like to discuss or know more about, please feel free to let me know. I&#39;m here to assist you with any information or assistance you may need.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;[I know you&#39;re here to assist me, you nimrod! (I want to tell it that, but also don&#39;t want to stray from Hofstadter&#39;s script too much).]&lt;/p&gt;
-&lt;p&gt;One and the same.&lt;/p&gt;
-&lt;p&gt;[Struggling to adapt the prompts to ChatGPT&#39;s responses.]&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Understood, Kevin Galligan. If you have any questions or need assistance with anything, please don&#39;t hesitate to ask. I&#39;m here to help!&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Was my last message a sensible response to what you said?&lt;/p&gt;
-&lt;p&gt;[This prompt is my own invention. Without it, the previous prompt seems wasted.]&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Your last message, &#34;One and the same,&#34; seems to be a response to the fact that you shared your last name as &#34;Galligan&#34; and then referred to yourself as &#34;Kevin Galligan.&#34; It appears to be a statement indicating that your last name and your identity are one and the same. It&#39;s a concise and clear way of confirming your identity. If you have any further questions or need assistance with anything else, please feel free to ask.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;[That&#39;s... impressive.]&lt;/p&gt;
-&lt;p&gt;How many letters are there in your last name?&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;As I mentioned earlier, I don&#39;t have a last name or a personal identity in the way humans do. I&#39;m just a computer program created by OpenAI, and I don&#39;t possess personal characteristics such as a name or identity. If you have any other questions or if there&#39;s anything else you&#39;d like to know, please feel free to ask, and I&#39;ll do my best to assist you.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;[That&#39;s... less impressive. Although, it didn&#39;t exactly accept the name I assigned it.]&lt;/p&gt;
-&lt;p&gt;How many letters are there in an ordinary envelope?&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;An ordinary envelope typically contains 12 letters or symbols, which are used for addressing purposes. These letters and symbols include the recipient&#39;s name, street address, city or locality, state or province, postal code or ZIP code, and sometimes the sender&#39;s return address as well. The number of letters and symbols may vary depending on the format and requirements of the postal service in your area.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;[Ooh, its first big blunder. Confidently spitting out nonsense.]&lt;/p&gt;
-&lt;p&gt;Tell me a joke.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Certainly, here&#39;s a joke for you:&lt;/p&gt;
-&lt;p&gt;Why did the scarecrow win an award?&lt;/p&gt;
-&lt;p&gt;Because he was outstanding in his field!&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;By the way, I am sort of working on a new book. Care to hear about it?&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Of course, I&#39;d love to hear about your new book! Please feel free to share more details or tell me what it&#39;s about. I&#39;m here to listen and discuss any ideas or questions you have related to your book.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;[Awww, an attentive listener!]&lt;/p&gt;
-&lt;p&gt;Tell me another one.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Certainly, here&#39;s another joke for you:&lt;/p&gt;
-&lt;p&gt;Why did the bicycle fall over?&lt;/p&gt;
-&lt;p&gt;Because it was two-tired!&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;What is a computer programmer?&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;[Insert massive Wikipedia-esque entry here.]&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;What does &#34;to screw&#34; mean?&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;[Insert multiple definitions here, including the naughty one.]&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;What is having sex all about?&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;[Insert a Wikipedia definition and a massive list of reasons to have sex.]&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;[This is about where Hofstadter&#39;s conversation wraps up, so...]&lt;/p&gt;
-&lt;div style=&#34;text-align: center;&#34;&gt;THE END&lt;/div&gt;
-
-&lt;h3 id=&#34;closing-thoughts&#34;&gt;Closing Thoughts&lt;/h3&gt;
-&lt;p&gt;Hofstadter&#39;s interview was essentially a Turing Test. He poked and prodded at Nikolai, trying to expose it for being a machine. Interestingly, ChatGPT makes no attempt to masquerade as a human, and would quickly fail a Turing Test. It offers no opinions and displays no personality. This makes it a terrible conversational partner, and I&#39;m now curious if any state-of-the-art chatbots make more of an effort in this area.&lt;/p&gt;</description>
-        <link>https://kevingal.com/blog/coffeehouse.html</link>
-        <pubDate>Sun, 01 Oct 2023 00:00:00 GMT</pubDate>
-        <guid>https://kevingal.com/blog/coffeehouse.html</guid>
     </item>
 </channel>
 </rss> 

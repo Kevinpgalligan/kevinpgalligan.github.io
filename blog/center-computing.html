@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>A Visit to the Center for Computing History</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+
+<meta property="og:description" content="You should go too!" /> 
+<meta property="og:image" content="https://kevingal.com/static/img/thumbnail.jpg" />
+<meta name="thumbnail" content="/static/img/thumbnail.jpg" />
+
+
+
+<meta property="description" content="You should go too!">
+
+<link rel="stylesheet" href="/static/css/blog.css">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon.ico">
+</head>
+<body>
+    <header>
+        <div data-nosnippet class="navbar">
+        <nav>
+        <a href="/index.html" class="navlink">about</a>
+        • <a href="/blog.html" class="navlink">blog</a>
+        • <a href="/software.html" class="navlink">software</a>
+        • <a href="/feed.xml" class="navlink">rss</a>
+        </nav>
+        </div>
+    </header>
+
+<h2 class="post-title">A Visit to the Center for Computing History</h2>
+<h3 class="post-date">2024-03-15</h3>
+<h3 class="post-date">You should go too!</h3>
+<p>Tags: <a href="/blog/tag/history.html">history</a> </p>
+<a href="/blog/rc10.html">&lt;&lt; previous</a>
+<hr>
+<p>I recently had the opportunity to visit the <a href="https://www.computinghistory.org.uk/">Center for Computing History</a> in Cambridge, England. Since it turned out to be one of my favourite museums ever, I wanted to document the experience and encourage people to go see it if they can. My motive is selfish: I want it to be successful so I can return some day!</p>
+<p>The Center has a large collection of computers, from ancient arcade machines, to videogame consoles, to 80s office computers. Most of them are running and interactive. As such, it's accessible and fun even for non-techies.</p>
+<figure>
+<img src="/static/img/center-computing/outside.jpg"
+     alt="The outside of the museum: blue/grey/glass and a sign with the name of the museum."
+     class="centered">
+<figcaption>When you see "Hello, World", you know you're in the right place.</figcaption>
+</figure>
+
+<p>In the lobby, visitors are greeted by a room-filling computer called the <a href="https://www.megaprocessor.com/">Megaprocessor</a>. It was hand-assembled using finger-sized transistors, and the state of each transistor is shown by LEDs. Theoretically, you can watch binary addition unfold before your eyes! I didn't understand the architecture of the computer at all, but it was still cool to see, and you can play Tetris on it.</p>
+<figure>
+<video class="centered" controls title="The Megaprocessor computer in action, with arcade machine noises in the background.">
+    <source src="/static/video/center-computing/megaprocessor.mp4" type="video/mp4">
+</video>
+<figcaption>Those are noisy arcade machines in the background.</figcaption>
+</figure>
+
+<p>In a side room there's a selection of computers from the 80s. The interface for many of them is a keyboard and a BASIC terminal, rather than the graphical user interfaces and mice that we're used to today. I wrote a FizzBuzz-like BASIC program on one of the computers, with the aid of a bulky instruction manual.</p>
+<figure>
+<img src="/static/img/center-computing/fizzbuzz-program.jpg"
+     alt="Fizzbuzz program."
+     class="centerfloat">
+<img src="/static/img/center-computing/fizzbuzz.jpg"
+     alt="And its execution."
+     class="centerfloat">
+<figcaption>The FizzBuzz(ish) program and its output.</figcaption>
+</figure>
+
+<p>I think the monitor is CRT-based, which could be why the screen appears to be faded. If that's the case, my camera picked up on the rapid refreshing of the screen that our puny human brains are too slow to perceive.</p>
+<figure>
+<img src="/static/img/center-computing/manual-1.jpg"
+     alt="The Manual."
+     class="centerfloat">
+<img src="/static/img/center-computing/manual-2.jpg"
+     alt="The Manual."
+     class="centerfloat">
+<img src="/static/img/center-computing/manual-3.jpg"
+     alt="The Manual."
+     class="centerfloat">
+<img src="/static/img/center-computing/basic-graphics.jpg"
+     alt="The Manual."
+     class="centerfloat">
+<figcaption>The manual. Includes: basics of BASIC, assembly language, music, graphics...</figcaption>
+</figure>
+
+<p>Here's a transcription of the BASIC program I wrote:</p>
+<div class="codehilite"><pre><span></span><code><span class="nl">10</span><span class="w"> </span><span class="kd">LET</span><span class="w"> </span><span class="vg">RESULT</span><span class="o">=</span><span class="il">0</span>
+<span class="nl">20</span><span class="w"> </span><span class="kd">LET</span><span class="w"> </span><span class="vg">N</span><span class="o">=</span><span class="il">1</span>
+<span class="nl">30</span><span class="w"> </span><span class="vg">REPEAT</span>
+<span class="nl">40</span><span class="w">   </span><span class="vg">X</span><span class="o">=</span><span class="vg">N</span>
+<span class="nl">50</span><span class="w">   </span><span class="vg">Y</span><span class="o">=</span><span class="il">3</span>
+<span class="nl">60</span><span class="w">   </span><span class="vg">PROCTEST</span>
+<span class="nl">70</span><span class="w">   </span><span class="kr">IF</span><span class="w"> </span><span class="vg">RESULT</span><span class="o">=</span><span class="il">1</span><span class="w"> </span><span class="kr">THEN</span><span class="w"> </span><span class="kr">PRINT</span><span class="w"> </span><span class="s2">&quot;FIZZ&quot;</span>
+<span class="nl">80</span><span class="w">   </span><span class="vg">Y</span><span class="o">=</span><span class="il">5</span>
+<span class="nl">90</span><span class="w">   </span><span class="vg">PROCTEST</span>
+<span class="nl">100</span><span class="w">   </span><span class="kr">IF</span><span class="w"> </span><span class="vg">RESULT</span><span class="o">=</span><span class="il">1</span><span class="w"> </span><span class="kr">THEN</span><span class="w"> </span><span class="kr">PRINT</span><span class="w"> </span><span class="s2">&quot;BUZZ&quot;</span>
+<span class="nl">110</span><span class="w">   </span><span class="vg">N</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="vg">N</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="il">1</span>
+<span class="nl">120</span><span class="w"> </span><span class="k">UNTIL</span><span class="w"> </span><span class="vg">N</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="il">20</span>
+<span class="nl">130</span><span class="w"> </span><span class="kr">DEF</span><span class="w"> </span><span class="vg">PROCTEST</span>
+<span class="nl">140</span><span class="w">   </span><span class="kd">LET</span><span class="w"> </span><span class="vg">I</span><span class="o">=</span><span class="vg">Y</span>
+<span class="nl">150</span><span class="w">   </span><span class="vg">RESULT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="il">0</span>
+<span class="nl">160</span><span class="w">   </span><span class="vg">REPEAT</span>
+<span class="nl">170</span><span class="w">      </span><span class="kr">IF</span><span class="w"> </span><span class="vg">I</span><span class="o">=</span><span class="vg">X</span><span class="w"> </span><span class="kr">THEN</span><span class="w"> </span><span class="vg">RESULT</span><span class="o">=</span><span class="il">1</span>
+<span class="nl">180</span><span class="w">      </span><span class="vg">I</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="vg">I</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="vg">Y</span>
+<span class="nl">190</span><span class="w">    </span><span class="k">UNTIL</span><span class="w"> </span><span class="vg">I</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="vg">X</span>
+<span class="nl">200</span><span class="w"> </span><span class="vg">ENDPROC</span>
+</code></pre></div>
+
+<p>This BASIC dialect is surprisingly advanced, and allows the definition of procedures &amp; functions (with arguments!). In my ugly implementation, however, everything gets passed around through global variables. Woops. There was an even worse prototype that had GOTOs everywhere.</p>
+<p>The development process is interesting. At least, it's interesting for someone who didn't cut their teeth programming at a BASIC REPL. Here are some key points:</p>
+<ul>
+<li>You enter one line of code at a time, with a line number at the start of each line. If you don't include a line number, the code gets executed as soon as you press the return key. Interactive development!</li>
+<li>The command "LIST" prints out all the lines of your program so far, ordered by line number. I'm not sure what happens if your program is too long to fit on the screen.</li>
+<li>"RENUMBER" replaces all the line numbers so that they start at 10 and increase in multiples of 10. This is useful when you're missing a line of code somewhere but there's no space to put it.</li>
+<li>"DELETE m,n" deletes all the lines from number m to number n.</li>
+<li>When the program is ready, you type "RUN".</li>
+<li>I think there's also a command to save the current program to disk.</li>
+</ul>
+<p>This computer's version of BASIC has built-in support for graphics and music programming. SuperCollider and p5js, watch out! There was another computer nearby that had a voice synthesizer, which was fun to mess around with.</p>
+<p>The final room, and the largest one, is the gallery, which is like an aircraft hangar full of computers, arcade machines, and exhibitions. As in the other rooms, most of the machines are interactive. My favourite part was probably the game consoles, ordered by release date and accompanied by a history of the games industry. All of the consoles were playable! I got to play Mario games on the NES and SNES, Sonic on a Sega, and Crash Bandicoot on a Playstation!</p>
+<figure>
+<img src="/static/img/center-computing/crash.jpg"
+     alt="Crash Bandicoot on a PS1."
+     class="centerfloat">
+<img src="/static/img/center-computing/mario.jpg"
+     alt="Mario on a SNES."
+     class="centerfloat">
+<img src="/static/img/center-computing/spectrum.jpg"
+     alt="Some random game on a ZX Spectrum."
+     class="centerfloat">
+<img src="/static/img/center-computing/mac.jpg"
+     alt="Some Mac computers."
+     class="centerfloat">
+<figcaption>A selection of consoles and computers from the gallery: Crash Bandicoot on a PS1, Mario on a SNES, a ZX Spectrum, and some Macs</figcaption>
+</figure>
+
+<p>There are much older machines on display, but the game consoles resonated the most for me because they've seeped into my consciousness from popular culture.</p>
+<p>They have a Mac that belonged to Douglas Adams. They couldn't recover any files from the hard-drive, unfortunately.</p>
+<p>They also have the original (clay?) model of the <a href="https://www.youtube.com/watch?v=Y-6DzI-krUQ">Creatures</a> game world, which was photographed / scanned to create the game assets! (That's a link to an awesome video about the AI in Creatures).</p>
+<figure>
+<img src="/static/img/center-computing/creatures.jpg"
+     alt="The model for the Creatures game world."
+     class="centered">
+<figcaption>The level map of Creatures!</figcaption>
+</figure>
+
+<p>10/10 museum experience. I would highly recommend checking it out if you ever find yourself in that part of the world.</p>
+<hr>
+<a href="/blog/rc10.html">&lt;&lt; previous</a>
+<ul>
+<li><a href="/blog.html">Back to blog</a></li>
+<li><a href="/feed.xml">RSS feed</a></li>
+</ul>
+<p>I'd be happy to hear from you at <i>galligankevinp@gmail.com</i>.</p>
+
+</body>
+</html>
