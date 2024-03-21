@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Recurse Center, week 11</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+
+<meta property="og:description" content="A weekly log of my activity at the Recurse Center, a 12-week programming retreat." /> 
+<meta property="og:image" content="https://kevingal.com/static/img/thumbnail.jpg" />
+<meta name="thumbnail" content="/static/img/thumbnail.jpg" />
+
+<link rel="stylesheet" href="/static/css/pygments.css">
+
+<meta property="description" content="A weekly log of my activity at the Recurse Center, a 12-week programming retreat.">
+
+<link rel="stylesheet" href="/static/css/blog.css">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon.ico">
+</head>
+<body>
+    <header>
+        <div data-nosnippet class="navbar">
+        <nav>
+        <a href="/index.html" class="navlink">about</a>
+        • <a href="/blog.html" class="navlink">blog</a>
+        • <a href="/software.html" class="navlink">software</a>
+        • <a href="/feed.xml" class="navlink">rss</a>
+        </nav>
+        </div>
+    </header>
+
+<h2 class="post-title">Recurse Center, week 11</h2>
+<h3 class="post-date">2024-03-21</h3>
+<h3 class="post-date">A weekly log of my activity at the Recurse Center, a 12-week programming retreat.</h3>
+<p>Tags: <a href="/blog/tag/rc.html">rc</a> </p>
+<a href="/blog/center-computing.html">&lt;&lt; previous</a>
+<hr>
+<h3 id="monday-march-11th">Monday, March 11th</h3>
+<p>Attended an Emacs masterclass organised by Reed and Thomas. It was cool to see more of Doom Emacs. My biggest takeway, however, was that the space character can be used as a command prefix, which avoids putting strain on your pinky.</p>
+<p>Had a career chat with Jake. This was EXTREMELY helpful for getting a sense of the data science career path, so thanks to Jake!!</p>
+<p>Fixed a few bugs in the BitTorrent client that arose during the latest round of testing. As a result, I was able to successfully transmit the first 1MB chunk of my test file! The next chunks kept failing their hash checks, though, so I'll need to debug that.</p>
+<h3 id="tuesday-march-12th">Tuesday, March 12th</h3>
+<p>Made slides for the presentations on Thursday, where I'm gonna talk about C-calling-assembly-calling-C.</p>
+<p>Paired with Mani on his L-system app, cool to see TypeScript in action for the 3rd time! Also interesting to see Svelte and the canvas API as a graphics environment.</p>
+<p>Fixed the BitTorrent bug from yesterday where the first chunk of data was sent successfully but the ones after that were failing their hash checks. Turns out I wasn't offsetting based on the index of the data chunk, which had the effect of sending the first chunk over and over. Now running my test in the background and it seems to be working, at the lightning-fast speed of...  ~110KB/s. For my 1GB test file, that will take... 2ish hours. I don't care if it's fast as long as it works, though. Optimising it can be a challenge for another day.</p>
+<p>Will's burnout talk was super interesting and timely! I feel like I fell off the self-care bandwagon towards the end of my PhD, and haven't fully recovered from it. Now feeling inspired to take up journaling and meditation again!</p>
+<h3 id="wednesday-march-13th">Wednesday, March 13th</h3>
+<p>My Final Test of the BitTorrent client failed yesterday. All the data chunks were transmitted and passed their hash checks, but somehow the final file on disk was a couple megabytes oversized. I (think I) fixed this by opening the file in a different mode. Then, after creating a smaller ~2MB test file that wouldn't take 2 hours to transmit, I successfully downloaded it from myself!! 🎉 I think that's a nice place to wrap up this project. Feels somewhat anti-climactic!</p>
+<h3 id="thursday-march-14th">Thursday, March 14th</h3>
+<p>Started reading <em>Learning From Data</em>, got as far as implementing a simple training algo for the perceptron/linear model. Mostly just reacquainting myself with numpy and trying to build intuitions. I had ambitions to do all my coding in J, but realised that learning a weird programming language AND math stuff at the same time was never going to work. So I'm back to the safety of numpy and Jupyter Notebook.</p>
+<p>A visualisation of training data and the perceptron's linear separation (I don't know why it's not just called a linear classifier?):</p>
+<figure>
+<img src="/static/img/recurse/perceptron.png"
+     alt="Two clusters of data, one with yellow datapoints in the bottom left corner and the other with purple datapoints in the top right corner. They're separated by a red line. "
+     class="centered">
+<figcaption>Two clusters of data, correctly separated and classified by a perceptron model.</figcaption>
+</figure>
+
+<p>I gave my presentation about assembly-calling-C-calling-assembly. It was way too much content for a 5-minute presentation, and I was a lot more nervous than expected! Also realised that I assumed too much prerequisite knowledge about assembly and C. Oh well. I still least got some nice feedback. Next week I'll present about BitTorrent.</p>
+<p>Paired with Stephanie. I talked through the C/assembly in my slides in more detail, and shared my hot take that assembly is simpler than Python. (I may not be qualified to make such a hot take, given that FizzBuzz is among the most complicated things I've coded in assembly). Then she did a great job explaining the CryptoPals challenge she was working on, and we debugged her MD4 implementation. Now excited to try CryptoPals!</p>
+<h3 id="friday-march-15th">Friday, March 15th</h3>
+<p>Converted my account of the Center for Computing History into a <a href="/blog/center-computing.html">blog post</a>. Also wrote some niceties (encouraging notes that Recursers write for each other at the end of a batch).</p>
+<p>Tried out Reaper (a DAW - Digital Audio Workstation). After A LOT of tinkering, and almost at the point of giving up, I managed to record some microphone input. Yay! (Everything to do with audio is surprisingly complicated). I also started working through Zack's SuperCollider workshops, except I'm using <a href="https://github.com/byulparan/cl-collider">Common Lisp</a> &amp; Emacs instead of sclang &amp; the SC IDE.</p>
+<p>This, in sclang...</p>
+<div class="codehilite"><pre><span></span><code>SynthDef(&quot;coolsynth&quot;,{
+    arg freq=110, amp=0.1;
+    var snd;
+    snd=Mix.ar(
+        SinOsc.ar(freq:[freq,freq*2,freq*4],mul:[amp,amp/2,amp/4])
+    );
+    snd=snd+(0.1*Mix.ar(
+        Saw.ar(freq:[freq,freq*2,freq*3,freq*4],mul:[amp,amp/2,amp/3,amp/4]))
+    );
+    snd=Splay.ar(snd);
+    Out.ar(0,snd);
+}).play;
+</code></pre></div>
+
+<p>...ends up looking like this in Common Lisp / cl-collider:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nv">defsynth</span> <span class="nv">coolsynth</span> <span class="p">((</span><span class="nv">freq</span> <span class="mi">110</span><span class="p">)</span> <span class="p">(</span><span class="nv">amp</span> <span class="mf">.1</span><span class="p">))</span>
+  <span class="p">(</span><span class="nv">out.ar</span> <span class="mi">0</span>
+          <span class="p">(</span><span class="nv">splay.ar</span>
+           <span class="p">(</span><span class="nb">+</span>
+            <span class="p">(</span><span class="nv">mix</span>
+             <span class="p">(</span><span class="nv">saw.ar</span> <span class="nv">[freq</span> <span class="p">(</span><span class="nb">*</span> <span class="mi">2</span> <span class="nv">freq</span><span class="p">)</span> <span class="p">(</span><span class="nb">*</span> <span class="mi">3</span> <span class="nv">freq</span><span class="p">)</span> <span class="p">(</span><span class="nb">*</span> <span class="mi">4</span> <span class="nv">freq</span><span class="p">)</span><span class="nv">]</span>
+                     <span class="mi">0</span>
+                     <span class="nv">[amp</span> <span class="p">(</span><span class="nb">/</span> <span class="nv">amp</span> <span class="mi">2</span><span class="p">)</span> <span class="p">(</span><span class="nb">/</span> <span class="nv">amp</span> <span class="mi">3</span><span class="p">)</span> <span class="p">(</span><span class="nb">/</span> <span class="nv">amp</span> <span class="mi">4</span><span class="p">)</span><span class="nv">]</span><span class="p">))</span>
+            <span class="p">(</span><span class="nv">mix</span>
+             <span class="p">(</span><span class="nv">sin-osc.ar</span> <span class="nv">[freq</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">freq</span> <span class="mi">2</span><span class="p">)</span><span class="nv">]</span>
+                         <span class="mi">0</span>
+                         <span class="nv">[amp</span> <span class="p">(</span><span class="nb">/</span> <span class="nv">amp</span> <span class="mi">2</span><span class="p">)</span><span class="nv">]</span><span class="p">))))))</span>
+</code></pre></div>
+
+<p>I'm conscious that this code doesn't reflect the "flow" of the synth all that well, as you have to read it from bottom to top. But I think this could be fixed by using the <a href="https://github.com/nightfly19/cl-arrows">arrows</a> macro, like so (untested):</p>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nv">defsynth</span> <span class="nv">coolsynth</span> <span class="p">((</span><span class="nv">freq</span> <span class="mi">110</span><span class="p">)</span> <span class="p">(</span><span class="nv">amp</span> <span class="mf">.1</span><span class="p">))</span>
+  <span class="p">(</span><span class="nv">-&gt;&gt;</span>
+   <span class="p">(</span><span class="nv">mix</span> <span class="p">(</span><span class="nv">sin-osc.ar</span> <span class="nv">[freq</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">freq</span> <span class="mi">2</span><span class="p">)</span><span class="nv">]</span>
+                    <span class="mi">0</span>
+                    <span class="nv">[amp</span> <span class="p">(</span><span class="nb">/</span> <span class="nv">amp</span> <span class="mi">2</span><span class="p">)</span><span class="nv">]</span><span class="p">))</span>
+   <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nv">mix</span>
+       <span class="p">(</span><span class="nv">saw.ar</span> <span class="nv">[freq</span> <span class="p">(</span><span class="nb">*</span> <span class="mi">2</span> <span class="nv">freq</span><span class="p">)</span> <span class="p">(</span><span class="nb">*</span> <span class="mi">3</span> <span class="nv">freq</span><span class="p">)</span> <span class="p">(</span><span class="nb">*</span> <span class="mi">4</span> <span class="nv">freq</span><span class="p">)</span><span class="nv">]</span>
+               <span class="mi">0</span>
+               <span class="nv">[amp</span> <span class="p">(</span><span class="nb">/</span> <span class="nv">amp</span> <span class="mi">2</span><span class="p">)</span> <span class="p">(</span><span class="nb">/</span> <span class="nv">amp</span> <span class="mi">3</span><span class="p">)</span> <span class="p">(</span><span class="nb">/</span> <span class="nv">amp</span> <span class="mi">4</span><span class="p">)</span><span class="nv">]</span><span class="p">)))</span>
+   <span class="p">(</span><span class="nv">splay.ar</span><span class="p">)</span>
+   <span class="p">(</span><span class="nv">out.ar</span> <span class="mi">0</span><span class="p">)))</span>
+</code></pre></div>
+<hr>
+<a href="/blog/center-computing.html">&lt;&lt; previous</a>
+<ul>
+<li><a href="/blog.html">Back to blog</a></li>
+<li><a href="/feed.xml">RSS feed</a></li>
+</ul>
+<p>I'd be happy to hear from you at <i>galligankevinp@gmail.com</i>.</p>
+
+</body>
+</html>
