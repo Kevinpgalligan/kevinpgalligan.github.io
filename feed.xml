@@ -4,10 +4,302 @@
     <title>Kevin's Blog</title>
     <link>https://kevingal.com</link>
     <description>Maths, computers and stuff.</description>
-    <pubDate>Tue, 09 Apr 2024 00:00:00 GMT</pubDate>
-    <lastBuildDate>Tue, 09 Apr 2024 00:00:00 GMT</lastBuildDate>
+    <pubDate>Sat, 11 May 2024 00:00:00 GMT</pubDate>
+    <lastBuildDate>Sat, 11 May 2024 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://kevingal.com/feed.xml" rel="self" type="application/rss+xml" />
     
+    <item>
+        <title>Calculating all possible rankings for The Circle USA Season 6</title>
+        <description>&lt;p&gt;The Circle is a reality competition show where the contestants communicate solely through text. This allows them to come into the show as a &#34;catfish&#34; and assume a new identity, though most people play as themselves. At the end of each round, they rank each other from first to last and the overall top-rated players become &#34;influencers&#34;, which gives them the power to eliminate someone from the game. In the final round, the top-ranked player wins the prize money.&lt;/p&gt;
+&lt;p&gt;As viewers, we are shown only a subset of the ratings (such as: Player A put Player B in 2nd place), and the final ranking. However, I&#39;m always how exactly the players ranked each other. Who were the backstabbers, who were the game-players, who were the do-gooders? This can be figured out with a little bit of programming.&lt;/p&gt;
+&lt;p&gt;First we need to encode the final results and the known rankings.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;WARNING: SPOILERS AHEAD FOR THE CIRCLE USA SEASON 6&lt;/strong&gt;.&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;OLIVIA&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;Olivia&amp;quot;&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;KYLE&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;Kyle&amp;quot;&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;QT&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;QT&amp;quot;&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;JORDAN&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;Jordan&amp;quot;&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;LAUREN&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;Lauren&amp;quot;&lt;/span&gt;
+
+&lt;span class=&#34;n&#34;&gt;real_final_rank&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;OLIVIA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;KYLE&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;QT&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;JORDAN&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;LAUREN&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+
+&lt;span class=&#34;n&#34;&gt;players&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;real_final_rank&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+
+&lt;span class=&#34;n&#34;&gt;known_rankings&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;OLIVIA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;QT&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;KYLE&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Then, for each player, we generate all the rankings they &lt;em&gt;could&lt;/em&gt; have chosen. For example, based on what we know about Olivia, either of the following rankings are possible:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;QT, Kyle, Jordan, Lauren.&lt;/li&gt;
+&lt;li&gt;QT, Kyle, Lauren, Jordan.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Here&#39;s some code for doing that. It basically makes a &#34;template&#34; of the possible rankings, like &lt;code&gt;[&#34;QT&#34;, &#34;Kyle&#34;, None, None]&lt;/code&gt;. Then, using &lt;code&gt;itertools.permutations(...)&lt;/code&gt;, it fills the &lt;code&gt;None&lt;/code&gt; spots in the template using all possible orderings of the unassigned players.&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;n&#34;&gt;possible_rankings_per_player&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[]&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;player&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;players&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;player_known_rankings&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;known_rankings&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;player&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;possible_rankings&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[]&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;ranking_template&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;None&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;range&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;len&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;players&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)]&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;p&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;rank&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;player_known_rankings&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;items&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;ranking_template&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;rank&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;p&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;unassigned_players&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;players&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;player&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;player_known_rankings&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;keys&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;())&lt;/span&gt;
+
+    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;perm&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;itertools&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;permutations&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;unassigned_players&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;possible_ranking&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ranking_template&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[:]&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;while&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;len&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;possible_ranking&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;and&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;len&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;perm&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+            &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;possible_ranking&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;None&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+                &lt;span class=&#34;n&#34;&gt;possible_ranking&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;perm&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;j&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+                &lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+            &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;possible_rankings&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;append&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;possible_ranking&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;possible_rankings_per_player&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;append&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;possible_rankings&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Finally, we take all possible &lt;em&gt;combinations&lt;/em&gt; of all the possible rankings, and see which combinations result in the final ordering we saw in the show. Those combinations are the candidates for the true rankings.&lt;/p&gt;
+&lt;p&gt;To make this clearer: we take the 2 possible rankings made by Olivia, and combine them with all the possible rankings by QT, and all the possible rankings by Kyle, and so on. This might seem like it would result in too many possibilities, but actually it doesn&#39;t, because there are only 5 players and quite a lot of information is known.&lt;/p&gt;
+&lt;p&gt;Here&#39;s the table of rankings we know about.&lt;/p&gt;
+&lt;div class=&#34;cooltablewrap&#34;&gt;
+&lt;table&gt;
+&lt;thead&gt;
+  &lt;tr&gt;
+    &lt;th&gt;Rank&lt;/th&gt;
+    &lt;th&gt;Olivia&lt;/th&gt;
+    &lt;th&gt;Kyle&lt;/th&gt;
+    &lt;th&gt;QT&lt;/th&gt;
+    &lt;th&gt;Jordan&lt;/th&gt;
+    &lt;th&gt;Lauren&lt;/th&gt;
+  &lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+    &lt;td&gt;1&lt;/td&gt;
+    &lt;td&gt;QT&lt;/td&gt;
+    &lt;td&gt;Olivia&lt;/td&gt;
+    &lt;td&gt;Kyle&lt;/td&gt;
+    &lt;td&gt;Lauren&lt;/td&gt;
+    &lt;td&gt;Jordan&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;2&lt;/td&gt;
+    &lt;td&gt;Kyle&lt;/td&gt;
+    &lt;td&gt;?&lt;/td&gt;
+    &lt;td&gt;?&lt;/td&gt;
+    &lt;td&gt;?&lt;/td&gt;
+    &lt;td&gt;?&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;3&lt;/td&gt;
+    &lt;td&gt;?&lt;/td&gt;
+    &lt;td&gt;Lauren&lt;/td&gt;
+    &lt;td&gt;Olivia&lt;/td&gt;
+    &lt;td&gt;?&lt;/td&gt;
+    &lt;td&gt;?&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;4&lt;/td&gt;
+    &lt;td&gt;?&lt;/td&gt;
+    &lt;td&gt;?&lt;/td&gt;
+    &lt;td&gt;?&lt;/td&gt;
+    &lt;td&gt;QT&lt;/td&gt;
+    &lt;td&gt;?&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;If there are &lt;code&gt;N&lt;/code&gt; unknown spots in someone&#39;s ranking, then there are &lt;code&gt;N! = N × (N-1) × ... × 1&lt;/code&gt; ways to fill those spots. That means there are &lt;code&gt;(2!)^4 × 3! = 96&lt;/code&gt; possible combinations for Season 6. Thankfully, &lt;code&gt;itertools&lt;/code&gt; comes to the rescue again and we can generate all the combinations using &lt;code&gt;itertools.product(...)&lt;/code&gt;. For every combination, we calculate the final score of each player, where 1st, 2nd, 3rd and 4th place positions are worth 3, 2, 1 and 0 points, respectively. We then order the players by their scores and check if the final ranking matches the &lt;em&gt;real&lt;/em&gt; final ranking - e.g. we have to discard any combinations that don&#39;t result in Olivia being the winner.&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;rankings&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;itertools&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;product&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;possible_rankings_per_player&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;scores&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;dict&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;player&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;player&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;players&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;])&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ranking&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;rankings&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;player&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;enumerate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ranking&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+            &lt;span class=&#34;n&#34;&gt;scores&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;player&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;len&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;players&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;final_rank&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;list&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;players&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;final_rank&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sort&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;key&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;lambda&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;p&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;scores&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;p&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;reverse&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;True&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+
+    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;matches_real_rank&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;final_rank&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;scores&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;pass&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# This is a possible solution, print it out!&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The only annoying part is the possibility of ties. A player who tied for 2nd place could be presented on the show as having finished in 2nd place &lt;em&gt;or&lt;/em&gt; 3rd place, according to the narrative that the producers wanted to create. The &lt;code&gt;matches_real_rank(...)&lt;/code&gt; function resolves this, basically checking that the players fell within the appropriate range of positions based on who they were tied with.&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;matches_real_rank&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;final_rank&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;scores&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;rank&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;score&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;sorted&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;scores&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;values&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()),&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;reverse&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;True&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;ps_with_score&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;p&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;p&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;final_rank&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;scores&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;p&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;score&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;p&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ps_with_score&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+            &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;real_final_rank&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;index&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;p&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+            &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;rank&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;and&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;rank&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;len&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ps_with_score&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)):&lt;/span&gt;
+                &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;False&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;rank&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;len&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ps_with_score&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;True&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Finally, running the code shows that there are 5 possibilities for the true rankings. Two of them result in a tie for first place between Olivia &amp;amp; Kyle, which I don&#39;t think is what happened, &#39;cause it would then be pretty unfair for Olivia to get all the prize money.&lt;/p&gt;
+&lt;p&gt;So, here are the 3 remaining possibilities! I&#39;ve highlighted in green the positions we know with certainty, including both the ones that were revealed in the show and the ones that are constant across all the possible rankings.&lt;/p&gt;
+&lt;p&gt;Scenario 1: Olivia (8), Kyle (6), QT (6), Jordan (6), Lauren (4).&lt;/p&gt;
+&lt;div class=&#34;cooltablewrap&#34;&gt;
+&lt;table&gt;
+&lt;thead&gt;
+  &lt;tr&gt;
+    &lt;th&gt;Rank&lt;/th&gt;
+    &lt;th&gt;Olivia&lt;/th&gt;
+    &lt;th&gt;Kyle&lt;/th&gt;
+    &lt;th&gt;QT&lt;/th&gt;
+    &lt;th&gt;Jordan&lt;/th&gt;
+    &lt;th&gt;Lauren&lt;/th&gt;
+  &lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+
+&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;QT&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Olivia&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Kyle&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Lauren&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Jordan&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;2&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Kyle&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;QT&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Jordan&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Olivia&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Olivia&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;Jordan&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Lauren&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Olivia&lt;/td&gt;
+&lt;td&gt;Kyle&lt;/td&gt;
+&lt;td&gt;QT&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;Lauren&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Jordan&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Lauren&lt;/td&gt;
+&lt;td&gt;QT&lt;/td&gt;
+&lt;td&gt;Kyle&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Scenario 2: Olivia (8), Kyle (6), QT (6), Jordan (5), Lauren (5).&lt;/p&gt;
+&lt;div class=&#34;cooltablewrap&#34;&gt;
+&lt;table&gt;
+&lt;thead&gt;
+  &lt;tr&gt;
+    &lt;th&gt;Rank&lt;/th&gt;
+    &lt;th&gt;Olivia&lt;/th&gt;
+    &lt;th&gt;Kyle&lt;/th&gt;
+    &lt;th&gt;QT&lt;/th&gt;
+    &lt;th&gt;Jordan&lt;/th&gt;
+    &lt;th&gt;Lauren&lt;/th&gt;
+  &lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+
+&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;QT&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Olivia&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Kyle&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Lauren&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Jordan&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;2&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Kyle&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;QT&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Jordan&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Olivia&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Olivia&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;Lauren&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Lauren&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Olivia&lt;/td&gt;
+&lt;td&gt;Kyle&lt;/td&gt;
+&lt;td&gt;QT&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;Jordan&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Jordan&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Lauren&lt;/td&gt;
+&lt;td&gt;QT&lt;/td&gt;
+&lt;td&gt;Kyle&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Scenario 3: Olivia (8), Kyle (7), QT (5), Jordan (5), Lauren (5).&lt;/p&gt;
+&lt;div class=&#34;cooltablewrap&#34;&gt;
+&lt;table&gt;
+&lt;thead&gt;
+  &lt;tr&gt;
+    &lt;th&gt;Rank&lt;/th&gt;
+    &lt;th&gt;Olivia&lt;/th&gt;
+    &lt;th&gt;Kyle&lt;/th&gt;
+    &lt;th&gt;QT&lt;/th&gt;
+    &lt;th&gt;Jordan&lt;/th&gt;
+    &lt;th&gt;Lauren&lt;/th&gt;
+  &lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+
+&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;QT&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Olivia&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Kyle&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Lauren&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Jordan&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;2&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Kyle&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;QT&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Jordan&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Olivia&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Olivia&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;Lauren&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Lauren&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Olivia&lt;/td&gt;
+&lt;td&gt;Kyle&lt;/td&gt;
+&lt;td&gt;Kyle&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;Jordan&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Jordan&lt;/td&gt;
+&lt;td class=&#34;incel&#34;&gt;Lauren&lt;/td&gt;
+&lt;td&gt;QT&lt;/td&gt;
+&lt;td&gt;QT&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;We&#39;re left with 2 unknowns:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Whether Olivia ranked Lauren and Jordan in 3rd or 4th place.&lt;/li&gt;
+&lt;li&gt;Whether Lauren and Jordan ranked QT and Kyle in 3rd or 4th place.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Of course, I&#39;ve made a critical assumption about how the scoring system works. The producers could easily tamper with it to achieve the outcome they want. In any case, even if my assumption is correct and there was no tampering, the producers still had to make a decision on how to break ties. Some interesting possibilities: there could&#39;ve been a 3-way tie for 2nd place, and Lauren could&#39;ve been tied for 3rd place and not have come dead last.&lt;/p&gt;
+&lt;p&gt;Another interesting thing to look at is to fix the rankings of all but one player, and then see if that player could&#39;ve won by making different choices. As far as I can see, QT couldn&#39;t have won in any scenario. Kyle could&#39;ve won in Scenario 3, at least, by ranking Olivia in 3rd or 4th place. At the end of the day, however, I think the most deserving player won, as Olivia (a.k.a. Brandon) managed to stay on good terms with everyone and played with the right mixture of heart and brains.&lt;/p&gt;
+&lt;p&gt;Full code is &lt;a href=&#34;https://gist.github.com/Kevinpgalligan/9e64c54b55f5f23408a67098bc83e625&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;</description>
+        <link>https://kevingal.com/blog/thecircle.html</link>
+        <pubDate>Sat, 11 May 2024 00:00:00 GMT</pubDate>
+        <guid>https://kevingal.com/blog/thecircle.html</guid>
+    </item>
     <item>
         <title>Rating fluctuations in chess</title>
         <description>&lt;p&gt;The ELO rating system, devised by physicist &lt;a href=&#34;https://en.wikipedia.org/wiki/Elo_rating_system&#34;&gt;Arpad Elo&lt;/a&gt;, is used in chess to rank people by their playing ability. This post is an investigation into what a typical rating fluctuation looks like, an idea that probably came to me after a particularly devastating drop in my rating. But first, let&#39;s briefly review the ELO system.&lt;/p&gt;
@@ -660,147 +952,6 @@ Backtrace:
         <link>https://kevingal.com/blog/rc1.html</link>
         <pubDate>Fri, 05 Jan 2024 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/rc1.html</guid>
-    </item>
-    <item>
-        <title>A Recursive Christmas</title>
-        <description>&lt;p&gt;I&#39;m happy to report that this January I&#39;ll be starting a 3-month programming retreat at the &lt;a href=&#34;https://www.recurse.com/&#34;&gt;Recurse Center&lt;/a&gt; (RC)! It&#39;s basically like a writing retreat, but for programming. Since I got rejected the first time I applied, and I found it helpful when preparing my second application to read other people&#39;s experiences, I figured I&#39;d do the same thing here. I&#39;ll also list the &lt;a href=&#34;#project-ideas&#34;&gt;project ideas&lt;/a&gt; I have for my batch, which I find VERY EXCITING to think about.&lt;/p&gt;
-&lt;p&gt;By the way, in the spirit of Christmas, here&#39;s a Palestine-themed animation I made of nested Christmas trees. Source code &lt;a href=&#34;https://github.com/Kevinpgalligan/sketches/blob/master/src/thesketches/xmas.lisp&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
-&lt;video width=&#34;200&#34; height=&#34;200&#34; class=&#34;centered&#34; controls&gt;
-    &lt;source src=&#34;/static/video/recurse/xmas.mp4&#34; type=&#34;video/mp4&#34;&gt;
-&lt;/video&gt;
-
-&lt;h3 id=&#34;first-application&#34;&gt;First Application&lt;/h3&gt;
-&lt;p&gt;There are three stages to the RC application process: a written application, a conversational interview, and a pair programming interview. The written application is meant to determine your motivations and your programming background. I felt like my attempt at the written application was pretty strong, and indeed, I managed to pass that stage of the interview. I&#39;ll share my final written application in the next section.&lt;/p&gt;
-&lt;p&gt;The conversational interview is where I got rejected. They don&#39;t provide feedback after the interview, but I can guess what went wrong. My motivations for attending RC were not clear or well thought-out. I said I liked the structure provided by RC, and that I thought it would help me to stay motivated -- but the RC website specifically says that they&#39;re looking for self-guided and self-motivated people! I also thought the interviewer would appreciate my openness when I shared my one worry about attending RC and said that, in the aftermath of my PhD experience, I sometimes find difficult programming to be anxiety-inducing, which makes me procrastinate and avoid it. In retrospect, I shouldn&#39;t have been so self-deprecating. An empathetic interviewer might even have rejected me for the good of my mental health!&lt;/p&gt;
-&lt;p&gt;Ultimately, I don&#39;t know why I got rejected, and I can only speculate. Needless to say, I was gutted, because I&#39;d been fantasising for many years about attending RC. The RC website says that 6% of attendees get in on their 2nd (or later) attempt, which is supposed to be encouraging, but seems like a pretty small percentage to me??? Still, I was determined to try again after the mandatory 3-month waiting period, and self-reflection had at least given me an idea of how to improve.&lt;/p&gt;
-&lt;h3 id=&#34;second-application&#34;&gt;Second Application&lt;/h3&gt;
-&lt;p&gt;I did a crapload of research for my second application. I combed through the RC website, and read upwards of 20 articles and blog posts by people who&#39;d applied to RC. I used these sources for inspiration and to better prepare myself. I also seriously reflected on my motivations, and concluded that the reason I wanted to attend RC specifically was for the community it provides. Anyone can go into the mountains and do a programming retreat by themselves, but it wouldn&#39;t be half as fun or as beneficial as working with other people!&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://gist.github.com/Kevinpgalligan/e03091ff2536f436c2fb56c16b6cdea1&#34;&gt;Here&lt;/a&gt; is my second written application, or something very close to it! Besides revising my motivations, I also tried to be more detailed about what I wanted to work on, and what types of projects I&#39;d worked on in the past.&lt;/p&gt;
-&lt;p&gt;The conversational interview was shorter this time, down from 30 minutes to 15 minutes. It also felt way less intense than the first one. I was prepared for all the questions, since either they were taken from the written application or I&#39;d encountered them during my preparations. The questions were:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;What&#39;s your programming background?&lt;/li&gt;
-&lt;li&gt;What do you want to work on at RC?&lt;/li&gt;
-&lt;li&gt;What was a programming problem you encountered, and how did you resolve it?&lt;/li&gt;
-&lt;li&gt;How will you tell that your batch has been a success?&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;At the end, I had the opportunity to ask my own questions, so I asked the interviewer what their experience at RC had been; how people divide their time between programming and interacting with others; and how flexible RC is in terms of people attending remotely (answer: 100% flexible).&lt;/p&gt;
-&lt;p&gt;I managed not to self-deprecate this time. The interviewer was really friendly, and I think there was a lot of crossover between what they&#39;d worked on and what I wanted to work on. Also, I think I conveyed my enthusiasm and excitement for RC a lot better this time, since I remember smiling a lot (out of genuine enthusiasm) when the interviewer talked about their experience. Despite these positive signs, I had gotten good vibes from the interviewer during the first application, so my heart rate still doubled when I received a follow-up email from RC, to the extent that I could hear my heartbeat pounding in my ears. I hid in the bathroom to open the email, just in case I burst into tears. I was relieved to find, however, that I had passed the conversational interview this time!&lt;/p&gt;
-&lt;p&gt;Next up was the pair programming interview. Beforehand, you&#39;re required to write a short program. During the interview, you then pair up with your interviewer to add a small feature to that program. I chose to write a toy version of Space Invaders, where the aliens were circles and the player was a rectangle. I also prepared by skimming &lt;a href=&#34;https://martinfowler.com/articles/on-pair-programming.html&#34;&gt;this&lt;/a&gt; article on pair programming. At the start of the interview, I spent a lot of time talking through my program from top to bottom. Maybe too much time, but the interviewer gave the go-ahead and could&#39;ve interrupted me if I was taking too long. We then worked on adding the ability to shoot bullets, just about managing to complete the collision-detection logic before running out of time. The point of this interview isn&#39;t to complete the task, but to find out what you&#39;re like to work with, so I wasn&#39;t worried about how much progress I&#39;d made. My approach was basically to talk through every single thing I was doing and to regularly prompt the interviewer for feedback. In practice, this meant I ended a lot of sentences by saying &#34;if that makes sense&#34; or &#34;if that sounds good to you&#34;.&lt;/p&gt;
-&lt;p&gt;I somehow ended up enjoying this interview a lot, despite being tired and sick with a headcold. The programming went smoothly, the interviewer was nice, and they were helpful in catching a bug or two. It is, in fact, fun to program with other people! Still, the pounding in my ears returned when I received the follow-up email today, and it was with relief and happiness that I read the good news.&lt;/p&gt;
-&lt;p&gt;The whole process took 1 week. My batch starts on January 3rd. For accountability, I&#39;m going to post a weekly update, so stay tuned! I&#39;m looking forward to meeting cool programmers and to 12 weeks of (hopefully) anxiety-free programming!&lt;/p&gt;
-&lt;h3 id=&#34;project-ideas&#34;&gt;Project Ideas&lt;/h3&gt;
-&lt;p&gt;Below are all the project ideas I have, grouped by the following categories: networking, systems, graphics, languages, software, workflow, music, computer science fundamentals, hacking, and maths &amp;amp; machine learning. (Yes, I have too many interests). I&#39;ve compiled them over many years, from many different sources -- including my brain.&lt;/p&gt;
-&lt;p&gt;There&#39;s no way I&#39;ll complete even half of them, so my plan is to do whatever makes me feel most excited on any particular day and see what happens. The projects I&#39;m planning to start with are marked with a star emoji ⭐. If you have any suggestions or want to team up with me on any of these ideas, please let me know!&lt;/p&gt;
-&lt;h5 id=&#34;networking&#34;&gt;Networking&lt;/h5&gt;
-&lt;ul&gt;
-&lt;li&gt;⭐ Implement a BitTorrent client.&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://wiki.theory.org/BitTorrentSpecification&#34;&gt;http://wiki.theory.org/BitTorrentSpecification&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.kristenwidman.com/blog/how-to-write-a-bittorrent-client-part-1/&#34;&gt;http://www.kristenwidman.com/blog/how-to-write-a-bittorrent-client-part-1/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.bittorrent.org/beps/bep_0003.html&#34;&gt;http://www.bittorrent.org/beps/bep_0003.html&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Network traffic visualiser.&lt;/li&gt;
-&lt;li&gt;Reverse engineer a network protocol, e.g. for a web-based game.&lt;/li&gt;
-&lt;li&gt;Learn how to troubleshoot a network connection with dig, ping and traceroute.&lt;/li&gt;
-&lt;li&gt;Trace ping, traceroute, netstat, DHCP, DNS, ARP, SSL (SSLsniff &amp;amp; SSLstrip).&lt;/li&gt;
-&lt;li&gt;Implement a command-line SMTP mailer.&lt;/li&gt;
-&lt;li&gt;Play around with DNS, maybe implement it? (and see: &lt;a href=&#34;https://www.dns.toys/&#34;&gt;https://www.dns.toys/&lt;/a&gt;).&lt;/li&gt;
-&lt;li&gt;Implement a program to spy on local WiFi.&lt;/li&gt;
-&lt;li&gt;More ideas: FTP-based file transfer program; a bandwidth monitor; a port scanner; a mail checker (enter POP or IMAP protocol, web server &amp;amp; IP, and application checks for mail); IP -&amp;gt; country; whois based on IP.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h5 id=&#34;systems&#34;&gt;Systems&lt;/h5&gt;
-&lt;ul&gt;
-&lt;li&gt;Reroute microphone input to another computer across the network.&lt;/li&gt;
-&lt;li&gt;Call a C function using assembly, and vice versa.&lt;/li&gt;
-&lt;li&gt;Device driver for my electronic piano.&lt;/li&gt;
-&lt;li&gt;C extension for higher level language.&lt;/li&gt;
-&lt;li&gt;Annotate the assembly output of a Hello World C program.&lt;/li&gt;
-&lt;li&gt;Hand-write an ELF binary file (inspired by: &lt;a href=&#34;https://blinry.org/rc-month-1/&#34;&gt;https://blinry.org/rc-month-1/&lt;/a&gt;).&lt;/li&gt;
-&lt;li&gt;Implement an assembler/linker from scratch (also &lt;a href=&#34;https://blinry.org/rc-month-1/&#34;&gt;https://blinry.org/rc-month-1/&lt;/a&gt;).&lt;/li&gt;
-&lt;li&gt;Parser for ELF file format.&lt;/li&gt;
-&lt;li&gt;Implement a debugger.&lt;/li&gt;
-&lt;li&gt;Print &#34;hello world&#34; during the boot process.&lt;/li&gt;
-&lt;li&gt;Try out alternative operating systems (Plan9, Free BSD).&lt;/li&gt;
-&lt;li&gt;Operating Systems books.&lt;ul&gt;
-&lt;li&gt;Operating System Design: The Xinu Approach.&lt;/li&gt;
-&lt;li&gt;The Design and Implementation of the FreeBSD Operating System.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Learn strace: &lt;a href=&#34;https://jvns.ca/blog/2021/04/03/what-problems-do-people-solve-with-strace/&#34;&gt;https://jvns.ca/blog/2021/04/03/what-problems-do-people-solve-with-strace/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Create my own filesystem (whatever that means).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h5 id=&#34;graphics&#34;&gt;Graphics&lt;/h5&gt;
-&lt;ul&gt;
-&lt;li&gt;⭐ Implement various generative art ideas, see: The Coding Train.&lt;/li&gt;
-&lt;li&gt;⭐ Add features to the sketch generative art framework (&lt;a href=&#34;https://github.com/vydd/sketch&#34;&gt;https://github.com/vydd/sketch&lt;/a&gt;).&lt;/li&gt;
-&lt;li&gt;3d renderer using 2d graphics primitives (draw skyscrapers).&lt;/li&gt;
-&lt;li&gt;Implement a rasteriser.&lt;/li&gt;
-&lt;li&gt;Learn about shaders: shadertoy and Book of Shaders.&lt;/li&gt;
-&lt;li&gt;Write Common Lisp bindings for Godot game engine.&lt;/li&gt;
-&lt;li&gt;Make a game (e.g. chessbots, players program each type of piece using a DSL).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h5 id=&#34;languages&#34;&gt;Languages&lt;/h5&gt;
-&lt;ul&gt;
-&lt;li&gt;⭐ Implement a Forth interpreter in Lisp.&lt;/li&gt;
-&lt;li&gt;Implement a Forth compiler:&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/nornagon/jonesforth/blob/master/jonesforth.S&#34;&gt;https://github.com/nornagon/jonesforth/blob/master/jonesforth.S&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://ratfactor.com/forth/forth_talk_2023.html&#34;&gt;https://ratfactor.com/forth/forth_talk_2023.html&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Implement a machine code-generating compiler (book: Engineering a Compiler).&lt;/li&gt;
-&lt;li&gt;Read: On Lisp (macros).&lt;/li&gt;
-&lt;li&gt;Read: The Common Lisp Condition System.&lt;/li&gt;
-&lt;li&gt;Read: Lisp in Small Pieces (advanced implementation of Lisps).&lt;/li&gt;
-&lt;li&gt;Play around with: Smalltalk (&lt;a href=&#34;http://wiki.squeak.org/squeak/377&#34;&gt;http://wiki.squeak.org/squeak/377&lt;/a&gt;).&lt;/li&gt;
-&lt;li&gt;Use J/APL for mathsy stuff.&lt;/li&gt;
-&lt;li&gt;Other languages of interest: OCaml, Guile, Prolog.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h5 id=&#34;software&#34;&gt;Software&lt;/h5&gt;
-&lt;ul&gt;
-&lt;li&gt;⭐ Finish my &lt;a href=&#34;https://github.com/Kevinpgalligan/RewindRSS&#34;&gt;RSS feed generator&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;Update my site generator to not regenerate pages that haven&#39;t changed.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h5 id=&#34;workflow&#34;&gt;Workflow&lt;/h5&gt;
-&lt;ul&gt;
-&lt;li&gt;Try out the Nyxt browser.&lt;/li&gt;
-&lt;li&gt;Learn Magit for Emacs.&lt;/li&gt;
-&lt;li&gt;Write an Emacs plugin.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h5 id=&#34;music&#34;&gt;Music&lt;/h5&gt;
-&lt;ul&gt;
-&lt;li&gt;⭐ Finish webcam theremin.&lt;/li&gt;
-&lt;li&gt;Read: &#34;Theory and Practice of Electronic Music&#34;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h5 id=&#34;hacking&#34;&gt;Hacking&lt;/h5&gt;
-&lt;ul&gt;
-&lt;li&gt;Maybe useful: &lt;a href=&#34;https://github.com/hackclub/some-assembly-required&#34;&gt;https://github.com/hackclub/some-assembly-required&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;Read: &#34;Metasploit: The Penetration Tester&#39;s Guide&#34;&lt;/li&gt;
-&lt;li&gt;Do: &lt;a href=&#34;https://cryptopals.com/&#34;&gt;https://cryptopals.com/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Do: &lt;a href=&#34;https://github.com/guyinatuxedo/nightmare&#34;&gt;https://github.com/guyinatuxedo/nightmare&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Do: &lt;a href=&#34;https://overthewire.org/wargames/bandit/&#34;&gt;https://overthewire.org/wargames/bandit/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;CTF challenges.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h5 id=&#34;computer-science-fundamentals&#34;&gt;Computer science fundamentals&lt;/h5&gt;
-&lt;ul&gt;
-&lt;li&gt;⭐ Finish computer emulator based on Code: The Hidden Language of Computer Hardware and Software.&lt;/li&gt;
-&lt;li&gt;Write BASIC interpreter in assembly (for emulator?).&lt;/li&gt;
-&lt;li&gt;Read Paradigms of Artificial Intelligence Programming (algorithms in Common Lisp).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h5 id=&#34;maths-machine-learning&#34;&gt;Maths &amp;amp; machine learning&lt;/h5&gt;
-&lt;ul&gt;
-&lt;li&gt;Book: Learning From Data.&lt;/li&gt;
-&lt;li&gt;Andrew Ng&#39;s machine learning lectures.&lt;/li&gt;
-&lt;li&gt;Reinforcement Learning: An Introduction (a book that uses Lisp!).&lt;/li&gt;
-&lt;li&gt;Code up stuff from Martin Gardner articles.&lt;/li&gt;
-&lt;li&gt;Implement principal component analysis.&lt;/li&gt;
-&lt;li&gt;Implement BCH and other error correction codes.&lt;/li&gt;
-&lt;li&gt;Read: How to Solve It.&lt;/li&gt;
-&lt;li&gt;Implement Fourier transform algorithm.&lt;/li&gt;
-&lt;li&gt;Do more Project Euler problems.&lt;/li&gt;
-&lt;/ul&gt;</description>
-        <link>https://kevingal.com/blog/recurse.html</link>
-        <pubDate>Thu, 28 Dec 2023 00:00:00 GMT</pubDate>
-        <guid>https://kevingal.com/blog/recurse.html</guid>
     </item>
 </channel>
 </rss> 

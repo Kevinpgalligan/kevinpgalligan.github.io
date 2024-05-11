@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Calculating all possible rankings for The Circle USA Season 6</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+
+<meta property="og:description" content="Figuring out who gave what rank to whom. (And coming out as someone who watches reality TV)." /> 
+<meta property="og:image" content="https://kevingal.com/static/img/thumbnail.jpg" />
+<meta name="thumbnail" content="/static/img/thumbnail.jpg" />
+
+<link rel="stylesheet" href="/static/css/pygments.css">
+
+<meta property="description" content="Figuring out who gave what rank to whom. (And coming out as someone who watches reality TV).">
+
+<link rel="stylesheet" href="/static/css/blog.css">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon.ico">
+</head>
+<body>
+    <header>
+        <div data-nosnippet class="navbar">
+        <nav>
+        <a href="/index.html" class="navlink">about</a>
+        • <a href="/blog.html" class="navlink">blog</a>
+        • <a href="/projects.html" class="navlink">projects</a>
+        • <a href="/feed.xml" class="navlink">rss</a>
+        </nav>
+        </div>
+    </header>
+
+<h2 class="post-title">Calculating all possible rankings for The Circle USA Season 6</h2>
+<h3 class="post-date">2024-05-11</h3>
+<h3 class="post-date">Figuring out who gave what rank to whom. (And coming out as someone who watches reality TV).</h3>
+<p>Tags: <a href="/blog/tag/pop-culture.html">pop-culture</a> <a href="/blog/tag/programming.html">programming</a> <a href="/blog/tag/python.html">python</a> </p>
+<a href="/blog/chess-ratings.html">&lt;&lt; previous</a>
+<hr>
+<p>The Circle is a reality competition show where the contestants communicate solely through text. This allows them to come into the show as a "catfish" and assume a new identity, though most people play as themselves. At the end of each round, they rank each other from first to last and the overall top-rated players become "influencers", which gives them the power to eliminate someone from the game. In the final round, the top-ranked player wins the prize money.</p>
+<p>As viewers, we are shown only a subset of the ratings (such as: Player A put Player B in 2nd place), and the final ranking. However, I'm always how exactly the players ranked each other. Who were the backstabbers, who were the game-players, who were the do-gooders? This can be figured out with a little bit of programming.</p>
+<p>First we need to encode the final results and the known rankings.</p>
+<p><strong>WARNING: SPOILERS AHEAD FOR THE CIRCLE USA SEASON 6</strong>.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">P</span><span class="p">:</span>
+    <span class="n">OLIVIA</span> <span class="o">=</span> <span class="s2">&quot;Olivia&quot;</span>
+    <span class="n">KYLE</span> <span class="o">=</span> <span class="s2">&quot;Kyle&quot;</span>
+    <span class="n">QT</span> <span class="o">=</span> <span class="s2">&quot;QT&quot;</span>
+    <span class="n">JORDAN</span> <span class="o">=</span> <span class="s2">&quot;Jordan&quot;</span>
+    <span class="n">LAUREN</span> <span class="o">=</span> <span class="s2">&quot;Lauren&quot;</span>
+
+<span class="n">real_final_rank</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">P</span><span class="o">.</span><span class="n">OLIVIA</span><span class="p">,</span>
+    <span class="n">P</span><span class="o">.</span><span class="n">KYLE</span><span class="p">,</span>
+    <span class="n">P</span><span class="o">.</span><span class="n">QT</span><span class="p">,</span>
+    <span class="n">P</span><span class="o">.</span><span class="n">JORDAN</span><span class="p">,</span>
+    <span class="n">P</span><span class="o">.</span><span class="n">LAUREN</span>
+<span class="p">]</span>
+
+<span class="n">players</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">real_final_rank</span><span class="p">)</span>
+
+<span class="n">known_rankings</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">P</span><span class="o">.</span><span class="n">OLIVIA</span><span class="p">:</span> <span class="p">{</span>
+        <span class="n">P</span><span class="o">.</span><span class="n">QT</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">P</span><span class="o">.</span><span class="n">KYLE</span><span class="p">:</span> <span class="mi">2</span>
+    <span class="p">},</span>
+    <span class="p">[</span><span class="o">...</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Then, for each player, we generate all the rankings they <em>could</em> have chosen. For example, based on what we know about Olivia, either of the following rankings are possible:</p>
+<ul>
+<li>QT, Kyle, Jordan, Lauren.</li>
+<li>QT, Kyle, Lauren, Jordan.</li>
+</ul>
+<p>Here's some code for doing that. It basically makes a "template" of the possible rankings, like <code>["QT", "Kyle", None, None]</code>. Then, using <code>itertools.permutations(...)</code>, it fills the <code>None</code> spots in the template using all possible orderings of the unassigned players.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">possible_rankings_per_player</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">player</span> <span class="ow">in</span> <span class="n">players</span><span class="p">:</span>
+    <span class="n">player_known_rankings</span> <span class="o">=</span> <span class="n">known_rankings</span><span class="p">[</span><span class="n">player</span><span class="p">]</span>
+    <span class="n">possible_rankings</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">ranking_template</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">players</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">rank</span> <span class="ow">in</span> <span class="n">player_known_rankings</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">ranking_template</span><span class="p">[</span><span class="n">rank</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span>
+    <span class="n">unassigned_players</span> <span class="o">=</span> <span class="p">(</span><span class="n">players</span> <span class="o">-</span> <span class="nb">set</span><span class="p">([</span><span class="n">player</span><span class="p">]))</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">player_known_rankings</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="k">for</span> <span class="n">perm</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">permutations</span><span class="p">(</span><span class="n">unassigned_players</span><span class="p">):</span>
+        <span class="n">possible_ranking</span> <span class="o">=</span> <span class="n">ranking_template</span><span class="p">[:]</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">possible_ranking</span><span class="p">)</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">perm</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">possible_ranking</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">possible_ranking</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">perm</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">possible_rankings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">possible_ranking</span><span class="p">)</span>
+    <span class="n">possible_rankings_per_player</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">possible_rankings</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Finally, we take all possible <em>combinations</em> of all the possible rankings, and see which combinations result in the final ordering we saw in the show. Those combinations are the candidates for the true rankings.</p>
+<p>To make this clearer: we take the 2 possible rankings made by Olivia, and combine them with all the possible rankings by QT, and all the possible rankings by Kyle, and so on. This might seem like it would result in too many possibilities, but actually it doesn't, because there are only 5 players and quite a lot of information is known.</p>
+<p>Here's the table of rankings we know about.</p>
+<div class="cooltablewrap">
+<table>
+<thead>
+  <tr>
+    <th>Rank</th>
+    <th>Olivia</th>
+    <th>Kyle</th>
+    <th>QT</th>
+    <th>Jordan</th>
+    <th>Lauren</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>1</td>
+    <td>QT</td>
+    <td>Olivia</td>
+    <td>Kyle</td>
+    <td>Lauren</td>
+    <td>Jordan</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Kyle</td>
+    <td>?</td>
+    <td>?</td>
+    <td>?</td>
+    <td>?</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>?</td>
+    <td>Lauren</td>
+    <td>Olivia</td>
+    <td>?</td>
+    <td>?</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>?</td>
+    <td>?</td>
+    <td>?</td>
+    <td>QT</td>
+    <td>?</td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+<p>If there are <code>N</code> unknown spots in someone's ranking, then there are <code>N! = N × (N-1) × ... × 1</code> ways to fill those spots. That means there are <code>(2!)^4 × 3! = 96</code> possible combinations for Season 6. Thankfully, <code>itertools</code> comes to the rescue again and we can generate all the combinations using <code>itertools.product(...)</code>. For every combination, we calculate the final score of each player, where 1st, 2nd, 3rd and 4th place positions are worth 3, 2, 1 and 0 points, respectively. We then order the players by their scores and check if the final ranking matches the <em>real</em> final ranking - e.g. we have to discard any combinations that don't result in Olivia being the winner.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">for</span> <span class="n">rankings</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">possible_rankings_per_player</span><span class="p">):</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">player</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">player</span> <span class="ow">in</span> <span class="n">players</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">ranking</span> <span class="ow">in</span> <span class="n">rankings</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">player</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ranking</span><span class="p">):</span>
+            <span class="n">scores</span><span class="p">[</span><span class="n">player</span><span class="p">]</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">players</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="o">-</span><span class="n">i</span>
+    <span class="n">final_rank</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">players</span><span class="p">)</span>
+    <span class="n">final_rank</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">scores</span><span class="p">[</span><span class="n">p</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">matches_real_rank</span><span class="p">(</span><span class="n">final_rank</span><span class="p">,</span> <span class="n">scores</span><span class="p">):</span>
+        <span class="k">pass</span> <span class="c1"># This is a possible solution, print it out!</span>
+</code></pre></div>
+
+<p>The only annoying part is the possibility of ties. A player who tied for 2nd place could be presented on the show as having finished in 2nd place <em>or</em> 3rd place, according to the narrative that the producers wanted to create. The <code>matches_real_rank(...)</code> function resolves this, basically checking that the players fell within the appropriate range of positions based on who they were tied with.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">matches_real_rank</span><span class="p">(</span><span class="n">final_rank</span><span class="p">,</span> <span class="n">scores</span><span class="p">):</span>
+    <span class="n">rank</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">score</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">scores</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">ps_with_score</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">final_rank</span> <span class="k">if</span> <span class="n">scores</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">==</span> <span class="n">score</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ps_with_score</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">real_final_rank</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">rank</span> <span class="o">&lt;=</span> <span class="n">i</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">rank</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="n">ps_with_score</span><span class="p">)):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">rank</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ps_with_score</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span>
+</code></pre></div>
+
+<p>Finally, running the code shows that there are 5 possibilities for the true rankings. Two of them result in a tie for first place between Olivia &amp; Kyle, which I don't think is what happened, 'cause it would then be pretty unfair for Olivia to get all the prize money.</p>
+<p>So, here are the 3 remaining possibilities! I've highlighted in green the positions we know with certainty, including both the ones that were revealed in the show and the ones that are constant across all the possible rankings.</p>
+<p>Scenario 1: Olivia (8), Kyle (6), QT (6), Jordan (6), Lauren (4).</p>
+<div class="cooltablewrap">
+<table>
+<thead>
+  <tr>
+    <th>Rank</th>
+    <th>Olivia</th>
+    <th>Kyle</th>
+    <th>QT</th>
+    <th>Jordan</th>
+    <th>Lauren</th>
+  </tr>
+</thead>
+<tbody>
+
+<tr><td>1</td>
+<td class="incel">QT</td>
+<td class="incel">Olivia</td>
+<td class="incel">Kyle</td>
+<td class="incel">Lauren</td>
+<td class="incel">Jordan</td>
+</tr>
+<tr><td>2</td>
+<td class="incel">Kyle</td>
+<td class="incel">QT</td>
+<td class="incel">Jordan</td>
+<td class="incel">Olivia</td>
+<td class="incel">Olivia</td>
+</tr>
+<tr><td>3</td>
+<td>Jordan</td>
+<td class="incel">Lauren</td>
+<td class="incel">Olivia</td>
+<td>Kyle</td>
+<td>QT</td>
+</tr>
+<tr><td>4</td>
+<td>Lauren</td>
+<td class="incel">Jordan</td>
+<td class="incel">Lauren</td>
+<td>QT</td>
+<td>Kyle</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<p>Scenario 2: Olivia (8), Kyle (6), QT (6), Jordan (5), Lauren (5).</p>
+<div class="cooltablewrap">
+<table>
+<thead>
+  <tr>
+    <th>Rank</th>
+    <th>Olivia</th>
+    <th>Kyle</th>
+    <th>QT</th>
+    <th>Jordan</th>
+    <th>Lauren</th>
+  </tr>
+</thead>
+<tbody>
+
+<tr><td>1</td>
+<td class="incel">QT</td>
+<td class="incel">Olivia</td>
+<td class="incel">Kyle</td>
+<td class="incel">Lauren</td>
+<td class="incel">Jordan</td>
+</tr>
+<tr><td>2</td>
+<td class="incel">Kyle</td>
+<td class="incel">QT</td>
+<td class="incel">Jordan</td>
+<td class="incel">Olivia</td>
+<td class="incel">Olivia</td>
+</tr>
+<tr><td>3</td>
+<td>Lauren</td>
+<td class="incel">Lauren</td>
+<td class="incel">Olivia</td>
+<td>Kyle</td>
+<td>QT</td>
+</tr>
+<tr><td>4</td>
+<td>Jordan</td>
+<td class="incel">Jordan</td>
+<td class="incel">Lauren</td>
+<td>QT</td>
+<td>Kyle</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<p>Scenario 3: Olivia (8), Kyle (7), QT (5), Jordan (5), Lauren (5).</p>
+<div class="cooltablewrap">
+<table>
+<thead>
+  <tr>
+    <th>Rank</th>
+    <th>Olivia</th>
+    <th>Kyle</th>
+    <th>QT</th>
+    <th>Jordan</th>
+    <th>Lauren</th>
+  </tr>
+</thead>
+<tbody>
+
+<tr><td>1</td>
+<td class="incel">QT</td>
+<td class="incel">Olivia</td>
+<td class="incel">Kyle</td>
+<td class="incel">Lauren</td>
+<td class="incel">Jordan</td>
+</tr>
+<tr><td>2</td>
+<td class="incel">Kyle</td>
+<td class="incel">QT</td>
+<td class="incel">Jordan</td>
+<td class="incel">Olivia</td>
+<td class="incel">Olivia</td>
+</tr>
+<tr><td>3</td>
+<td>Lauren</td>
+<td class="incel">Lauren</td>
+<td class="incel">Olivia</td>
+<td>Kyle</td>
+<td>Kyle</td>
+</tr>
+<tr><td>4</td>
+<td>Jordan</td>
+<td class="incel">Jordan</td>
+<td class="incel">Lauren</td>
+<td>QT</td>
+<td>QT</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<p>We're left with 2 unknowns:</p>
+<ol>
+<li>Whether Olivia ranked Lauren and Jordan in 3rd or 4th place.</li>
+<li>Whether Lauren and Jordan ranked QT and Kyle in 3rd or 4th place.</li>
+</ol>
+<p>Of course, I've made a critical assumption about how the scoring system works. The producers could easily tamper with it to achieve the outcome they want. In any case, even if my assumption is correct and there was no tampering, the producers still had to make a decision on how to break ties. Some interesting possibilities: there could've been a 3-way tie for 2nd place, and Lauren could've been tied for 3rd place and not have come dead last.</p>
+<p>Another interesting thing to look at is to fix the rankings of all but one player, and then see if that player could've won by making different choices. As far as I can see, QT couldn't have won in any scenario. Kyle could've won in Scenario 3, at least, by ranking Olivia in 3rd or 4th place. At the end of the day, however, I think the most deserving player won, as Olivia (a.k.a. Brandon) managed to stay on good terms with everyone and played with the right mixture of heart and brains.</p>
+<p>Full code is <a href="https://gist.github.com/Kevinpgalligan/9e64c54b55f5f23408a67098bc83e625">here</a>.</p>
+<hr>
+<a href="/blog/chess-ratings.html">&lt;&lt; previous</a>
+<ul>
+<li><a href="/blog.html">Back to blog</a></li>
+<li><a href="/feed.xml">RSS feed</a></li>
+</ul>
+<p>I'd be happy to hear from you at <i>galligankevinp@gmail.com</i>.</p>
+
+</body>
+</html>
