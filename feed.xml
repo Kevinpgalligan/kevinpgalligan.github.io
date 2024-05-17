@@ -11,7 +11,7 @@
     <item>
         <title>Calculating all possible rankings for The Circle USA Season 6</title>
         <description>&lt;p&gt;The Circle is a reality competition show where the contestants communicate solely through text. This allows them to come into the show as a &#34;catfish&#34; and assume a new identity, though most people play as themselves. At the end of each round, they rank each other from first to last and the overall top-rated players become &#34;influencers&#34;, which gives them the power to eliminate someone from the game. In the final round, the top-ranked player wins the prize money.&lt;/p&gt;
-&lt;p&gt;As viewers, we are shown only a subset of the ratings (such as: Player A put Player B in 2nd place), and the final ranking. However, I&#39;m always how exactly the players ranked each other. Who were the backstabbers, who were the game-players, who were the do-gooders? This can be figured out with a little bit of programming.&lt;/p&gt;
+&lt;p&gt;As viewers, we are shown only a subset of the ratings (such as: Player A put Player B in 2nd place) and the final ranking. However, I&#39;m always curious how exactly the players ranked each other. Who were the backstabbers, who were the game-players, who were the do-gooders? This can be figured out with a little bit of programming.&lt;/p&gt;
 &lt;p&gt;First we need to encode the final results and the known rankings.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;WARNING: SPOILERS AHEAD FOR THE CIRCLE USA SEASON 6&lt;/strong&gt;.&lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
@@ -40,12 +40,12 @@
 &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;Then, for each player, we generate all the rankings they &lt;em&gt;could&lt;/em&gt; have chosen. For example, based on what we know about Olivia, either of the following rankings are possible:&lt;/p&gt;
+&lt;p&gt;Then, for each player, we generate all the rankings they &lt;em&gt;could&lt;/em&gt; have chosen. For example, based on what we know about Olivia, she could have ranked the other players in either of the following orders:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;QT, Kyle, Jordan, Lauren.&lt;/li&gt;
 &lt;li&gt;QT, Kyle, Lauren, Jordan.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Here&#39;s some code for doing that. It basically makes a &#34;template&#34; of the possible rankings, like &lt;code&gt;[&#34;QT&#34;, &#34;Kyle&#34;, None, None]&lt;/code&gt;. Then, using &lt;code&gt;itertools.permutations(...)&lt;/code&gt;, it fills the &lt;code&gt;None&lt;/code&gt; spots in the template using all possible orderings of the unassigned players.&lt;/p&gt;
+&lt;p&gt;Here&#39;s some Python code for doing that. It basically makes a &#34;template&#34; of the possible rankings, like &lt;code&gt;[&#34;QT&#34;, &#34;Kyle&#34;, None, None]&lt;/code&gt;. Then, using &lt;code&gt;itertools.permutations(...)&lt;/code&gt;, it fills the &lt;code&gt;None&lt;/code&gt; spots in the template using all possible orderings of the unassigned players.&lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;n&#34;&gt;possible_rankings_per_player&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[]&lt;/span&gt;
 &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;player&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;players&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
     &lt;span class=&#34;n&#34;&gt;player_known_rankings&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;known_rankings&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;player&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;

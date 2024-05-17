@@ -22,14 +22,37 @@
     </header>
 
 <h2 id="title">Data Science & Machine Learning Portfolio</h2>
-<p>Here's a collection of data science and machine learning projects I've worked on in my spare time. Further description, and links to Jupyter Notebooks, can be found below.</p>
+<p>These are data science and machine learning projects I've worked on in my spare time. Further description, and links to Jupyter Notebooks, can be found below.</p>
 <ul>
-<li>SMS Detection with Naive Bayes <a href="#sms-detection-with-naive-bayes">v</a></li>
+<li><a href="#spam-detection-with-naive-bayes">Spam detection with Naive Bayes</a></li><li><a href="#linear-models-and-gaussian-discriminative-analysis-of-iris-dataset">Linear models and gaussian discriminative analysis of iris dataset</a></li><li><a href="#country-clustering-with-k-means">Country clustering with k-means</a></li>
 </ul>
-<hr><h4 id="sms-detection-with-naive-bayes">SMS Detection with Naive Bayes</h3>
-<p>I implemented a Naive Bayes classifier to achieve almost 99% test set accuracy on Kaggle's <a href="https://www.kaggle.com/datasets/uciml/sms-spam-collection-dataset/">SMS Spam Collection Dataset</a>. The classifier also achieved high precision (98.8%) and recall (92.7%). The features were based on words used, as well as the presence of money symbols and numbers of various lengths.</p>
-<ul>
-<li><a href="/notebooks/spam.html">Jupyter Notebook</a></li>
-</ul>
+<hr><h4 id="spam-detection-with-naive-bayes">Spam detection with Naive Bayes</h3>
+<div class="notebooklink">(<a href="/notebooks/spam.html">Jupyter notebook</a>)</div>
+<figure>
+<img src="/static/img/dsml/spam-confusion-matrix.png"
+     alt="Confusion matrix consisting of 4 panels: 1199 true negatives (not spam, classified as not spam), 176 true positives (spam, classified as spam), 13 false negatives and 5 false positives. This differs from the "
+     class="centered">
+<figcaption>Confusion matrix showing the number of true positives (spam classified as spam), false positives (spam classified as ham), true negatives and false negatives.</figcaption>
+</figure>
+
+<p>Implementing the Naive Bayes classifier to achieve almost 99% test set accuracy on Kaggle's <a href="https://www.kaggle.com/datasets/uciml/sms-spam-collection-dataset/">SMS Spam Collection Dataset</a>. The classifier also achieves high precision (98.8%) and recall (92.7%). The features are based on words used, as well as the presence of money symbols and numbers of various lengths.</p><hr><h4 id="linear-models-and-gaussian-discriminative-analysis-of-iris-dataset">Linear models and gaussian discriminative analysis of iris dataset</h3>
+<div class="notebooklink">(<a href="/notebooks/iris.html">Jupyter notebook</a>)</div>
+<figure>
+<img src="/static/img/dsml/iris-prediction.png"
+     alt="Plot of sepal length vs. the predicted value, showing that the prediction is pretty good for all flower types."
+     class="centered">
+<figcaption>Sepal length vs. predicted value, roughly following the line x=y.</figcaption>
+</figure>
+
+<p>Applying linear models to regression and classification tasks on the iris flower dataset. Also includes my own implementation of gaussian discriminative analysis, which happens to perform worse than logistic regression on this dataset.</p><hr><h4 id="country-clustering-with-k-means">Country clustering with k-means</h3>
+<div class="notebooklink">(<a href="/notebooks/countries.html">Jupyter notebook</a>)</div>
+<figure>
+<img src="/static/img/dsml/country-clusters.png"
+     alt="2-dimensional plot of country data, clustered into 4 groups."
+     class="centered">
+<figcaption>PCA visualisation of country clusters with k=4.</figcaption>
+</figure>
+
+<p>Implementing the k-means algorithm to cluster countries based on <a href="https://www.kaggle.com/datasets/rohan0301/unsupervised-learning-on-country-data/">economic data</a>. The elbow and silhouette methods are used to pick an appropriate number of clusters.</p>
 </body>
 </html>
