@@ -24,7 +24,7 @@
 <h2 id="title">Data Science & Machine Learning Portfolio</h2>
 <p>These are data science and machine learning projects I've worked on in my spare time. Further description, and links to Jupyter Notebooks, can be found below.</p>
 <ul>
-<li><a href="#spam-detection-with-naive-bayes">Spam detection with Naive Bayes</a></li><li><a href="#linear-models-and-gaussian-discriminative-analysis-of-iris-dataset">Linear models and gaussian discriminative analysis of iris dataset</a></li><li><a href="#country-clustering-with-k-means">Country clustering with k-means</a></li>
+<li><a href="#spam-detection-with-naive-bayes">Spam detection with Naive Bayes</a></li><li><a href="#reinforcement-learning-for-navigation">Reinforcement learning for navigation</a></li><li><a href="#linear-models-and-gaussian-discriminative-analysis-of-iris-dataset">Linear models and gaussian discriminative analysis of iris dataset</a></li><li><a href="#country-clustering-with-k-means-and-gmm">Country clustering with k-means and GMM</a></li>
 </ul>
 <hr><h4 id="spam-detection-with-naive-bayes">Spam detection with Naive Bayes</h3>
 <div class="notebooklink">(<a href="/notebooks/spam.html">Jupyter notebook</a>)</div>
@@ -35,7 +35,16 @@
 <figcaption>Confusion matrix showing the number of true positives (spam classified as spam), false positives (spam classified as ham), true negatives and false negatives.</figcaption>
 </figure>
 
-<p>Implementing the Naive Bayes classifier to achieve almost 99% test set accuracy on Kaggle's <a href="https://www.kaggle.com/datasets/uciml/sms-spam-collection-dataset/">SMS Spam Collection Dataset</a>. The classifier also achieves high precision (98.8%) and recall (92.7%). The features are based on words used, as well as the presence of money symbols and numbers of various lengths.</p><hr><h4 id="linear-models-and-gaussian-discriminative-analysis-of-iris-dataset">Linear models and gaussian discriminative analysis of iris dataset</h3>
+<p>Implementing the Naive Bayes classifier to achieve almost 99% test set accuracy on Kaggle's <a href="https://www.kaggle.com/datasets/uciml/sms-spam-collection-dataset/">SMS Spam Collection Dataset</a>. The classifier also achieves high precision (98.8%) and recall (92.7%). The features are based on words used, as well as the presence of money symbols and numbers of various lengths.</p><hr><h4 id="reinforcement-learning-for-navigation">Reinforcement learning for navigation</h3>
+<div class="notebooklink">(<a href="/notebooks/reinforcement.html">Jupyter notebook</a>)</div>
+<figure>
+<img src="/static/img/dsml/rl-agent.png"
+     alt="3-by-4 grid with arrows in each cell indicating the direction taken by the optimal policy."
+     class="centered">
+<figcaption>Visualisation of a navigation task and the optimal policy.</figcaption>
+</figure>
+
+<p>An implementation of value iteration to find the optimal policy for reinforcement learning problems. In the scenario depicted above, the agent is placed 3 cells across and 3 cells down in a 3-by-4 grid. The top-right corner is the goal state, giving a reward of +1. Below that is a fail state, giving a reward of -1. Every other state gives -0.1, incentivising the agent to not dilly-dally. The arrows indicate the direction to move, as proposed by the optimal policy. There's a 75% chance of moving in the intended direction, and a 25% chance of veering left or right. This is why, at grid position (2,3), the optimal decision is to go left, avoiding the possibility of accidentally reaching the fail state.</p><hr><h4 id="linear-models-and-gaussian-discriminative-analysis-of-iris-dataset">Linear models and gaussian discriminative analysis of iris dataset</h3>
 <div class="notebooklink">(<a href="/notebooks/iris.html">Jupyter notebook</a>)</div>
 <figure>
 <img src="/static/img/dsml/iris-prediction.png"
@@ -44,7 +53,7 @@
 <figcaption>Sepal length vs. predicted value, roughly following the line x=y.</figcaption>
 </figure>
 
-<p>Applying linear models to regression and classification tasks on the iris flower dataset. Also includes my own implementation of gaussian discriminative analysis, which happens to perform worse than logistic regression on this dataset.</p><hr><h4 id="country-clustering-with-k-means">Country clustering with k-means</h3>
+<p>Applying linear models to regression and classification tasks on the iris flower dataset. Also includes my own implementation of gaussian discriminative analysis, which happens to perform worse than logistic regression on this dataset.</p><hr><h4 id="country-clustering-with-k-means-and-gmm">Country clustering with k-means and GMM</h3>
 <div class="notebooklink">(<a href="/notebooks/countries.html">Jupyter notebook</a>)</div>
 <figure>
 <img src="/static/img/dsml/country-clusters.png"
@@ -53,6 +62,6 @@
 <figcaption>PCA visualisation of country clusters with k=4.</figcaption>
 </figure>
 
-<p>Implementing the k-means algorithm to cluster countries based on <a href="https://www.kaggle.com/datasets/rohan0301/unsupervised-learning-on-country-data/">economic data</a>. The elbow and silhouette methods are used to pick an appropriate number of clusters.</p>
+<p>Implementing k-means and the gaussian mixture model to cluster countries based on <a href="https://www.kaggle.com/datasets/rohan0301/unsupervised-learning-on-country-data/">economic data</a>. The elbow and silhouette methods are used to pick an appropriate number of clusters.</p>
 </body>
 </html>

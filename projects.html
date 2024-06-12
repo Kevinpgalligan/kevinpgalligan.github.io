@@ -121,18 +121,21 @@ e ni li tawa.  </p>
 <li>Fractions.</li>
 <li>Units and unit conversion.</li>
 <li>Variable assignment.</li>
+<li>Probability distributions and sampling.</li>
 </ul>
 <p>There are 3 ways to interact with it: executing individual expressions through the CLI (<code>ka '1+1'</code>), a CLI interpreter (<code>ka</code>), and a GUI (<code>ka --gui</code>).</p>
 <div class="codehilite"><pre><span></span><code>&gt;&gt;&gt; 2 * (1/2)
 1
-&gt;&gt;&gt; 1 metre + 1 foot &gt; feet
-4.2808398950131235
-&gt;&gt;&gt; p = 0.7; C(10,3) * p^3 * (1-p)^7
-0.009001692000000007
+&gt;&gt;&gt; 1 metre + 1 foot to feet
+4.28084
+&gt;&gt;&gt; p=.7; N=10; sum({C(N,k)*p^k*(1-p)^(N-k) : k in [0,4]})
+0.047349
 &gt;&gt;&gt; sin(90 deg)
 1 
 &gt;&gt;&gt; e^pi
-23.140692632779263
+23.1407
+&gt;&gt;&gt; X = Binomial(10, 0.3); P(3 &lt;= X &lt; 7)
+0.6066
 </code></pre></div>
 
 <p>Installation:</p>
