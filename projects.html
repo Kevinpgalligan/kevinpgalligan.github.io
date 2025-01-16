@@ -36,7 +36,7 @@
 <tr><td><a href="https://twitter.com/PonaBot">TokiPonaPoemBot</a></td><td>web</td><td>Bot that tweets random poems in toki pona.</td><td><a href="#tokiponapoembot">goto</a></td>
 <tr><td><a href="https://github.com/Kevinpgalligan/GoLfind">GoLfind</a></td><td>desktop</td><td>Common Lisp software for tinkering with the Game of Life.</td><td><a href="#golfind">goto</a></td>
 <tr><td><a href="/apps/collision.html">Collision Calculator</a></td><td>web</td><td>Calculate hash collision probabilities.</td><td><a href="#collision-calculator">goto</a></td>
-<tr><td><a href="https://github.com/Kevinpgalligan/ka">ka</a></td><td>desktop</td><td>Calculator tool with a CLI and GUI.</td><td><a href="#ka">goto</a></td>
+<tr><td><a href="https://github.com/Kevinpgalligan/ka">Ka</a></td><td>desktop</td><td>Calculator tool with a CLI and GUI.</td><td><a href="#ka">goto</a></td>
 <tr><td><a href="/apps/slingshotchess.html">Slingshot Chess</a></td><td>web</td><td>Chess game where you fire your pieces at the enemy.</td><td><a href="#slingshot-chess">goto</a></td>
 <tr><td><a href="https://github.com/Kevinpgalligan/sketches">sketches</a></td><td>desktop</td><td>Generative art in Common Lisp.</td><td><a href="#sketches">goto</a></td>
 <tr><td><a href="https://github.com/Kevinpgalligan/noisy">noisy</a></td><td>desktop</td><td>Perlin noise library for Common Lisp.</td><td><a href="#noisy">goto</a></td>
@@ -114,20 +114,25 @@ e ni li tawa.  </p>
 <h3>Collision Calculator<span class="project-link">(link: <a id="collision-calculator" href="/apps/collision.html">kevingal.com</a>) <a href="#projects">^</a></span></h3>
 <p>If you put 'k' balls in 'N' buckets, what's the probability that at least 2 balls will end up in the same bucket? In other words, what's the probability of a <a href="https://kevingal.com/blog/collisions.html">hash collision</a>?</p>
 <hr>
-<h3>ka<span class="project-link">(link: <a id="ka" href="https://github.com/Kevinpgalligan/ka">github.com</a>) <a href="#projects">^</a></span></h3>
-<p>ka is a small calculator language. It supports various useful features for day-to-day calculations, such as:</p>
+<h3>Ka<span class="project-link">(link: <a id="ka" href="https://github.com/Kevinpgalligan/ka">github.com</a>) <a href="#projects">^</a></span></h3>
+<p>Ka is a small calculator language for quick, day-to-day calculations. It aims to be convenient: you can start the GUI, do your sums, and close the GUI with Ctrl-W -- no keyboard needed! Or if you're pottering about in the terminal, you can do a quick one-off calculation with <code>ka '1+1'</code>.</p>
+<p>Featuring...</p>
 <ul>
-<li>Common math functions and constants.</li>
-<li>Fractions.</li>
-<li>Units and unit conversion.</li>
-<li>Variable assignment.</li>
-<li>Probability distributions and sampling.</li>
+<li>A <strong>GUI</strong> and <strong>CLI</strong>.</li>
+<li><strong>Fractions</strong>: <code>(5/3) * 3</code> gives <code>5</code>.</li>
+<li><strong>Units</strong> and unit conversion: <code>5 ft to m</code>.</li>
+<li><strong>Probability</strong> distributions and sampling: <code>X = Bernoulli(0.3); P(X=1)</code>.</li>
+<li><strong>Arrays</strong> with math-like syntax: <code>{3*x : x in [1,3]}</code> gives <code>{3,6,9}</code>.</li>
+<li><strong>Lazy combinatorics</strong>: <code>10000000!/9999999!</code> gives <code>10000000</code> rather than hanging.</li>
+<li>Other boring stuff: Variable assignment. Common math functions and constants.</li>
 </ul>
-<p>There are 3 ways to interact with it: executing individual expressions through the CLI (<code>ka '1+1'</code>), a CLI interpreter (<code>ka</code>), and a GUI (<code>ka --gui</code>).</p>
+<p>More examples.</p>
 <div class="codehilite"><pre><span></span><code>&gt;&gt;&gt; 2 * (1/2)
 1
 &gt;&gt;&gt; 1 metre + 1 foot to feet
 4.28084
+&gt;&gt;&gt; p = 0.7; C(10,3) * p^3 * (1-p)^7
+0.00900169
 &gt;&gt;&gt; p=.7; N=10; sum({C(N,k)*p^k*(1-p)^(N-k) : k in [0,4]})
 0.047349
 &gt;&gt;&gt; sin(90 deg)

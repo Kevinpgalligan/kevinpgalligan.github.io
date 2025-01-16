@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Chess Detective: Identifying player profiles from Lichess recaps</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+
+<meta property="og:description" content="How to find someone&#39;s Lichess profile based on their yearly recap." /> 
+<meta property="og:image" content="https://kevingal.com/static/img/thumbnail.jpg" />
+<meta name="thumbnail" content="/static/img/thumbnail.jpg" />
+
+<link rel="stylesheet" href="/static/css/pygments.css">
+
+<meta property="description" content="How to find someone&#39;s Lichess profile based on their yearly recap.">
+
+<link rel="stylesheet" href="/static/css/blog.css">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon.ico">
+</head>
+<body>
+    <header>
+        <div data-nosnippet class="navbar">
+        <nav>
+        <a href="/index.html" class="navlink">about</a>
+        • <a href="/blog.html" class="navlink">blog</a>
+        • <a href="/projects.html" class="navlink">projects</a>
+        • <a href="/feed.xml" class="navlink">rss</a>
+        </nav>
+        </div>
+    </header>
+
+<h2 class="post-title">Chess Detective: Identifying player profiles from Lichess recaps</h2>
+<h3 class="post-date">2025-01-15</h3>
+<h3 class="post-date">How to find someone&#39;s Lichess profile based on their yearly recap.</h3>
+<p>Tags: <a href="/blog/tag/chess.html">chess</a> <a href="/blog/tag/python.html">python</a> </p>
+<a href="/blog/rc-reflections.html">&lt;&lt; previous</a>
+<hr>
+<p>Last year, I posted <a href="/blog/chess-ratings.html">an analysis</a> of Lichess data, with the aim of figuring out what a "normal" rating fluctuation looks like. It was a garbage piece of work, because I was too lazy to properly clean the data. Another time, I <a href="/blog/rc8.html">paired up</a> with someone at the Recurse Center to do some baby reverse engineering of the Lichess network protocol.</p>
+<p>Today we return to Lichess, that most noble of chess websites, with a different objective in mind. Lichess recently released a summary of the year for each player: how many games they played, who their most-played opponent was, and so on. Spotify Wrapped for chess, basically.</p>
+<figure>
+<img src="/static/img/chess-detective/lichess-recap.png"
+     alt="My Lichess recap for 2024. 2084 games played, 73484 moves played, 8 days and 16 hours spent playing, favourite time control was blitz, Ivanomran most played opponent, 170 puzzles solved, Sicilian Defence Alapin Variation most-played opening as white, Caro-Kann Defence Exchange Variation most-played as black."
+     class="centered">
+<figcaption>My Lichess Wrapped™.</figcaption>
+</figure>
+
+<p>I was struck by the question of whether it's possible to identify someone's profile based on the summary page of their Lichess recap. This turned out to be a lot easier than I expected, as all we really need to know is the most-played opponent and the number of games played.</p>
+<p>It all starts with the Lichess API. Lichess offers the following HTTPS endpoint for fetching someone's games:</p>
+<div class="codehilite"><pre><span></span><code>https://lichess.org/api/games/user/BLAH?since=1590969600000&amp;until=1591833599999
+</code></pre></div>
+
+<p>Here, <code>BLAH</code> is the username, while <code>since</code> and <code>until</code> specify the time period. Those numbers are unix timestamps, in milliseconds -- that is, the number of milliseconds that have passed since January 1st 1970. We can write a convenience function to spit out the unix timestamp for a given date.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="k">def</span> <span class="nf">epoch</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">1000</span><span class="o">*</span><span class="nb">int</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">timestamp</span><span class="p">())</span>
+
+<span class="c1"># REPL test.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">epoch</span><span class="p">(</span><span class="s2">&quot;2024-01-01&quot;</span><span class="p">)</span>
+<span class="mi">1704067200000</span>
+</code></pre></div>
+
+<p>(This is all Python, by the way).</p>
+<p>Next, another convenience function. This one assembles the URL and query string, given a username and range of dates.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_lichess_url</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;https://lichess.org/api/games/user/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;?since=</span><span class="si">{</span><span class="n">epoch</span><span class="p">(</span><span class="n">start_date</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;&amp;until=</span><span class="si">{</span><span class="n">epoch</span><span class="p">(</span><span class="n">end_date</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">get_lichess_url</span><span class="p">(</span><span class="s2">&quot;BlunderJan&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2025-01-01&quot;</span><span class="p">)</span>
+<span class="s1">&#39;https://lichess.org/api/games/user/BlunderJan?[...]&#39;</span>
+</code></pre></div>
+
+<p>And here's a 1-line function to download all of someone's games in a given year, using the <code>requests</code> library and the convenience function we wrote before. The return value of this function, <code>r.content</code>, should be a bytestring containing the <a href="https://en.wikipedia.org/wiki/Portable_Game_Notation">PGN</a> (Portable Game Notation) data for all the games.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="k">def</span> <span class="nf">download_games</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">get_lichess_url</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">-01-01&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">year</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">-01-01&quot;</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">content</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="n">download_games</span><span class="p">(</span><span class="s2">&quot;kpgiskpg&quot;</span><span class="p">,</span> <span class="mi">2024</span><span class="p">)</span> <span class="c1"># it&#39;s me!</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span>
+<span class="sa">b</span><span class="s1">&#39;[Event &quot;Rated bullet game&quot;]</span><span class="se">\n</span><span class="s1">[Site &quot;https://lichess.org/3sEETUVO&quot;]</span><span class="se">\n</span><span class="s1">[...]&#39;</span>
+</code></pre></div>
+
+<p>At this point we have the PGN data stored in a variable called <code>s</code>. The following code reads all the games contained therein and counts how many times the given user (the most-played opponent of our mystery profile) played each opponent. We use the <code>chess</code> package to read PGN data.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">chess.pgn</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+
+<span class="c1"># The chess API expects to receive a stream of characters, so first</span>
+<span class="c1"># convert the bytestring to a string and then wrap it in a streamy thing.</span>
+<span class="n">stream</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+<span class="c1"># Like a regular dictionary, but if a key (i.e. a username) isn&#39;t present</span>
+<span class="c1"># when we try to access it, then defaultdict gives it an initial value of 0.</span>
+<span class="n">counts</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="n">game</span> <span class="o">=</span> <span class="n">chess</span><span class="o">.</span><span class="n">pgn</span><span class="o">.</span><span class="n">read_game</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">game</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">break</span>
+    <span class="c1"># Add 1 to the game count for the player who IS NOT the</span>
+    <span class="c1"># player whose games we&#39;re analysing.</span>
+    <span class="n">counts</span><span class="p">[</span><span class="n">game</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Black&quot;</span><span class="p">]</span>
+           <span class="k">if</span> <span class="n">game</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;White&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;kpgiskpg&quot;</span>
+           <span class="k">else</span> <span class="n">game</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;White&quot;</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
+</code></pre></div>
+
+<p>Finally, we create a ranked list of all the opponents based on the number of games played, and display them. This <em>almost</em> gives us the result: if user B is user A's most-played opponent, then user A is likely to be high in the ranking of user B's opponents.</p>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">ranked</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">counts</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ranked</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span class="p">[(</span><span class="s2">&quot;MostPlayedOpponent&quot;</span><span class="p">,</span> <span class="mi">12345</span><span class="p">),</span>
+ <span class="p">(</span><span class="s2">&quot;SecondMostPlayedOpponent&quot;</span><span class="p">,</span> <span class="mi">12344</span><span class="p">),</span>
+ <span class="o">...</span><span class="p">]</span>
+</code></pre></div>
+
+<p>If we wanted, we could then iterate through these players until we found someone who played exactly the number of games shown in the recap, reusing our <code>download_games</code> function to calculate that. I'm going to stop here, however, because... well... let's say, hypothetically, that I was curious to find someone's Lichess profile, and that, hypothetically, at this point in the search, a username turned up near the top of the list that was obviously theirs. While that's just a hypothetical scenario, the last piece of the puzzle is still left as an exercise for the reader.</p>
+<p>Moral of the story: if you want to share your Lichess recap without revealing your Lichess profile, then you should obscure the most-played opponent. Another thing you should probably do is add a random offset to all the numbers in the recap, since they could also be used to uniquely identify your profile if someone is obsessed enough to trawl through the entire Lichess userbase.</p>
+<p>By the way, this is my 50th blog post! Woohoo! 🎉 Stay tuned for post #51, which will be about graphics livecoding with Common Lisp.</p>
+<hr>
+<a href="/blog/rc-reflections.html">&lt;&lt; previous</a>
+<ul>
+<li><a href="/blog.html">Back to blog</a></li>
+<li><a href="/feed.xml">RSS feed</a></li>
+</ul>
+<p>I'd be happy to hear from you at <i>galligankevinp@gmail.com</i>.</p>
+
+</body>
+</html>

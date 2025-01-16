@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Graphics livecoding in Common Lisp</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+
+<meta property="og:description" content="Developing a graphics application (Boids) without restarting it." /> 
+<meta property="og:image" content="https://kevingal.com/static/img/thumbnail.jpg" />
+<meta name="thumbnail" content="/static/img/thumbnail.jpg" />
+
+<link rel="stylesheet" href="/static/css/pygments.css">
+
+<meta property="description" content="Developing a graphics application (Boids) without restarting it.">
+
+<link rel="stylesheet" href="/static/css/blog.css">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon.ico">
+</head>
+<body>
+    <header>
+        <div data-nosnippet class="navbar">
+        <nav>
+        <a href="/index.html" class="navlink">about</a>
+        • <a href="/blog.html" class="navlink">blog</a>
+        • <a href="/projects.html" class="navlink">projects</a>
+        • <a href="/feed.xml" class="navlink">rss</a>
+        </nav>
+        </div>
+    </header>
+
+<h2 class="post-title">Graphics livecoding in Common Lisp</h2>
+<h3 class="post-date">2025-01-06</h3>
+<h3 class="post-date">Developing a graphics application (Boids) without restarting it.</h3>
+<p>Tags: <a href="/blog/tag/lisp.html">lisp</a> <a href="/blog/tag/programming.html">programming</a> </p>
+
+<hr>
+<p>Some Lisps, like Common Lisp, have a powerful feature that tends to go underappreciated amidst all the hullabaloo about macros: the ability to recompile your program while it's running, without restarting it. For the purposes of this post, and because it sounds cool, let's call this ability <em>livecoding</em><sup id="fnref:livecod"><a class="footnote-ref" href="#fn:livecod">1</a></sup>.</p>
+<p>Entering this strange land where the programs never stop, we'll first take a brief tour of Common Lisp and one of its graphics frameworks, Sketch, before ultimately walking through a livecoded implementation of the <a href="https://en.wikipedia.org/wiki/Boids">Boids algorithm</a> for simulating animal flocking behaviour.</p>
+<figure>
+<video loop autoplay muted class="centered">
+  <source src="/static/img/cl-livecoding/boids-sample.mp4" type="video/mp4">
+</video> 
+<figcaption>Boids!</figcaption>
+</figure>
+
+<h3 id="wait-whats-this-livecoding-thing-again">"Wait, what's this livecoding thing again?"</h3>
+<p>Consider the typical workflow needed to make a small change to some long-running application, like a videogame.</p>
+<ol>
+<li>Stop the application.</li>
+<li>Change the code.</li>
+<li>(If a compiled language) Wait N time units for a full recompilation.</li>
+<li>Start the application again.</li>
+<li>Interact with the application to get it back to its previous state.</li>
+<li>Carry on.</li>
+</ol>
+<p>In a livecoding environment, the application is never stopped, which immediately eliminates steps 1, 4 and 5. Instead, small code changes are immediately reflected in the running program. Step 3 is often instantaneous because only the changed parts of the program must be recompiled. In theory, then, you can develop an entire application while it continuously runs in the background, without ever waiting for code to recompile. This makes the development process more fluid, with minimal downtime.</p>
+<p>In Common Lisp, the workflow would look something like this:</p>
+<ol>
+<li>Make a small change to a single function.</li>
+<li>Recompile the function (instantaneous).</li>
+<li>Carry on.</li>
+</ol>
+<p>It's possible to emulate livecoding in languages that don't support it. For example, a scripting language can be embedded inside the application, or the application can be made to restart itself whenever it detects a change to its source code. However, these approaches have obvious limitations compared to having first-class support in the language itself.</p>
+<p>Some examples of livecoding in action:</p>
+<ul>
+<li>Common Lisp and Emacs have been used as an environment for <a href="https://www.youtube.com/watch?v=EkYUU0UoB_0">live musical performance</a>.</li>
+<li>Lisp programs have been debugged remotely while running in <a href="https://corecursive.com/lisp-in-space-with-ron-garret/">deep space</a>.</li>
+<li>Later in the post, we'll step through that livecoded implementation of Boids I was talking about.</li>
+</ul>
+<h3 id="a-rough-sketch-of-common-lisp">A rough sketch of Common Lisp</h3>
+<p>Since we'll be exploring the livecoding concept using Common Lisp, this section provides a whirlwind tour of the language. If you're already a Common Lisp pro or just want to wing it, feel free to skip ahead.</p>
+<p>Common Lisp is the large, uncouth, pragmatic member of the Lisp family. It's often contrasted with its smaller, supposedly more elegant sibling, Scheme. Its ANSI specification dates back to 1994. There are multiple implementations of this standard: SBCL compiles to machine code, ECL transpiles to C, Clasp compiles to LLVM IR, and ABCL targets the JVM, to name a few. SBCL is the most performant and widely-used implementation. It tends to be about as fast as Java in benchmarks.</p>
+<p>Here's a Common Lisp function to add together two numbers.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nb">defun</span> <span class="nv">add</span> <span class="p">(</span><span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">+</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">))</span>
+</code></pre></div>
+
+<p>And here's how you'd invoke it in the REPL:</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">CL-USER&gt;</span> <span class="p">(</span><span class="nv">add</span> <span class="mi">1</span> <span class="mi">2</span><span class="p">)</span>
+<span class="mi">3</span>
+</code></pre></div>
+
+<p>Some notes to accompany our first function:</p>
+<ul>
+<li>All Lisp code is in the form of <em>lists</em> and <em>atoms</em>.</li>
+<li>The lists are delimited by <code>(</code> and <code>)</code>, hence why Lisp is known to some as "that parentheses language"<sup id="fnref:pars"><a class="footnote-ref" href="#fn:pars">2</a></sup>. More specifically, these are <em>linked</em> lists, i.e. a sequence of cells where each cell contains a pointer to the next one.</li>
+<li>Atoms are all the things that aren't lists, like numbers and strings and symbols.</li>
+<li>The simplicity of the syntax is what makes Lisp macros so powerful! But that's a topic for another day... or Appendix A, below.</li>
+<li><code>defun</code> is a <em>symbol</em>, a data structure for representing the names of things. The name "defun" stands for "define function".</li>
+<li><code>add</code> is another symbol, representing the function name.</li>
+<li><code>x</code> and <code>y</code> are the function parameters. Also symbols.</li>
+<li><code>(+ x y)</code> calls the function <code>+</code>, with <code>x</code> and <code>y</code> as arguments. There's no distinction between "operators" and "functions", as you might expect from other languages. Instead, when a list is evaluated in Lisp, it's treated as a function call where the first element of the list is the function, and the remaining elements are the arguments.</li>
+</ul>
+<p>Local variables are usually introduced using the <code>let</code> form. The last value in the body of the <code>let</code> is returned as its result.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">x</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="p">(</span><span class="nv">y</span> <span class="mi">2</span><span class="p">))</span>
+  <span class="p">(</span><span class="nb">+</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">))</span> <span class="c1">; returns 3</span>
+</code></pre></div>
+
+<p>Global variables, if needed, can be defined using <code>defvar</code> or <code>defparameter</code>. To avoid clashing with local variables, their names are, by convention, given "earmuffs" (surrounded by asterisks).</p>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nb">defparameter</span> <span class="vg">*global-var-bad*</span> <span class="mi">42</span><span class="p">)</span>
+</code></pre></div>
+
+<p>There's a fairly sophisticated object system, which we don't have to worry too much about today, but I'll just mention it for completeness.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nb">defclass</span> <span class="nv">foo</span> <span class="p">(</span><span class="nv">some-superclass</span><span class="p">)</span>
+  <span class="p">((</span><span class="nv">x</span> <span class="ss">:initarg</span> <span class="ss">:x</span> <span class="ss">:initform</span> <span class="mi">0</span> <span class="ss">:accessor</span> <span class="nv">x</span><span class="p">)</span>
+   <span class="p">(</span><span class="nv">y</span> <span class="ss">:initarg</span> <span class="ss">:y</span> <span class="ss">:initform</span> <span class="mi">3</span><span class="p">))</span>
+
+<span class="c1">;; Make an instance of the class.</span>
+<span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">blah</span> <span class="p">(</span><span class="nb">make-instance</span> <span class="ss">&#39;foo</span> <span class="ss">:x</span> <span class="mi">5</span><span class="p">)))</span>
+  <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nv">x</span> <span class="nv">blah</span><span class="p">)</span> <span class="mi">1</span><span class="p">))</span> <span class="c1">; returns 6</span>
+</code></pre></div>
+
+<p>And there are generic functions that dispatch on the types of the arguments they receive.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nb">defgeneric</span> <span class="nv">flerb</span> <span class="p">(</span><span class="nv">x</span><span class="p">))</span>
+<span class="p">(</span><span class="nb">defmethod</span> <span class="nv">flerb</span> <span class="p">((</span><span class="nv">f</span> <span class="nv">foo</span><span class="p">))</span>
+  <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nv">x</span> <span class="nv">f</span><span class="p">)</span> <span class="mi">1</span><span class="p">))</span>
+<span class="p">(</span><span class="nv">flerb</span> <span class="p">(</span><span class="nb">make-instance</span> <span class="ss">&#39;foo</span> <span class="ss">:x</span> <span class="mi">2</span><span class="p">))</span> <span class="c1">; returns 3</span>
+</code></pre></div>
+
+<p>Lastly, here are two ways to calculate the sum of a list, one using a loop and the other using a reduction. This demonstrates that Common Lisp is really a multi-paradigm language. It supports looping and mutating state and all the joys/horrors of imperative programming, and also a more functional style!</p>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">sum</span> <span class="mi">0</span><span class="p">))</span>
+  <span class="p">(</span><span class="nb">loop</span> <span class="nv">for</span> <span class="nv">x</span> <span class="nv">in</span> <span class="p">(</span><span class="nb">list</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="nb">do</span> <span class="p">(</span><span class="nb">setf</span> <span class="nv">sum</span> <span class="p">(</span><span class="nb">+</span> <span class="nv">sum</span> <span class="nv">x</span><span class="p">)))</span>
+  <span class="nv">sum</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nb">reduce</span> <span class="nf">#&#39;</span><span class="nb">+</span> <span class="p">(</span><span class="nb">list</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span>
+</code></pre></div>
+
+<p>A big selling-point of Lisp is its macros, but I've expelled any discussion of those to Appendix A below.</p>
+<h3 id="a-rough-sketch-of-sketch">A rough sketch of Sketch</h3>
+<p><a href="https://github.com/vydd/sketch">Sketch</a> is the graphics framework we'll be developing Boids in. It's based on the Processing API, so if you've ever used Processing or p5js, then this should be very familiar to you.</p>
+<p>The main interface to Sketch is the <code>defsketch</code> macro. The code below generates a "sketch" called <code>my-sketch</code>.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nv">defsketch</span> <span class="nv">my-sketch</span>
+    <span class="p">((</span><span class="nv">width</span> <span class="mi">200</span><span class="p">)</span>
+     <span class="p">(</span><span class="nv">height</span> <span class="mi">200</span><span class="p">)</span>
+     <span class="p">(</span><span class="nv">n</span> <span class="mi">5</span><span class="p">))</span>
+  <span class="nv">[...drawing</span> <span class="nv">code...]</span><span class="p">)</span>
+</code></pre></div>
+
+<p>After the name of the sketch comes a list of bindings that define its state and configuration; here, the configuration parameters <code>width</code> and <code>height</code>, which determine the dimensions of the window, are set to <code>200</code>, while <code>n</code> is another state parameter of the sketch.</p>
+<p>Then comes the drawing code. This gets run in a loop while the sketch is running. For example, we could swap out <code>[...drawing code...]</code> for the following snippet, and on every frame we would see 5 red circles, each of radius 10, drawn on a black background in random positions.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nv">background</span> <span class="nv">+black+</span><span class="p">)</span>
+<span class="p">(</span><span class="nb">loop</span> <span class="nv">repeat</span> <span class="nv">n</span>
+      <span class="nb">do</span> <span class="p">(</span><span class="nv">with-pen</span> <span class="p">(</span><span class="nv">make-pen</span> <span class="ss">:fill</span> <span class="nv">+red+</span><span class="p">)</span>
+           <span class="p">(</span><span class="nv">circle</span> <span class="p">(</span><span class="nb">random</span> <span class="nv">width</span><span class="p">)</span> <span class="p">(</span><span class="nb">random</span> <span class="nv">height</span><span class="p">)</span> <span class="mi">10</span><span class="p">)))</span>
+</code></pre></div>
+
+<p>The all-powerful <code>loop</code> macro is used to repeatedly draw circles. <code>with-pen</code> sets the "pen" that determines the appearance (fill colour, stroke colour, ...) of whatever gets drawn inside the body of <code>with-pen</code>.</p>
+<p>Here's all the code together:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nv">defsketch</span> <span class="nv">my-sketch</span>
+    <span class="p">((</span><span class="nv">width</span> <span class="mi">200</span><span class="p">)</span>
+     <span class="p">(</span><span class="nv">height</span> <span class="mi">200</span><span class="p">)</span>
+     <span class="p">(</span><span class="nv">n</span> <span class="mi">5</span><span class="p">))</span>
+  <span class="p">(</span><span class="nv">background</span> <span class="nv">+black+</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">loop</span> <span class="nv">repeat</span> <span class="nv">n</span>
+        <span class="nb">do</span> <span class="p">(</span><span class="nv">with-pen</span> <span class="p">(</span><span class="nv">make-pen</span> <span class="ss">:fill</span> <span class="nv">+red+</span><span class="p">)</span>
+             <span class="p">(</span><span class="nv">circle</span> <span class="p">(</span><span class="nb">random</span> <span class="nv">width</span><span class="p">)</span> <span class="p">(</span><span class="nb">random</span> <span class="nv">height</span><span class="p">)</span> <span class="mi">10</span><span class="p">))))</span>
+</code></pre></div>
+
+<p>Finally, to run the sketch, we execute <code>(run-sketch 'my-sketch)</code> from the REPL.</p>
+<figure>
+<img src="/static/img/cl-livecoding/sketch-sample.gif"
+     alt="The result: red circles flashing on a black background."
+     class="centered">
+<figcaption>Art.</figcaption>
+</figure>
+
+<p>That's all we need to know about Sketch for now!</p>
+<h3 id="livecoding-boids">Livecoding Boids</h3>
+<p>TODO:</p>
+<ul>
+<li>Go through recording, extract clips somehow.</li>
+</ul>
+<p><a href="https://vergenet.net/~conrad/boids/pseudocode.html">https://vergenet.net/~conrad/boids/pseudocode.html</a></p>
+<h3 id="appendix-a-macros-in-lisp">Appendix A: Macros in Lisp</h3>
+<p>Any Lisp program can be represented inside another Lisp program as a simple data structure, either an <em>atom</em> (like <code>1</code> or <code>hi</code>) or a <em>list</em> of atoms (like <code>(1 (2 x))</code>). Lisp macros are functions that accept other Lisp code as input (in the form of an atom or list), and generate new Lisp code as output. Macros can do everything that other Lisp functions can do, except they're executed when code is being loaded/compiled rather than when it's evaluated.</p>
+<p>To give a quick demonstration, here's a function to add 2 numbers together in Common Lisp.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nb">defun</span> <span class="nv">add</span> <span class="p">(</span><span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">+</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">))</span>
+</code></pre></div>
+
+<p>And here's the same code as a Lisp data structure.</p>
+<div class="codehilite"><pre><span></span><code><span class="o">&#39;</span><span class="p">(</span><span class="nb">defun</span> <span class="nv">add</span> <span class="p">(</span><span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">+</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">))</span>
+</code></pre></div>
+
+<p>Note that this looks almost exactly the same as before, except the apostrophe before the opening bracket tells the Lisp compiler not to evaluate the code (which would define the "add" function", but to instead just return the given list.</p>
+<p>The resulting list, whose first element is the symbol <code>defun</code>, contains: 1. atoms, like <code>defun</code> and <code>+</code>; and 2. nested lists, like <code>(x y)</code>. This data structure can be passed around to other functions, chopped up, and put back together again in any way imaginable. </p>
+<p>Now, here's a macro that takes a list of Lisp forms and reverses them. If <code>defmacro</code> were swapped for <code>defun</code>, this would become a function that reverses the items in a list.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nb">defmacro</span> <span class="nv">rev</span> <span class="p">(</span><span class="nv">c</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">reverse</span> <span class="nv">c</span><span class="p">))</span>
+</code></pre></div>
+
+<p>With this macro, we can generate our <code>add</code> function from before by writing it backwards:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nv">rev</span> <span class="p">((</span><span class="nb">+</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span> <span class="p">(</span><span class="nv">x</span> <span class="nv">y</span><span class="p">)</span> <span class="nv">add</span> <span class="nb">defun</span><span class="p">))</span>
+</code></pre></div>
+
+<p>And now we can call it in the REPL.</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">CL-USER&gt;</span> <span class="p">(</span><span class="nv">add</span> <span class="mi">1</span> <span class="mi">2</span><span class="p">)</span>
+<span class="mi">3</span>
+</code></pre></div>
+
+<p>This particular example isn't very useful, but it gives you a sense of what's possible with these programmable macros. Macros can be used to extend the language syntax, make domain-specific languages, AND MORE!</p>
+<h3 id="graveyard">Graveyard</h3>
+<p>Lisp programs are typically written alongside a REPL (Read-Eval-Print Loop), which can be used to test small pieces of the program as it's being written. Assuming the REPL isn't crap, it should be possible to redefine an individual function and immediately see the effects of its new definition in the running program.</p>
+<p>Another useful livecoding feature, specific to Common Lisp and enshrined in its 1994 ANSI standard, is the ability to define what happens to existing instances of a class when the definition of that class gets recompiled. So not only can the behaviour of a program be updated on the fly, but also its state.</p>
+<p>Common Lisp also does interactive debugging really well. Inevitably, 
+TODO: interactive debugging, stacktrace -&gt; fix function -&gt; recompile it -&gt; resume execution.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:livecod">
+<p>See the <a href="https://en.wikipedia.org/wiki/Live_coding">Wiki page</a>, and also <a href="https://en.wikipedia.org/wiki/Interactive_programming">interactive programming</a>.&#160;<a class="footnote-backref" href="#fnref:livecod" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:pars">
+<p>Many people are scared by the abundance of parentheses in Lisp code, but experienced Lispers barely even notice the parentheses. Indentation tells you what you need to know about the code structure, while code editors keep the parentheses balanced, so the parentheses are really only there for the compiler's sake. If you ever find yourself counting parentheses, you're probably doing something wrong... unless you enjoy that sort of thing.&#160;<a class="footnote-backref" href="#fnref:pars" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+<hr>
+
+<ul>
+<li><a href="/blog.html">Back to blog</a></li>
+<li><a href="/feed.xml">RSS feed</a></li>
+</ul>
+<p>I'd be happy to hear from you at <i>galligankevinp@gmail.com</i>.</p>
+
+</body>
+</html>
