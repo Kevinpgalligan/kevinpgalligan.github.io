@@ -33,10 +33,10 @@
     </header>
 
 <h2 class="post-title">Graphics livecoding in Common Lisp</h2>
-<h3 class="post-date">2025-01-06</h3>
+<h3 class="post-date">2025-04-23</h3>
 <h3 class="post-date">Developing a Boids program from scratch without restarting it.</h3>
 <p>Tags: <a href="/blog/tag/lisp.html">lisp</a> <a href="/blog/tag/programming.html">programming</a> <a href="/blog/tag/artsy.html">artsy</a> </p>
-
+<a href="/blog/chess-detective.html">&lt;&lt; previous</a>
 <hr>
 <p>Some Lisps, like Common Lisp, have a powerful feature that tends to go underappreciated amidst all the talk about macros: the ability to recompile your program while it's running, without restarting it. For the purposes of this post, and because it sounds cool, let's call this ability <em>livecoding</em><sup id="fnref:livecod"><a class="footnote-ref" href="#fn:livecod">1</a></sup>.</p>
 <p>Entering this strange land where the programs never stop, we'll first take a brief tour of Common Lisp and one of its graphics frameworks, Sketch, before walking through a livecoded implementation of the <a href="https://en.wikipedia.org/wiki/Boids">Boids algorithm</a>.</p>
@@ -48,7 +48,7 @@
 </figure>
 
 <h3 id="wait-what-exactly-is-this-livecoding-thing">"Wait, what exactly is this livecoding thing?"</h3>
-<p>Consider the typical workflow needed to modify a long-running application, like a videogame.</p>
+<p>Consider the typical workflow needed to modify a running application, like a videogame.</p>
 <ol>
 <li>Stop the application.</li>
 <li>Change the code.</li>
@@ -57,7 +57,7 @@
 <li>Fiddle with the application to get it back to its previous state.</li>
 <li>Carry on.</li>
 </ol>
-<p>In a livecoding environment, the application is never stopped, which immediately eliminates steps 1, 4 and 5. Instead, small code changes are immediately reflected in the running program. Step 3 is often instantaneous because only the changed parts of the program must be recompiled. In theory, then, you can develop an entire application while it continuously runs in the background, without ever waiting for code to recompile. This makes the development process more fluid and interactive, with minimal downtime.</p>
+<p>In a livecoding environment, the application is never stopped, which eliminates steps 1, 4 and 5. Instead, small code changes (which can be as granular as recompiling a single function) are immediately reflected in the running program. Step 3 is often instantaneous because only the changed parts of the program must be recompiled. In theory, then, you can develop an entire application while it continuously runs in the background, without ever waiting for code to recompile. This makes the development process more fluid and interactive, with minimal downtime.</p>
 <p>In Common Lisp, the workflow might look something like this:</p>
 <ol>
 <li>Make a small change to a single function.</li>
@@ -76,7 +76,7 @@
   <span class="p">)</span>
 </code></pre></div>
 
-<p>After the name of the sketch comes a list of bindings that define its state and configuration. Here, the configuration parameters <code>width</code> and <code>height</code>, which determine the dimensions of the window, are set to <code>200</code>, while <code>n</code> is an attribute we've added for our own use.</p>
+<p>After the name of the sketch comes a list of bindings that define its state and configuration. Here, the window properties <code>width</code> and <code>height</code> are set to <code>200</code>, while <code>n</code> is an attribute we've added for our own use.</p>
 <p>Then comes the drawing code. This gets run in a loop while the sketch is running, once per frame. The following snippet draws 5 red circles on a black background, each of radius 10 and in random positions.</p>
 <div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nv">background</span> <span class="nv">+black+</span><span class="p">)</span>
 <span class="p">(</span><span class="nb">loop</span> <span class="nv">repeat</span> <span class="nv">n</span>
@@ -159,9 +159,12 @@
 </video>
 
 <p>...we get an error! Woops. </p>
+<figure>
 <video loop autoplay muted class="centered">
   <source src="/static/video/cl-livecoding/boids-2-missing-draw.mp4" type="video/mp4">
-</video>
+</video> 
+<figcaption>Before: gray canvas. After: red error screen.</figcaption>
+</figure>
 
 <p>But of course! We forgot to define <code>draw-boids</code>. The program doesn't crash, however, and we'll soon be able to recover from this setback.</p>
 <p>Here's an implementation of <code>draw-boids</code>. We don't need to get into the weeds of how it works. For each boid, it does some unwieldy vector math to figure out which direction the boid is facing and draws a triangle pointing in that direction.</p>
@@ -189,9 +192,12 @@
 </code></pre></div>
 
 <p>As soon as we compile <code>draw-boids</code>, the error screen disappears and our lovely boids are drawn into place. And we didn't have to restart the program to fix it!</p>
+<figure>
 <video loop autoplay muted class="centered">
   <source src="/static/video/cl-livecoding/boids-3-define-draw.mp4" type="video/mp4">
-</video>
+</video> 
+<figcaption>Before: red error screen. After: boids are drawn.</figcaption>
+</figure>
 
 <p>There are two Common Lisp features that enable us to fix errors on-the-fly like we've done here:</p>
 <ol>
@@ -252,14 +258,14 @@
 </span><span class="hll">   <span class="nv">v-sum</span><span class="p">))</span>
 </span></code></pre></div>
 
-<p>(Note: the vector functions ending in <code>!</code>, like <code>v+!</code>, follow the convention of using the first argument to store the result).</p>
+<p>(Note: the vector functions ending in <code>!</code>, like <code>v+!</code>, follow the convention of storing the result in the vector passed as the first argument).</p>
 <p>When we recompile this function...</p>
 <video loop autoplay muted class="centered">
   <source src="/static/video/cl-livecoding/boids-4-first-rule.mp4" type="video/mp4">
 </video>
 
 <p>...a pair of boids that happen to be too close to each other are sent flying off into the void. There's no counterforce to bring them back, just yet.</p>
-<p>Next, we implement <code>rule-2</code>: boids should fly towards the average position of other boids. Our implementation could be more efficient by summing the boid positions just once, rather than doing it for every single boid, but who the hell cares.</p>
+<p>Next, we implement <code>rule-2</code>: boids should fly towards the average position of other boids. Our implementation could be more efficient by summing the boid positions just once, rather than doing it for every single boid, but I can't be bothered.</p>
 <div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nb">defun</span> <span class="nv">rule2</span> <span class="p">(</span><span class="nv">boid</span> <span class="nv">boids</span><span class="p">)</span>
 <span class="hll">  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">center</span> <span class="p">(</span><span class="nv">vec2</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">)))</span>
 </span><span class="hll">    <span class="p">(</span><span class="nb">map</span> <span class="no">nil</span>
@@ -278,7 +284,7 @@
   <source src="/static/video/cl-livecoding/boids-5-second-rule.mp4" type="video/mp4">
 </video>
 
-<p>Yes! This is starting to look vaguely Boids-like. Let's add the final rule, <code>rule-3</code>: boids should match their velocity to all the other boids. Implementation note: we probably shouldn't update the velocities until all the new velocities have been calculated, but this doesn't seem to matter too much.</p>
+<p>Yes! This is starting to look vaguely like Boids. Let's add the final rule, <code>rule-3</code>: boids should match their velocity to all the other boids. Implementation note: we probably shouldn't update the velocities until all the new velocities have been calculated, but this doesn't seem to matter too much.</p>
 <div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nb">defun</span> <span class="nv">rule3</span> <span class="p">(</span><span class="nv">boid</span> <span class="nv">boids</span><span class="p">)</span>
 <span class="hll">  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">result</span> <span class="p">(</span><span class="nv">vec2</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">)))</span>
 </span><span class="hll">    <span class="p">(</span><span class="nb">map</span> <span class="no">nil</span>
@@ -329,9 +335,9 @@
 <span class="hll">                                <span class="p">(</span><span class="nv">v-rescale</span> <span class="mf">0.1</span> <span class="p">(</span><span class="nv">v-</span> <span class="nv">mouse-pos</span> <span class="p">(</span><span class="nv">pos</span> <span class="nv">boid</span><span class="p">)))))))))</span>
 </span></code></pre></div>
 
-<p>And with that, we have a complete implementation of Boids! At the risk of beating a dead horse, I'll re-emphasise that we did the whole thing without once restarting our program or waiting for code to compile.</p>
+<p>And with that, we have a complete implementation of Boids! At the risk of beating a dead horse, I'll re-emphasise that we did the whole thing without once restarting our program or waiting a perceivable amount of time for code to compile.</p>
 <h3 id="closing-thoughts">Closing thoughts</h3>
-<p>I hope, in this brief demonstration of livecoding, I've given you a taste of how useful and fun this feature can be. Like I've said, it's not unique to Common Lisp, as at least Smalltalk and Erlang have similar capabilities. It's also possible to bridge the gap in less interactive languages by making applications automatically restart themselves when a code change is detected, or by bolting on a scripting language. Just do me a favour and ask yourself, the next time you're waiting the requisite time units for your code to recompile: <em>How can I make this workflow more interactive? How can I make it more... like Common Lisp?</em></p>
+<p>I hope, in this brief demonstration of livecoding, I've given you a taste of how useful and fun this feature can be, whether you're developing a graphics application or mundane accounting software. Like I've said, it's not unique to Common Lisp, as at least Smalltalk and Erlang have similar capabilities. It's also possible to bridge the gap in less interactive languages by making applications automatically restart themselves when a code change is detected, or by bolting on a scripting language. Just do me a favour and ask yourself, the next time you're waiting the requisite time units for your code to recompile: <em>How can I make this workflow more interactive? How can I make it more... like Common Lisp?</em></p>
 <!-- Just in case, here's the ffmpeg command I used to trim the screen recordings:
 ffmpeg -i input.mp4 -ss 2 -to 4 -async 1 cut.mp4 -->
 
@@ -347,7 +353,7 @@ ffmpeg -i input.mp4 -ss 2 -to 4 -async 1 cut.mp4 -->
 </ol>
 </div>
 <hr>
-
+<a href="/blog/chess-detective.html">&lt;&lt; previous</a>
 <ul>
 <li><a href="/blog.html">Back to blog</a></li>
 <li><a href="/feed.xml">RSS feed</a></li>

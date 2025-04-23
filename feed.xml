@@ -4,10 +4,330 @@
     <title>Kevin's Blog</title>
     <link>https://kevingal.com</link>
     <description>Maths, computers and stuff.</description>
-    <pubDate>Wed, 15 Jan 2025 00:00:00 GMT</pubDate>
-    <lastBuildDate>Wed, 15 Jan 2025 00:00:00 GMT</lastBuildDate>
+    <pubDate>Wed, 23 Apr 2025 00:00:00 GMT</pubDate>
+    <lastBuildDate>Wed, 23 Apr 2025 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://kevingal.com/feed.xml" rel="self" type="application/rss+xml" />
     
+    <item>
+        <title>Graphics livecoding in Common Lisp</title>
+        <description>&lt;p&gt;Some Lisps, like Common Lisp, have a powerful feature that tends to go underappreciated amidst all the talk about macros: the ability to recompile your program while it&#39;s running, without restarting it. For the purposes of this post, and because it sounds cool, let&#39;s call this ability &lt;em&gt;livecoding&lt;/em&gt;&lt;sup id=&#34;fnref:livecod&#34;&gt;&lt;a class=&#34;footnote-ref&#34; href=&#34;#fn:livecod&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;p&gt;Entering this strange land where the programs never stop, we&#39;ll first take a brief tour of Common Lisp and one of its graphics frameworks, Sketch, before walking through a livecoded implementation of the &lt;a href=&#34;https://en.wikipedia.org/wiki/Boids&#34;&gt;Boids algorithm&lt;/a&gt;.&lt;/p&gt;
+&lt;figure&gt;
+&lt;video loop autoplay muted class=&#34;centered&#34;&gt;
+  &lt;source src=&#34;/static/img/cl-livecoding/boids-sample.mp4&#34; type=&#34;video/mp4&#34;&gt;
+&lt;/video&gt; 
+&lt;figcaption&gt;Boids!&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;wait-what-exactly-is-this-livecoding-thing&#34;&gt;&#34;Wait, what exactly is this livecoding thing?&#34;&lt;/h3&gt;
+&lt;p&gt;Consider the typical workflow needed to modify a running application, like a videogame.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Stop the application.&lt;/li&gt;
+&lt;li&gt;Change the code.&lt;/li&gt;
+&lt;li&gt;(If a compiled language) Wait N time units for a full recompilation.&lt;/li&gt;
+&lt;li&gt;Start the application again.&lt;/li&gt;
+&lt;li&gt;Fiddle with the application to get it back to its previous state.&lt;/li&gt;
+&lt;li&gt;Carry on.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;In a livecoding environment, the application is never stopped, which eliminates steps 1, 4 and 5. Instead, small code changes (which can be as granular as recompiling a single function) are immediately reflected in the running program. Step 3 is often instantaneous because only the changed parts of the program must be recompiled. In theory, then, you can develop an entire application while it continuously runs in the background, without ever waiting for code to recompile. This makes the development process more fluid and interactive, with minimal downtime.&lt;/p&gt;
+&lt;p&gt;In Common Lisp, the workflow might look something like this:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Make a small change to a single function.&lt;/li&gt;
+&lt;li&gt;Recompile the function (instantaneous).&lt;/li&gt;
+&lt;li&gt;Carry on.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;For an example of this workflow in action, check out Common Lisp and Emacs being used as an environment for &lt;a href=&#34;https://www.youtube.com/watch?v=EkYUU0UoB_0&#34;&gt;live musical performance&lt;/a&gt;. You can hear about a Lisp program being debugged remotely while running in &lt;a href=&#34;https://corecursive.com/lisp-in-space-with-ron-garret/&#34;&gt;deep space&lt;/a&gt;. Livecoding (or hot reloading, or whatever you like to call it) is also available in other languages, like Smalltalk and Erlang.&lt;/p&gt;
+&lt;h3 id=&#34;a-rough-sketch-of-sketch&#34;&gt;A rough sketch of Sketch&lt;/h3&gt;
+&lt;p&gt;Before jumping into Boids, let&#39;s take a brief look at &lt;a href=&#34;https://github.com/vydd/sketch&#34;&gt;Sketch&lt;/a&gt;, our Common Lisp graphics framework of choice. We&#39;ll be more concerned with big ideas than with code minutiae, but if you&#39;re unfamiliar with Common Lisp and want to understand the code samples, then please take a detour through &lt;a href=&#34;https://learnxinyminutes.com/common-lisp/&#34;&gt;Learn Common Lisp in Y Minutes&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;So, Sketch. The Sketch API is heavily based on that of &lt;a href=&#34;https://processing.org/&#34;&gt;Processing&lt;/a&gt;. Its primary entry point is the &lt;code&gt;defsketch&lt;/code&gt; macro. The code below defines a &#34;sketch&#34; called &lt;code&gt;my-sketch&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;defsketch&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;my-sketch&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;width&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;200&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+     &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;height&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;200&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+     &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;n&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+  &lt;span class=&#34;c1&#34;&gt;;; ...drawing code here...&lt;/span&gt;
+  &lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;After the name of the sketch comes a list of bindings that define its state and configuration. Here, the window properties &lt;code&gt;width&lt;/code&gt; and &lt;code&gt;height&lt;/code&gt; are set to &lt;code&gt;200&lt;/code&gt;, while &lt;code&gt;n&lt;/code&gt; is an attribute we&#39;ve added for our own use.&lt;/p&gt;
+&lt;p&gt;Then comes the drawing code. This gets run in a loop while the sketch is running, once per frame. The following snippet draws 5 red circles on a black background, each of radius 10 and in random positions.&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;background&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;+black+&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;loop&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;repeat&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;n&lt;/span&gt;
+      &lt;span class=&#34;nb&#34;&gt;do&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;with-pen&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;make-pen&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:fill&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;+red+&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+           &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;circle&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;random&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;width&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;random&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;height&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;After painting the background black, the all-powerful &lt;code&gt;loop&lt;/code&gt; macro is used to draw &lt;code&gt;n&lt;/code&gt; circles. The &lt;code&gt;with-pen&lt;/code&gt; macro (defined by Sketch) configures drawing properties like fill colour, stroke width and stroke colour. It takes a &#34;pen&#34; object as an argument.&lt;/p&gt;
+&lt;p&gt;Here&#39;s all the code together:&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;defsketch&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;my-sketch&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;width&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;200&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+     &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;height&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;200&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+     &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;n&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+  &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;background&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;+black+&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+  &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;loop&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;repeat&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;n&lt;/span&gt;
+        &lt;span class=&#34;nb&#34;&gt;do&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;with-pen&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;make-pen&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:fill&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;+red+&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+             &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;circle&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;random&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;width&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;random&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;height&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Finally, to run the sketch, we compile our code and execute &lt;code&gt;(run-sketch &#39;my-sketch)&lt;/code&gt; from the REPL, resulting in...&lt;/p&gt;
+&lt;figure&gt;
+&lt;img src=&#34;/static/img/cl-livecoding/sketch-sample.gif&#34;
+     alt=&#34;The result: red circles flashing on a black background.&#34;
+     class=&#34;centered&#34;&gt;
+&lt;figcaption&gt;...art.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;That&#39;s all we need to know about Sketch for now!&lt;/p&gt;
+&lt;h3 id=&#34;livecoding-boids&#34;&gt;Livecoding Boids&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Boids&#34;&gt;Boids&lt;/a&gt; is an algorithm from 1986 for simulating flocks of birds. In its essence, it consists of applying 3 forces to the simulated birds. Quoting Wikipedia&lt;sup id=&#34;fnref:boidsref&#34;&gt;&lt;a class=&#34;footnote-ref&#34; href=&#34;#fn:boidsref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;, these forces are:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;separation: steer to avoid crowding local flockmates&lt;/li&gt;
+&lt;li&gt;cohesion: steer to move towards the average position (center of mass) of local flockmates&lt;/li&gt;
+&lt;li&gt;alignment: steer towards the average heading of local flockmates&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;How can we implement this ourselves? First, we need a canvas to draw on!&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;defsketch&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;width&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;400&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+     &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;height&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;400&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+     &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;restart-on-change&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;nil&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+  &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;background&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;gray-255&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;230&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The only mysterious thing in this code is the &lt;code&gt;restart-on-change&lt;/code&gt; parameter, which is available in my &lt;a href=&#34;https://github.com/Kevinpgalligan/sketch&#34;&gt;fork&lt;/a&gt; of Sketch. When its value is &lt;code&gt;nil&lt;/code&gt; (false), the sketch&#39;s state - like the boid positions - won&#39;t be reset when we recompile our code.&lt;/p&gt;
+&lt;p&gt;Compiling the defsketch form in Emacs (with the Ctrl-C Ctrl-C shortcut) and executing &lt;code&gt;(run-sketch &#39;boids)&lt;/code&gt; at the REPL gives us... 🥁... a gray background. Wonderful.&lt;/p&gt;
+&lt;figure&gt;
+&lt;img src=&#34;/static/img/cl-livecoding/boids-1-canvas.png&#34;
+     alt=&#34;A light-gray background.&#34;
+     class=&#34;centered&#34;&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;(Note: all going well, this modest window will run continuously throughout the entire development lifecycle).&lt;/p&gt;
+&lt;p&gt;Now let&#39;s create some boids to populate our world. We add a &lt;code&gt;boid&lt;/code&gt; class to store their position and velocity, as well as a convenience function &lt;code&gt;make-boid&lt;/code&gt; to create a boid from x &amp;amp; y co-ordinates. These rely on a hopefully self-explanatory implementation of 2d vectors, which are created using the &lt;code&gt;vec2&lt;/code&gt; function.&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;defclass&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+  &lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;pos&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:initarg&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:pos&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:accessor&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;pos&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+   &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;velocity&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:initarg&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:velocity&lt;/span&gt;
+             &lt;span class=&#34;ss&#34;&gt;:initform&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;vec2&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+             &lt;span class=&#34;ss&#34;&gt;:accessor&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;velocity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))&lt;/span&gt;
+
+&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;defun&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;make-boid&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+  &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;make-instance&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;#39;boid&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;:pos&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;vec2&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;To the sketch itself, we add 20 boids in random positions, and pass them to the &lt;code&gt;draw-boids&lt;/code&gt; function in the drawing loop.&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;defsketch&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;width&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;400&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+     &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;height&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;400&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+     &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;restart-on-change&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;nil&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;hll&#34;&gt;     &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;loop&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;repeat&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;20&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;                  &lt;span class=&#34;nv&#34;&gt;collect&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;make-boid&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;random&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;width&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;random&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;height&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))))&lt;/span&gt;
+&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;background&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;gray-255&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;230&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;hll&#34;&gt;  &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;draw-boids&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If we then recompile defsketch (with Ctrl-C Ctrl-C)... &lt;/p&gt;
+&lt;video loop autoplay muted class=&#34;centered&#34;&gt;
+  &lt;source src=&#34;/static/video/cl-livecoding/boids-2-missing-draw-compile.mp4&#34; type=&#34;video/mp4&#34;&gt;
+&lt;/video&gt;
+
+&lt;p&gt;...we get an error! Woops. &lt;/p&gt;
+&lt;figure&gt;
+&lt;video loop autoplay muted class=&#34;centered&#34;&gt;
+  &lt;source src=&#34;/static/video/cl-livecoding/boids-2-missing-draw.mp4&#34; type=&#34;video/mp4&#34;&gt;
+&lt;/video&gt; 
+&lt;figcaption&gt;Before: gray canvas. After: red error screen.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;But of course! We forgot to define &lt;code&gt;draw-boids&lt;/code&gt;. The program doesn&#39;t crash, however, and we&#39;ll soon be able to recover from this setback.&lt;/p&gt;
+&lt;p&gt;Here&#39;s an implementation of &lt;code&gt;draw-boids&lt;/code&gt;. We don&#39;t need to get into the weeds of how it works. For each boid, it does some unwieldy vector math to figure out which direction the boid is facing and draws a triangle pointing in that direction.&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;defun&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;draw-boids&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+  &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;boid-width&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+        &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;boid-length&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;20&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;loop&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;
+          &lt;span class=&#34;nb&#34;&gt;do&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;with-slots&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;pos&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;velocity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt;
+               &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;with-pen&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;:fill&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;+black+&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+                 &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;let*&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;dir&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;zerop&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v-length&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;velocity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+                                 &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;vec2&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;-1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+                                 &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v-normalise&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;velocity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))&lt;/span&gt;
+                        &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;p1&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v+&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;pos&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v-rescale&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;/&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid-length&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))&lt;/span&gt;
+                        &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;p2&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v+&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;pos&lt;/span&gt;
+                                &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v-rescale&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;/&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid-length&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+                                &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v-rescale&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;/&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid-width&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+                                           &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;perpendicular-anticlockwise&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))))&lt;/span&gt;
+                        &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;p3&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v+&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;pos&lt;/span&gt;
+                                &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v-rescale&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;/&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid-length&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+                                &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v-rescale&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;/&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid-width&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+                                           &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;perpendicular-clockwise&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))))&lt;/span&gt;
+                   &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;polygon&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;vx&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;p1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;vy&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;p1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+                            &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;vx&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;p2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;vy&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;p2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+                            &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;vx&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;p3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;vy&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;p3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))))))))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;As soon as we compile &lt;code&gt;draw-boids&lt;/code&gt;, the error screen disappears and our lovely boids are drawn into place. And we didn&#39;t have to restart the program to fix it!&lt;/p&gt;
+&lt;figure&gt;
+&lt;video loop autoplay muted class=&#34;centered&#34;&gt;
+  &lt;source src=&#34;/static/video/cl-livecoding/boids-3-define-draw.mp4&#34; type=&#34;video/mp4&#34;&gt;
+&lt;/video&gt; 
+&lt;figcaption&gt;Before: red error screen. After: boids are drawn.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;There are two Common Lisp features that enable us to fix errors on-the-fly like we&#39;ve done here:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Newly compiled code, and recompiled code, is immediately loaded (sometimes called &#34;hot reloading&#34;) into the running program. This opens up possibilities such as optimising a program as it runs, tweaking parameters like gravitational force and background colour, and iteratively developing a GUI.&lt;/li&gt;
+&lt;li&gt;The condition system! This is somewhat like exception handling in other languages, but more powerful. Not only can we signal exceptional situations (&#34;conditions&#34;), but we can also define &#34;restarts&#34; for recovering from those situations. When a running Common Lisp program encounters an unhandled condition, control passes to the debugger, and the user is presented with a selection of restarts. Perhaps they want to recompile the offending function and continue execution from the previous stack frame. Or perhaps the error was a division by zero, and the offending function provides a restart that swaps in a value of 1 for the divisor. Suddenly, there are a lot more possibilities than just crashing the program.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Anyway, a worthy discussion of the condition system would take up a full blog post of its own. Back to Boids!&lt;/p&gt;
+&lt;p&gt;Now that our boids are drawn correctly, we want them to move around and do boid things. First, we implement an &lt;code&gt;update-positions&lt;/code&gt; function, which basically adds the velocity of each boid to its position (so that the boid moves), and applies the 3 Boidian forces to update the boid&#39;s velocity. For now, the functions implementing these forces are stubbed out.&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;defun&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;update-positions&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+  &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;max-velocity&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;;; Update boid positions.&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;map&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;nil&lt;/span&gt;
+         &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;lambda&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+           &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;setf&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;pos&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v+&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;pos&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;velocity&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))))&lt;/span&gt;
+         &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+
+    &lt;span class=&#34;c1&#34;&gt;;; Update boid velocities.&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;loop&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;
+          &lt;span class=&#34;nb&#34;&gt;do&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;setf&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;velocity&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+                   &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v-clamp&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;max-velocity&lt;/span&gt;
+                            &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v+&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;velocity&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+                                &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;rule1&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+                                &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;rule2&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+                                &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;rule3&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))))))&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;;; Stubs! (For now).&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;defun&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;rule1&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+  &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;vec2&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+
+&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;defun&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;rule2&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+  &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;vec2&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+
+&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;defun&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;rule3&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+  &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;vec2&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We then have to modify the drawing loop to call &lt;code&gt;update-positions&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;defsketch&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;width&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;400&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+     &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;height&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;400&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+     &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;restart-on-change&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;nil&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+     &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;loop&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;repeat&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;20&lt;/span&gt;
+                  &lt;span class=&#34;nv&#34;&gt;collect&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;make-boid&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;random&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;width&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+                                     &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;random&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;height&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))))&lt;/span&gt;
+  &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;background&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;gray-255&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;230&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+  &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;draw-boids&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;hll&#34;&gt;  &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;update-positions&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So far, these changes haven&#39;t affected the boid behaviour, so let&#39;s circle back and implement &lt;code&gt;rule-1&lt;/code&gt;, which can be summarised as &#34;stay away from other boids&#34;. When a boid is less than 10 pixels from another boid, we push them away from each other to avoid crowding.&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;defun&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;rule1&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;hll&#34;&gt;  &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v-sum&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;vec2&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;   &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;loop&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid2&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;         &lt;span class=&#34;nv&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;offset&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v-&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;pos&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;pos&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;         &lt;span class=&#34;nv&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;dist&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v-length&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;offset&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;         &lt;span class=&#34;nb&#34;&gt;when&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;and&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;eq&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;dist&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;           &lt;span class=&#34;nb&#34;&gt;do&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v+!&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;v-sum&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;offset&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;   &lt;span class=&#34;nv&#34;&gt;v-sum&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;(Note: the vector functions ending in &lt;code&gt;!&lt;/code&gt;, like &lt;code&gt;v+!&lt;/code&gt;, follow the convention of storing the result in the vector passed as the first argument).&lt;/p&gt;
+&lt;p&gt;When we recompile this function...&lt;/p&gt;
+&lt;video loop autoplay muted class=&#34;centered&#34;&gt;
+  &lt;source src=&#34;/static/video/cl-livecoding/boids-4-first-rule.mp4&#34; type=&#34;video/mp4&#34;&gt;
+&lt;/video&gt;
+
+&lt;p&gt;...a pair of boids that happen to be too close to each other are sent flying off into the void. There&#39;s no counterforce to bring them back, just yet.&lt;/p&gt;
+&lt;p&gt;Next, we implement &lt;code&gt;rule-2&lt;/code&gt;: boids should fly towards the average position of other boids. Our implementation could be more efficient by summing the boid positions just once, rather than doing it for every single boid, but I can&#39;t be bothered.&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;defun&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;rule2&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;hll&#34;&gt;  &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;center&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;vec2&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;    &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;map&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;nil&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;         &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;lambda&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;boid2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;           &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;when&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;eq&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;             &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v+!&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;center&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;pos&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))))&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;         &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;    &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v-scale!&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;/&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;1-&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;length&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;center&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;    &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v-!&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;center&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;pos&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;    &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v-scale!&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;/&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;200&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;center&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;    &lt;span class=&#34;nv&#34;&gt;center&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Recompiling &lt;code&gt;rule-2&lt;/code&gt;, we get...&lt;/p&gt;
+&lt;video loop autoplay muted class=&#34;centered&#34;&gt;
+  &lt;source src=&#34;/static/video/cl-livecoding/boids-5-second-rule.mp4&#34; type=&#34;video/mp4&#34;&gt;
+&lt;/video&gt;
+
+&lt;p&gt;Yes! This is starting to look vaguely like Boids. Let&#39;s add the final rule, &lt;code&gt;rule-3&lt;/code&gt;: boids should match their velocity to all the other boids. Implementation note: we probably shouldn&#39;t update the velocities until all the new velocities have been calculated, but this doesn&#39;t seem to matter too much.&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;defun&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;rule3&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;hll&#34;&gt;  &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;result&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;vec2&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;    &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;map&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;nil&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;         &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;lambda&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;boid2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;           &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;when&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;eq&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;             &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v+!&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;result&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;velocity&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))))&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;         &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;    &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v-scale!&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;/&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;1-&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;length&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;result&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;    &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v-!&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;result&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;velocity&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;    &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v-scale!&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;/&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;result&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;    &lt;span class=&#34;nv&#34;&gt;result&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Recompiling, we see the Boids calm down a little bit.&lt;/p&gt;
+&lt;video loop autoplay muted class=&#34;centered&#34;&gt;
+  &lt;source src=&#34;/static/video/cl-livecoding/boids-6-third-rule.mp4&#34; type=&#34;video/mp4&#34;&gt;
+&lt;/video&gt;
+
+&lt;p&gt;Since it&#39;s not very bird-like to fly around in a vortex of death, we could also give the boids a purpose by making them follow the mouse position. The result of these changes can be seen at the top of the post.&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;defsketch&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;width&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;400&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+     &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;height&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;400&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+     &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;restart-on-change&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;nil&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+     &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;loop&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;repeat&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;20&lt;/span&gt;
+                  &lt;span class=&#34;nv&#34;&gt;collect&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;make-boid&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;random&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;width&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+                                     &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;random&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;height&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))))&lt;/span&gt;
+&lt;span class=&#34;hll&#34;&gt;     &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;mouse-pos&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;vec2&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;200&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;200&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))&lt;/span&gt;
+&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;background&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;gray-255&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;230&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+  &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;draw-boids&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;hll&#34;&gt;  &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;update-positions&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;mouse-pos&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;
+&lt;span class=&#34;hll&#34;&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;defmethod&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;on-hover&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;instance&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&#34;hll&#34;&gt;  &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;setf&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;boids-mouse-pos&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;instance&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;vec2&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))&lt;/span&gt;
+&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;defun&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;update-positions&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;mouse-pos&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+  &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;max-velocity&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;map&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;nil&lt;/span&gt;
+         &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;lambda&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+           &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;setf&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;pos&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v+&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;pos&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;velocity&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))))&lt;/span&gt;
+         &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;loop&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;
+          &lt;span class=&#34;nb&#34;&gt;do&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;setf&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;velocity&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+                   &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v-clamp&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;max-velocity&lt;/span&gt;
+                            &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v+&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;velocity&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+                                &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;rule1&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+                                &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;rule2&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+                                &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;rule3&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boids&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;hll&#34;&gt;                                &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v-rescale&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;0.1&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;v-&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;mouse-pos&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;pos&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;boid&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))))))))&lt;/span&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And with that, we have a complete implementation of Boids! At the risk of beating a dead horse, I&#39;ll re-emphasise that we did the whole thing without once restarting our program or waiting a perceivable amount of time for code to compile.&lt;/p&gt;
+&lt;h3 id=&#34;closing-thoughts&#34;&gt;Closing thoughts&lt;/h3&gt;
+&lt;p&gt;I hope, in this brief demonstration of livecoding, I&#39;ve given you a taste of how useful and fun this feature can be, whether you&#39;re developing a graphics application or mundane accounting software. Like I&#39;ve said, it&#39;s not unique to Common Lisp, as at least Smalltalk and Erlang have similar capabilities. It&#39;s also possible to bridge the gap in less interactive languages by making applications automatically restart themselves when a code change is detected, or by bolting on a scripting language. Just do me a favour and ask yourself, the next time you&#39;re waiting the requisite time units for your code to recompile: &lt;em&gt;How can I make this workflow more interactive? How can I make it more... like Common Lisp?&lt;/em&gt;&lt;/p&gt;
+&lt;!-- Just in case, here&#39;s the ffmpeg command I used to trim the screen recordings:
+ffmpeg -i input.mp4 -ss 2 -to 4 -async 1 cut.mp4 --&gt;
+
+&lt;div class=&#34;footnote&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:livecod&#34;&gt;
+&lt;p&gt;See the &lt;a href=&#34;https://en.wikipedia.org/wiki/Live_coding&#34;&gt;Wiki page&lt;/a&gt;, and also &lt;a href=&#34;https://en.wikipedia.org/wiki/Interactive_programming&#34;&gt;interactive programming&lt;/a&gt;.&amp;#160;&lt;a class=&#34;footnote-backref&#34; href=&#34;#fnref:livecod&#34; title=&#34;Jump back to footnote 1 in the text&#34;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:boidsref&#34;&gt;
+&lt;p&gt;I also heavily leaned on &lt;a href=&#34;https://vergenet.net/~conrad/boids/pseudocode.html&#34;&gt;this webpage&lt;/a&gt; for my implementation. Thanks, Conrad!&amp;#160;&lt;a class=&#34;footnote-backref&#34; href=&#34;#fnref:boidsref&#34; title=&#34;Jump back to footnote 2 in the text&#34;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</description>
+        <link>https://kevingal.com/blog/cl-livecoding.html</link>
+        <pubDate>Wed, 23 Apr 2025 00:00:00 GMT</pubDate>
+        <guid>https://kevingal.com/blog/cl-livecoding.html</guid>
+    </item>
     <item>
         <title>Chess Detective: Identifying player profiles from Lichess recaps</title>
         <description>&lt;p&gt;Last year, I posted &lt;a href=&#34;/blog/chess-ratings.html&#34;&gt;an analysis&lt;/a&gt; of Lichess data, with the aim of figuring out what a &#34;normal&#34; rating fluctuation looks like. It was a garbage piece of work, because I was too lazy to properly clean the data. Another time, I &lt;a href=&#34;/blog/rc8.html&#34;&gt;paired up&lt;/a&gt; with someone at the Recurse Center to do some baby reverse engineering of the Lichess network protocol.&lt;/p&gt;
@@ -877,43 +1197,6 @@ r_{A} + K(s-\sigma(r_{A}, r_{B})),
         <link>https://kevingal.com/blog/rc4.html</link>
         <pubDate>Fri, 26 Jan 2024 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/rc4.html</guid>
-    </item>
-    <item>
-        <title>Recurse Center, week 3</title>
-        <description>&lt;h3 id=&#34;monday-january-15th&#34;&gt;Monday, January 15th&lt;/h3&gt;
-&lt;p&gt;Had a nice chat with Julie, learned a lot about music and music programming! She&#39;s doing cool graphics stuff, and shared a bunch of cool links with me. She also remembered my EmojipastaBot that went viral on reddit, which was a blast from the past.&lt;/p&gt;
-&lt;p&gt;Tried to optimise the &lt;a href=&#34;https://github.com/Kevinpgalligan/sketches/blob/master/src/thesketches/reaction-diffusion.lisp&#34;&gt;reaction diffusion animation&lt;/a&gt; that Tristan and I made on Friday, which basically consisted of adding type declarations to all the simulation code. It was still pretty slow, though. When I profiled the code, it turned out that the drawing part was the real bottleneck and was taking ~28 times longer than the simulation part! We &#34;manually&#34; draw each pixel as a rectangle, which, under the hood, involves pushing vertices to the GPU. I may look into a faster way of doing it.&lt;/p&gt;
-&lt;figure&gt;
-&lt;img src=&#34;/static/img/recurse/reaction.png&#34;
-     alt=&#34;What kinda looks like a skull &amp; crossbones in black &amp; white.&#34;
-     class=&#34;centered&#34;&gt;
-&lt;figcaption&gt;A still from the reaction diffusion animation.&lt;/figcaption&gt;
-&lt;/figure&gt;
-
-&lt;p&gt;Joined the TIC-80 tour given by Quinten, it&#39;s really cool! Was struck by the idea of writing a Forth compiler with WASM as a target, which could then be run on the TIC-80. First I&#39;d better do a Forth interpreter, though.&lt;/p&gt;
-&lt;p&gt;Ended the day with a long debugging session, finally tracked down the bug that was causing my &lt;code&gt;sketch&lt;/code&gt; refactor to break. Though, when I fixed it, it unearthed several more broken behaviours that I&#39;ll have to investigate. Tomorrow I&#39;ll focus on BitTorrent stuff.&lt;/p&gt;
-&lt;h3 id=&#34;tuesday-january-16th&#34;&gt;Tuesday, January 16th&lt;/h3&gt;
-&lt;p&gt;Enjoyed part 2 of the SuperCollider workshop! Was also listening to a cool electronic music playlist that Julie shared with me!&lt;/p&gt;
-&lt;p&gt;Wrote the skeleton of my BitTorrent client, hopefully I&#39;ll be handshaking with peers tomorrow! The only blocker is that most trackers are communicating over UDP, I&#39;ve only implemented the HTTP tracker protocol, and the HTTP tracker I&#39;ve been testing against was down today.&lt;/p&gt;
-&lt;p&gt;Had a coffee chat with Alex, enjoyed hearing about his embedded projects! Looking forward to seeing his networked videogame and model train in action.&lt;/p&gt;
-&lt;p&gt;I read most of &lt;a href=&#34;https://ratfactor.com/forth/the_programming_language_that_writes_itself.html&#34;&gt;this article&lt;/a&gt; about Forth, I&#39;m now pretty excited to write a Forth interpreter/compiler! Especially thinking about how Lisp macros can be used to express the Forth words in a DSL, and how code can be shared between an interpreter and a machine code-generating compiler.&lt;/p&gt;
-&lt;h3 id=&#34;wednesday-january-17th&#34;&gt;Wednesday, January 17th&lt;/h3&gt;
-&lt;p&gt;Figured out the OpenGL bug in my refactoring of the sketch graphics library. The way I had restructured the main class was causing resources to be created without the OpenGL context.&lt;/p&gt;
-&lt;p&gt;Paired with Christopher to implement socket-based communication with other BitTorrent peers. I haven&#39;t done much byte-shuffling in Common Lisp, and I haven&#39;t done socket programming before, so this has been a slow process. I&#39;ve also discovered that the bytes of an individual peer-to-peer message are not guaranteed to arrive in the same network packet, adding an annoying layer of complexity.&lt;/p&gt;
-&lt;p&gt;I feel bad that I&#39;ve been the driver in all of my pairing sessions -- I&#39;m almost at the point of begging the next person to let me be the navigator! &lt;/p&gt;
-&lt;h3 id=&#34;thursday-january-18th&#34;&gt;Thursday, January 18th&lt;/h3&gt;
-&lt;p&gt;This morning, I finally submitted a &lt;a href=&#34;https://github.com/vydd/sketch/pull/134&#34;&gt;pull request&lt;/a&gt; to fix a tricky bug in sketch. There are still some small changes required to ensure backwards compatibility, but I&#39;m counting this as a win!!&lt;/p&gt;
-&lt;p&gt;Today was Impossible Day at RC, where everyone is supposed to attempt something that seems impossible to them. I couldn&#39;t participate, though, because I was traveling to Dublin in the evening for a Lisp meetup. Maybe Friday can be my Impossible Day.&lt;/p&gt;
-&lt;p&gt;Tried to work on the bus but looking down was making me feel ill, ended up napping instead. Did manage to finish reading &lt;a href=&#34;https://ratfactor.com/forth/the_programming_language_that_writes_itself.html&#34;&gt;this overly-long article&lt;/a&gt; about Forth. Now feeling hyped about writing a Forth interpreter. Also read some Godot articles, inspired by Quinten.&lt;/p&gt;
-&lt;h3 id=&#34;friday-january-19th&#34;&gt;Friday, January 19th&lt;/h3&gt;
-&lt;p&gt;Read through some &lt;a href=&#34;https://kidscancode.org/godot_recipes/4.x/&#34;&gt;Godot tutorials&lt;/a&gt; that Quinten shared, excited to try Godot now! Also read about how other languages can interface with the engine, since that seems like it could be a fun project. They have a C API called GDExtension that has been used to, e.g., make Rust bindings. (This was actually at 3am last night when I couldn&#39;t sleep, lol).&lt;/p&gt;
-&lt;p&gt;Reed&#39;s enthusiasm for Forth inspired me to shuffle my priorities! Read &lt;a href=&#34;https://ratfactor.com/forth/the_programming_language_that_writes_itself.html&#34;&gt;this&lt;/a&gt; overly-long but entertaining article, and am enjoying the &lt;a href=&#34;https://github.com/nornagon/jonesforth/blob/master/jonesforth.S&#34;&gt;jonesforth.S&lt;/a&gt; literate implementation of Forth. I&#39;ve also started writing a Forth interpreter. The plan is to implement Forth words in the order that they appear in &lt;a href=&#34;https://www.forth.com/starting-forth/&#34;&gt;Starting Forth&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Coffee chat with Kenneth, talked about shaders and graphics and how to handle motivation at RC.&lt;/p&gt;
-&lt;p&gt;Tweaked my &lt;a href=&#34;https://github.com/vydd/sketch/pull/134/&#34;&gt;pull request&lt;/a&gt; for the sketch graphics library, trying to ensure backward compatibility even for users who rely too much on the implementation details.&lt;/p&gt;
-&lt;p&gt;Making a tactical retreat from the BitTorrent client because my motivation was flagging. I think I was overwhelmed by the combined complexity of the client design, the network protocol, and all the new Common Lisp packages I&#39;m being exposed to. Next week I&#39;ll divide the remaining work into tiny chunks and hopefully that will make it feel more approachable.&lt;/p&gt;</description>
-        <link>https://kevingal.com/blog/rc3.html</link>
-        <pubDate>Fri, 19 Jan 2024 00:00:00 GMT</pubDate>
-        <guid>https://kevingal.com/blog/rc3.html</guid>
     </item>
 </channel>
 </rss> 
