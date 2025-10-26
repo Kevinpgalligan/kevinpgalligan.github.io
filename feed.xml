@@ -10,7 +10,7 @@
     
     <item>
         <title>An Earnest Guide to Symbols in Common Lisp</title>
-        <description>&lt;p&gt;Lisp programming languages have an extremely simple syntax, where everything is either a list or an atom. The most common type of atom is the &lt;strong&gt;symbol&lt;/strong&gt;, which is used to name things like variables and functions. In the Common Lisp code below, &lt;code&gt;defun&lt;/code&gt;, &lt;code&gt;pie&lt;/code&gt;, &lt;code&gt;let&lt;/code&gt;, &lt;code&gt;+&lt;/code&gt;, &lt;code&gt;x&lt;/code&gt; and &lt;code&gt;y&lt;/code&gt; are all symbols.&lt;/p&gt;
+        <description>&lt;p&gt;Lisp programs have an extremely simple syntax, where everything is either a list or an atom. The most common type of atom is the &lt;strong&gt;symbol&lt;/strong&gt;, which is used to give names to things like variables and functions. In the Common Lisp code below, &lt;code&gt;defun&lt;/code&gt;, &lt;code&gt;pie&lt;/code&gt;, &lt;code&gt;let&lt;/code&gt;, &lt;code&gt;+&lt;/code&gt;, &lt;code&gt;x&lt;/code&gt; and &lt;code&gt;y&lt;/code&gt; are all symbols.&lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;defun&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;pie&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
   &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;y&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
     &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))&lt;/span&gt;
@@ -31,8 +31,10 @@
 &lt;li&gt;&lt;a href=&#34;#what-is-a-symbol&#34;&gt;What is a symbol?&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#what-is-to-be-done-with-symbols&#34;&gt;What is to be done... with symbols?&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#why-is-the-symbol-name-in-all-caps&#34;&gt;Why is the symbol name in all-caps?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#_-is-a-symbol&#34;&gt;&amp;lt;_%&amp;amp;? is a symbol&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#the-secrets-of-the-defun&#34;&gt;The secrets of the defun&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#lexical-binding-and-symbols&#34;&gt;Lexical binding and symbols&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#bindings-and-symbols&#34;&gt;Bindings and symbols&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#did-you-say-naming-conventions&#34;&gt;Did you say naming conventions?&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#what-is-a-package&#34;&gt;What is a package?&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#how-do-symbols-get-added-to-a-package&#34;&gt;How do symbols get added to a package?&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#print-read-consistency&#34;&gt;Print-read consistency&lt;/a&gt;&lt;/li&gt;
@@ -53,7 +55,7 @@
 &lt;/blockquote&gt;
 &lt;p&gt;In other words, a symbol is a data structure for identifying things. It&#39;s important to emphasise that &lt;strong&gt;symbols are not strings&lt;/strong&gt;. Each symbol has an associated name, which is represented as a string, but the symbol itself is not a string. I point this out because strings are the closest primitive data type to symbols in most other programming languages.&lt;/p&gt;
 &lt;h2 id=&#34;what-is-to-be-done-with-symbols&#34;&gt;What is to be done... with symbols?&lt;/h2&gt;
-&lt;p&gt;If we enter just &lt;code&gt;x&lt;/code&gt; at the REPL, the symbol of that name will be evaluated, with the result being the &lt;strong&gt;value&lt;/strong&gt; referred to by the symbol &lt;code&gt;x&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;If we enter just &#34;x&#34; at the REPL, the symbol of that name will be evaluated, with the result being the &lt;strong&gt;value&lt;/strong&gt; referred to by that symbol.&lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;nv&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;defparameter&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 &lt;span class=&#34;nv&#34;&gt;[...]&lt;/span&gt;
 
@@ -68,12 +70,12 @@
 &lt;span class=&#34;nv&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;symbol-name&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;#39;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 &lt;span class=&#34;s&#34;&gt;&amp;quot;X&amp;quot;&lt;/span&gt;
 
-&lt;span class=&#34;nv&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;equalp&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;#39;x&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;symbol-name&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;#39;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;equal&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;#39;x&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;symbol-name&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;#39;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
 &lt;span class=&#34;no&#34;&gt;NIL&lt;/span&gt;     &lt;span class=&#34;c1&#34;&gt;; not equal!&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;At read time, when the raw Lisp code is slurped in and parsed, all occurrences of a particular name are mapped to a single, unique symbol. And so, in the next example, we&#39;re comparing the same symbol to itself.&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;nv&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;equalp&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;#39;x&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;#39;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;nv&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;equal&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;#39;x&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;#39;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 &lt;span class=&#34;no&#34;&gt;T&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;; equal&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
@@ -123,8 +125,8 @@
 &lt;p&gt;Each symbol also has an associated &lt;a href=&#34;https://www.lispworks.com/documentation/HyperSpec/Body/26_glo_p.htm#property_list&#34;&gt;property list&lt;/a&gt;, accessed with &lt;code&gt;symbol-plist&lt;/code&gt;, but that doesn&#39;t rear its head very often. There&#39;s also &lt;code&gt;symbol-package&lt;/code&gt;, which we&#39;ll discuss later.&lt;/p&gt;
 &lt;h2 id=&#34;why-is-the-symbol-name-in-all-caps&#34;&gt;Why is the symbol name in all-caps?&lt;/h2&gt;
 &lt;p&gt;Good catch: we entered the symbol &lt;code&gt;&#39;x&lt;/code&gt;, but the printed symbol name was &lt;code&gt;&#34;X&#34;&lt;/code&gt;. By default, all symbol names are converted to upper case by the so-called Lisp Reader. This can be controlled with a parameter called &lt;a href=&#34;https://www.lispworks.com/documentation/HyperSpec/Body/23_ab.htm&#34;&gt;readtable-case&lt;/a&gt;, which, if you really want to preserve your precious little capitalisation, can be set to &lt;code&gt;:preserve&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Honestly, I think this is one of the language&#39;s biggest warts. Under the default behaviour, if you&#39;re trying to implement a formula that contains - &lt;em&gt;gasp&lt;/em&gt; - both &lt;code&gt;n&lt;/code&gt; AND &lt;code&gt;N&lt;/code&gt;, you&#39;re reduced to mutating one of the names, as if you were a wretched internet user trying to meet password requirements by going from &#34;password&#34; to &#34;Password1!&#34;.&lt;/p&gt;
-&lt;p&gt;That said, there&#39;s another way to preserve case in symbol names. Wrap the name in &lt;code&gt;|&lt;/code&gt;s, like &lt;code&gt;&#39;|x|&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Honestly, I think this is one of the language&#39;s biggest warts. Under the default behaviour, if you&#39;re trying to implement a formula that contains - &lt;em&gt;gasp&lt;/em&gt; - both &lt;code&gt;n&lt;/code&gt; AND &lt;code&gt;N&lt;/code&gt;, you&#39;re reduced to mutating one of the names, as if you were a wretched internet user trying to meet password requirements by going from &#34;password&#34; to &#34;Password1!&#34;. I&#39;m not sure why this behaviour was chosen as the default, but usually such things can be blamed on the ANSI standard having to maintain backward compatibility with pre-existing Lisp dialects.&lt;/p&gt;
+&lt;p&gt;That said, there&#39;s a way to preserve case in symbol names regardless of &lt;code&gt;readtable-case&lt;/code&gt;. Wrap the name in &lt;code&gt;|&lt;/code&gt;s, like &lt;code&gt;&#39;|x|&lt;/code&gt;.&lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;nv&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;symbol-name&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;#39;|hi|&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 &lt;span class=&#34;s&#34;&gt;&amp;quot;hi&amp;quot;&lt;/span&gt;
 
@@ -132,6 +134,27 @@
 &lt;span class=&#34;no&#34;&gt;NIL&lt;/span&gt;   &lt;span class=&#34;c1&#34;&gt;; they have different names&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
+&lt;h2 id=&#34;_-is-a-symbol&#34;&gt;&amp;lt;_%&amp;amp;? is a symbol&lt;/h2&gt;
+&lt;p&gt;The rules for symbol names are somewhat unusual, compared to other programming languages. Case in point: &lt;code&gt;&amp;lt;_%&amp;amp;?&lt;/code&gt; is a valid symbol name.&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;nv&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;symbol-name&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;#39;&amp;lt;_%&amp;amp;?&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;s&#34;&gt;&amp;quot;&amp;lt;_%&amp;amp;?&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;What are these rules? They&#39;re described in &lt;a href=&#34;https://www.lispworks.com/documentation/HyperSpec/Body/02_a.htm&#34;&gt;Section 2.1&lt;/a&gt; of the spec, and were admirably summarised by ScottBurson on Reddit -- now reproduced here with their permission.&lt;/p&gt;
+&lt;p&gt;Any consecutive sequence of characters will be parsed as a symbol, except:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;whitespace.&lt;/li&gt;
+&lt;li&gt;parentheses/braces/brackets.&lt;/li&gt;
+&lt;li&gt;those that can be parsed as numbers.&lt;/li&gt;
+&lt;li&gt;those starting with certain special characters, including &lt;code&gt;&#39;&lt;/code&gt;, &lt;code&gt;`&lt;/code&gt;, &lt;code&gt;,&lt;/code&gt;, and &lt;code&gt;#&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;a single period by itself (called &#34;dot&#34;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;As exceptions to these exceptions:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;any sequence of characters surrounded by &lt;code&gt;|&lt;/code&gt; is parsed as a symbol.&lt;/li&gt;
+&lt;li&gt;the non-symbol meaning of any character (including &lt;code&gt;|&lt;/code&gt;) can be suppressed by preceding it with &lt;code&gt;\&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Following the rules above, here are some valid symbols: &lt;code&gt;foo&lt;/code&gt;, &lt;code&gt;foo-bar&lt;/code&gt;, &lt;code&gt;=&lt;/code&gt;, &lt;code&gt;&amp;lt;_%&amp;amp;?&lt;/code&gt;, &lt;code&gt;23-and-me&lt;/code&gt;, &lt;code&gt;|(|&lt;/code&gt;, and &lt;code&gt;\(&lt;/code&gt;.&lt;/p&gt;
 &lt;h2 id=&#34;the-secrets-of-the-defun&#34;&gt;The secrets of the defun&lt;/h2&gt;
 &lt;p&gt;Y&#39;know how symbols have a &lt;code&gt;symbol-function&lt;/code&gt; property? We can overwrite the value of this property with &lt;code&gt;setf&lt;/code&gt;. That&#39;s essentially what &lt;code&gt;defun&lt;/code&gt; is doing behind the scenes.&lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;nv&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;setf&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;symbol-function&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;#39;porridge&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
@@ -148,22 +171,36 @@
          &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;lambda&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;parameters&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;,@&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;body&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;h2 id=&#34;lexical-binding-and-symbols&#34;&gt;Lexical binding and symbols&lt;/h2&gt;
+&lt;h2 id=&#34;bindings-and-symbols&#34;&gt;Bindings and symbols&lt;/h2&gt;
 &lt;p&gt;Based on what we&#39;ve covered already, it&#39;d be reasonable to expect the following code to work.&lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
   &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;symbol-value&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;#39;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;But instead this raises an error about &lt;code&gt;x&lt;/code&gt; being unbound.&lt;/p&gt;
-&lt;p&gt;Here&#39;s why: &lt;code&gt;let&lt;/code&gt; creates a &lt;a href=&#34;https://www.lispworks.com/documentation/HyperSpec/Body/26_glo_l.htm#lexical_binding&#34;&gt;&lt;em&gt;lexical binding&lt;/em&gt;&lt;/a&gt; for the symbol &lt;code&gt;x&lt;/code&gt;, which is kinda like a local variable in other languages. Within the body of the &lt;code&gt;let&lt;/code&gt;, &lt;code&gt;x&lt;/code&gt; is lexically bound to the value &lt;code&gt;1&lt;/code&gt;, but that doesn&#39;t affect the &lt;em&gt;global&lt;/em&gt; value of &lt;code&gt;x&lt;/code&gt;, which is what &lt;code&gt;symbol-value&lt;/code&gt; tries to retrieve.&lt;/p&gt;
-&lt;p&gt;During evaluation, lexical bindings take precedence over global ones, so just evaluate the symbol to get its lexically bound value.&lt;/p&gt;
+&lt;p&gt;Here&#39;s why: the &lt;code&gt;let&lt;/code&gt; form creates a &lt;a href=&#34;https://www.lispworks.com/documentation/HyperSpec/Body/26_glo_b.htm#binding&#34;&gt;lexical binding&lt;/a&gt; between the symbol &lt;code&gt;x&lt;/code&gt; and the value &lt;code&gt;1&lt;/code&gt;, which persists throughout the body of the &lt;code&gt;let&lt;/code&gt;. This is comparable to declaring a local variable in other languages. It doesn&#39;t affect the &lt;em&gt;global&lt;/em&gt; value of &lt;code&gt;x&lt;/code&gt;, which is what &lt;code&gt;symbol-value&lt;/code&gt; attempts to retrieve, and hence the error.&lt;/p&gt;
+&lt;p&gt;If &lt;code&gt;x&lt;/code&gt; has already been declared a dynamic (a.k.a. global) variable, however, then the binding created by &lt;code&gt;let&lt;/code&gt; will shadow whatever global value &lt;code&gt;x&lt;/code&gt; has. Other binding constructs within the language work the same way, e.g. a function parameter called &lt;code&gt;x&lt;/code&gt; would also shadow the global variable.&lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;nv&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;defparameter&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;[...]&lt;/span&gt;
+
 &lt;span class=&#34;nv&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
-      &lt;span class=&#34;nv&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+      &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;symbol-value&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;#39;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
 &lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;
+
+&lt;span class=&#34;nv&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;symbol-value&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;#39;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;&#34;Wow,&#34; you might be thinking, &#34;Doesn&#39;t this make it easy to accidentally shadow a global variable with a local variable?&#34;. Well, yes. That&#39;s why, similar to most other programming languages, Common Lisp has a naming convention for global variables. They&#39;re given &#34;earmuffs&#34;: &lt;code&gt;x&lt;/code&gt; becomes &lt;code&gt;*x*&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;(The exact details around variables, bindings, lexical scope, dynamic scope, etc. are beyond the scope of this article).&lt;/p&gt;
+&lt;p&gt;&#34;Wow,&#34; you might be thinking, &#34;Doesn&#39;t this make it easy to accidentally mutate a global variable?&#34;. Well, yes. That&#39;s why, similar to most other programming languages, Common Lisp has a naming convention for global variables. They&#39;re given &#34;earmuffs&#34;, so that &lt;code&gt;x&lt;/code&gt; becomes &lt;code&gt;*x*&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;did-you-say-naming-conventions&#34;&gt;Did you say naming conventions?&lt;/h2&gt;
+&lt;p&gt;Yes, the Common Lisp community has adopted a number of &lt;a href=&#34;https://www.cliki.net/Naming+conventions&#34;&gt;naming conventions&lt;/a&gt;. Some that I&#39;ll highlight here:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;*x*&lt;/code&gt; is a global variable.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;+x+&lt;/code&gt; is a constant.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;funcp&lt;/code&gt; or &lt;code&gt;func-p&lt;/code&gt; is a &lt;em&gt;predicate&lt;/em&gt; function, i.e. it returns a truthy or falsey value. I much prefer the Scheme convention, &lt;code&gt;func?&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Check out that cliki page for more!&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h2 id=&#34;what-is-a-package&#34;&gt;What is a package?&lt;/h2&gt;
 &lt;p&gt;It&#39;s impossible to get a full picture of how symbols work without also understanding the related concept of &lt;strong&gt;packages&lt;/strong&gt;. These are somewhat like namespaces or &#34;packages&#34; in other languages, except they&#39;re an actual data structure that we can directly query and manipulate.&lt;/p&gt;
 &lt;p&gt;Again &lt;a href=&#34;https://www.lispworks.com/documentation/HyperSpec/Body/t_pkg.htm&#34;&gt;quoting&lt;/a&gt; the spec:&lt;/p&gt;
@@ -183,7 +220,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;(&#34;CL-USER&amp;gt;&#34; is the command prompt from the SLIME REPL, indicating that CL-USER is the currently active package).&lt;/p&gt;
-&lt;p&gt;Programs always start in the COMMON-LISP-USER package, which also goes by the nickname CL-USER. This package has all the symbols you know and love from the ANSI spec: &lt;code&gt;car&lt;/code&gt;, &lt;code&gt;cdr&lt;/code&gt;, &lt;code&gt;loop&lt;/code&gt;, &lt;code&gt;defun&lt;/code&gt;, etc. We&#39;ll explore CL-USER in more detail later on. The macro &lt;code&gt;(in-package &amp;lt;package-name&amp;gt;)&lt;/code&gt; changes the currently active package.&lt;/p&gt;
+&lt;p&gt;Programs always start in the COMMON-LISP-USER package, which also goes by the nickname CL-USER. This package gives access to all the symbols you know and love from the ANSI spec: &lt;code&gt;car&lt;/code&gt;, &lt;code&gt;cdr&lt;/code&gt;, &lt;code&gt;loop&lt;/code&gt;, &lt;code&gt;defun&lt;/code&gt;, etc. We&#39;ll explore CL-USER in more detail later on. The macro &lt;code&gt;(in-package &amp;lt;package-name&amp;gt;)&lt;/code&gt; changes the currently active package.&lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;nv&#34;&gt;CL-USER&amp;gt;&lt;/span&gt; &lt;span class=&#34;vg&#34;&gt;*package*&lt;/span&gt;
 &lt;span class=&#34;err&#34;&gt;#&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;&amp;lt;PACKAGE&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;COMMON-LISP-USER&amp;quot;&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;&amp;gt;&lt;/span&gt;
 
@@ -346,11 +383,11 @@ Used by list: [nothing here]
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2 id=&#34;package-designators&#34;&gt;Package designators&lt;/h2&gt;
-&lt;p&gt;We&#39;ve seen that macros/functions like &lt;code&gt;defpackage&lt;/code&gt; and &lt;code&gt;find-package&lt;/code&gt; accept various data types as references to package, including symbols, keywords and strings. These are collectively referred to as &lt;a href=&#34;https://novaspec.org/cl/26_1_Glossary#package_designator&#34;&gt;package designators&lt;/a&gt;, defined in the standard as:&lt;/p&gt;
+&lt;p&gt;We&#39;ve seen that macros/functions like &lt;code&gt;defpackage&lt;/code&gt; and &lt;code&gt;find-package&lt;/code&gt; accept various data types as references to a package, including symbols, keywords and strings. These are collectively referred to as &lt;a href=&#34;https://www.lispworks.com/documentation/HyperSpec/Body/26_glo_p.htm#package_designator&#34;&gt;package designators&lt;/a&gt;, defined in the standard as:&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;a designator for a package; that is, an object that denotes a package and that is one of: a string designator (denoting the package that has the string that it designates as its name or as one of its nicknames), or a package (denoting itself).&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;A &lt;a href=&#34;https://novaspec.org/cl/26_1_Glossary#string_designator&#34;&gt;string designator&lt;/a&gt;, in turn, is defined as:&lt;/p&gt;
+&lt;p&gt;A &lt;a href=&#34;https://www.lispworks.com/documentation/HyperSpec/Body/26_glo_s.htm#string_designator&#34;&gt;string designator&lt;/a&gt;, in turn, is defined as:&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;a designator for a string; that is, an object that denotes a string and that is one of: a character (denoting a singleton string that has the character as its only element), a symbol (denoting the string that is its name), or a string (denoting itself). The intent is that this term be consistent with the behavior of string; implementations that extend string must extend the meaning of this term in a compatible way.&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -397,7 +434,7 @@ Used by list: [nothing here]
 &lt;p&gt;In situations where the set of names is not finitely enumerable (i.e., where name conflicts might arise) it is frequently best to use symbols in some package other than KEYWORD so that conflicts will be naturally avoided. For example, it is generally not wise for a program to use a keyword as a property indicator, since if there were ever another program that did the same thing, each would clobber the other&#39;s data. &lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;can-a-symbol-be-homeless&#34;&gt;Can a symbol be homeless?&lt;/h2&gt;
-&lt;p&gt;We&#39;ve seen how symbols have a home package, which is the package into which they were originally interned. &lt;code&gt;(symbol-package &#39;sym)&lt;/code&gt; yields this package. Here are some ways for a symbol to be orphaned, such that &lt;code&gt;(symbol-package &#39;sym)&lt;/code&gt; returns &lt;code&gt;NIL&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;We&#39;ve seen how symbols have a home package, which is the package into which they were originally interned. &lt;code&gt;(symbol-package &#39;sym)&lt;/code&gt; yields this package. Here are some ways in which a symbol can become orphaned, such that &lt;code&gt;(symbol-package &#39;sym)&lt;/code&gt; returns &lt;code&gt;NIL&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;1) Manually create a symbol data structure: &lt;code&gt;(make-symbol &#34;NAME-HERE&#34;)&lt;/code&gt;.&lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;nv&#34;&gt;CL-USER&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;symbol-package&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;make-symbol&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;jinkies&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
 &lt;span class=&#34;no&#34;&gt;NIL&lt;/span&gt;
@@ -447,7 +484,7 @@ Used by list: [nothing here]
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;...where &lt;code&gt;#:g690&lt;/code&gt; is a unique, homeless symbol produced for us by &lt;code&gt;gensym&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;The problem with this idea is that it represents a misunderstanding of how code execution works in Common Lisp. For the sake of simplification, let&#39;s say that code execution consists of two stages: Reading and Evaluation. First, raw text is guzzled up by the Lisp Reader and converted to Lisp data structures. It&#39;s in this stage that symbols are created, and it&#39;s here that their home package is determined, based on the value of &lt;code&gt;*package*&lt;/code&gt; when Reading occurs. Next comes Evaluation, which begins with the expansion of all macros in the code. Macros are functions that operate on Lisp data structures and return Lisp data structures. By the time our &lt;code&gt;with-package&lt;/code&gt; macro is passed the list &lt;code&gt;((play))&lt;/code&gt; as its &lt;code&gt;body&lt;/code&gt; parameter, it&#39;s already too late. The &lt;code&gt;play&lt;/code&gt; symbol has been interned in whatever package was active when the Lisp Reader did its job, probably CL-USER. It doesn&#39;t matter if, when our expanded code is being evaluated, we set &lt;code&gt;*package*&lt;/code&gt; before calling &lt;code&gt;(play)&lt;/code&gt;, because the &lt;code&gt;play&lt;/code&gt; has already been interned somewhere else.&lt;/p&gt;
+&lt;p&gt;The problem with this idea is that it represents a misunderstanding of how code execution works in Common Lisp. For the sake of simplification, let&#39;s say that code execution consists of two stages: Reading and Evaluation. First, raw text is guzzled up by the Lisp Reader and converted to Lisp data structures. It&#39;s in this stage that symbols are created, and it&#39;s here that their home package is determined, based on the value of &lt;code&gt;*package*&lt;/code&gt; when Reading occurs. Next comes Evaluation, which begins with the expansion of all macros in the code. Macros are functions that operate on Lisp data structures and return Lisp data structures. By the time our &lt;code&gt;with-package&lt;/code&gt; macro is passed the list &lt;code&gt;((play))&lt;/code&gt; as its &lt;code&gt;body&lt;/code&gt; parameter, it&#39;s already too late. The &lt;code&gt;play&lt;/code&gt; symbol has been interned in whatever package was active when the Lisp Reader did its job, probably CL-USER. It doesn&#39;t matter if, when our expanded code is being evaluated, we set &lt;code&gt;*package*&lt;/code&gt; before calling &lt;code&gt;(play)&lt;/code&gt;, because &lt;code&gt;play&lt;/code&gt; has already been interned somewhere else.&lt;/p&gt;
 &lt;p&gt;All that to say: the Evaluation of a form can&#39;t affect how it is read by the Lisp Reader, since Reading happens before Evaluation. We could implement something like &lt;code&gt;with-package&lt;/code&gt; using &lt;em&gt;reader macros&lt;/em&gt;, but that&#39;s a topic for another day.&lt;/p&gt;
 &lt;h2 id=&#34;special-symbols-t-and-nil&#34;&gt;Special symbols: T and NIL&lt;/h2&gt;
 &lt;p&gt;There are two special symbols that evaluate to themselves: &lt;code&gt;t&lt;/code&gt; and &lt;code&gt;nil&lt;/code&gt;. When we evaluate &lt;code&gt;(symbol-value t)&lt;/code&gt;, we get back... &lt;code&gt;t&lt;/code&gt; again. These &#34;special symbols&#34; represent various things, including the boolean values true &amp;amp; false. &lt;code&gt;nil&lt;/code&gt; also represents the empty list, hence why &lt;code&gt;(listp nil)&lt;/code&gt; returns &lt;code&gt;t&lt;/code&gt;.&lt;/p&gt;
@@ -475,7 +512,7 @@ Used by list: [nothing here]
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;In your REPL, the currently active package is CL-USER. So when you compile the &lt;code&gt;bar&lt;/code&gt; function, why does it get added to the FOO package rather than CL-USER?&lt;/p&gt;
-&lt;p&gt;This is an implementation detail of SLIME more than anything, but I remember being confused by it, so let&#39;s indulge ourselves with this brief tangent. First, let&#39;s see which Elisp function the &lt;code&gt;C-c C-c&lt;/code&gt; shortcut (Ctrl-C Ctrl-C) is bound to. Entering the help command for keyboard shortcuts, &lt;code&gt;C-h k&lt;/code&gt;, and then &lt;code&gt;C-c C-c&lt;/code&gt;, we&#39;re told that this shortcut is bound to the function &lt;code&gt;slime-compile-defun&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;This is an implementation detail of SLIME more than anything, but I remember being confused by it, so let&#39;s indulge ourselves with this brief tangent. First, let&#39;s see which Elisp function the &lt;code&gt;C-c C-c&lt;/code&gt; shortcut is bound to. Entering the help command for keyboard shortcuts, &lt;code&gt;C-h k&lt;/code&gt;, and then &lt;code&gt;C-c C-c&lt;/code&gt;, we&#39;re told that this shortcut is bound to the function &lt;code&gt;slime-compile-defun&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;This function is defined in &lt;code&gt;slime.el&lt;/code&gt;. Following the link there and searching for &#34;in-package&#34;, we find the following comment:&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;We have the concept of the &#34;current Lisp package&#34;. RPC requests always say what package the user is making them from and the Lisp side binds that package to *BUFFER-PACKAGE* to use as it sees fit. The current package is defined as the buffer-local value of &#39;slime-buffer-package&#39; if set, and otherwise the package named by the nearest IN-PACKAGE as found by text search (cl-first backwards, then forwards).&lt;/p&gt;
@@ -490,7 +527,11 @@ Used by list: [nothing here]
       &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;when&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;or&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;re-search-backward&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;regexp&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;nil&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;t&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
                 &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;re-search-forward&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;regexp&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;nil&lt;/span&gt; &lt;span class=&#34;no&#34;&gt;t&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
         &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;match-string-no-properties&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;small&gt;With thanks to ScottBurson, stassats, vindarel, zacque0, kagevf, Jamie and Ordy for their feedback on this post.&lt;/small&gt;&lt;/p&gt;</description>
         <link>https://kevingal.com/blog/cl-symbols.html</link>
         <pubDate>Wed, 04 Jun 2025 00:00:00 GMT</pubDate>
         <guid>https://kevingal.com/blog/cl-symbols.html</guid>
